@@ -56,6 +56,8 @@
 
 \begin{document}
 
+% [Ad: typo] ...quadrocopter... -> ...quadcopter... {I would actually use multirotor UAV / not only quadrotors}
+% [Ad: little suggestion] An Energy-Efficient Vision-Based Autonomous Tracking and Landing approach for a Multirotor UAV on a Moving Platform in an Agricultural Use-Case
 \title{Energy efficient vision based autonomous tracking and landing of a quadrocopter on a moving platform for an agricultural application}
 
 %% author names and affiliations
@@ -103,15 +105,63 @@ abstract
 %%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 \label{sec:introduction}
-In the last years UAVs, especially multicopter drones, are used for various commercial applications such as monitoring, surveillance, transportation of small payloads and agricultural applications. One of the biggest constraints, is their limited flight range due to the battery or fuel capacity. It is therefore seen that to further extend that range, the UAV will have to land in order to change/charge its battery or refuel. Furthermore implementing energy efficient algorithms onboard of the UAV, especially computer vision ones, will further reduce the energy consuption during flight and increase the overall flight range. Concerning the autonomous landing, it is not energy or time efficient for the UAV to fly back to its base. Instead the UAV should land as close as possible to its current location. Constructing and supporting many landing locations scattered around a wide area is considered as a non cost effective solution. Instead it is suggested that the UAV should land on other bigger ground vehicles that are close to its current location, to recharge and then take-off again to continue its mission. 
+% [Ad: suggested change] In the last years UAVs, especially multicopter drones, are -> In the last years Unmanned Aerial Vehicles (UAVs) as multirotor drones are being increasingly... 
+% [Ad: citation needed (any paper on drones starts with something like that)]
+In the last years UAVs, especially multicopter drones, are used for 
+% [Ad: why commercial?] various commercial applications such as... -> e.g.,...
+various commercial applications such as monitoring, surveillance, transportation of small payloads 
+% [Ad: Oxford comma] and -> , and
+and agricultural applications.
+% [Ad: citation needed, if you change it slightly {see suggested}, you can cite my other paper https://adamseew.bitbucket.io/publications/mechanical-and-computational-energy-estimation-of-a-fixed-wing-drone/bibtex.bib] One of the biggest constraints, is their limited flight range due to the battery or fuel capacity. -> One of the major constraints of such applications is their limited level of autonomy due to battery limitations.
+% [Ad: I'd rather avoid fuel capacity as we don't work with those here]
+One of the biggest constraints, is their limited flight range due to the battery or fuel capacity. 
+% [Ad: mixed feelings with ...that range...] ...that range... -> ...the flying time...
+% [Ad:] ...the UAV will have to land... -> ...the UAV would have to land...
+It is therefore seen that to further extend that range, the UAV will have to land in order to 
+% [Ad: seems a lot of suggestions with refuel being the least likely; I would just go with] change/charge its battery or refuel. -> charge the battery.
+change/charge its battery or refuel. 
+% [Ad: let's change it a little to fit it into the computational energy context] Furthermore implementing energy efficient algorithms onboard of the UAV, especially computer vision ones, will further reduce the energy consuption... -> The flight extension can be also achieved by implementing energy-efficient computational components, such as efficient computer vision algorithms. With such an approach, combined with an autonomous landing strategy, we aim to reduce the energy consumption of the UAV
+Furthermore implementing energy efficient algorithms onboard of the UAV, especially computer vision ones, will further reduce the energy consuption 
+% [Ad: I would avoid; not only during flight as we are doing mostly simulations here] 
+during flight 
+% [Ad: let's connect it with the earlier sentence] ...and increase the overall flight range... -> ...and therefore increase the level of autonomy...
+and increase the overall flight range. 
 
-The use of GPS signal for autonomous landing is not considered as a safe option. The noise and errors of the GPS signal are not predictable and can be further increased by signal reflections from buildings, multipathing errors, bad weather conditions or even by the position of the satellites on a given hour of the day. Also, GPS signal jammers may be used to hack the drone and guide it to a non-safe location or even crash it. Therefore a vision-based autonomous landing system is considered as a more optimal option. A drone equipped with a camera can extract information from the scene, in order to find the location of the landing site and guide itself accordingly. Such a system is more suitable for guidance and navigation in GPS-denied locations and is more robust towards hacking attempts.
+% [Ad: I am missing an introduction of the use-case; what we are doing and why {detecting humans on ground while flying close to a tractor using marker tracking and landing when battery level is critical} {+motivation e.g., precision agriculture}]
+% [Ad: (**)]
 
-In this project an agricultural case of a quadrocopter tracking and landing on a moving tractor will be studied. Furthermore, the detection and tracking of the moving ground vehicle for inspection purposes will also be studied.
+% [Ad: I feel like this need either a citation or can be phrased differently; avoid the should]
+% [Ad: and got lost let's rephrase this paragraph {suggested, see (*)}]
+Concerning the autonomous landing, it is not energy or time efficient for the UAV to fly back to its base. Instead the UAV should land as close as possible to its current location. Constructing and supporting many landing locations scattered around a wide area is considered as a non cost effective solution. 
+Instead it is suggested that the UAV should land on other bigger ground vehicles that are close to its current location, to recharge and then take-off again to continue its mission. 
+% [Ad: (*)] Apart from presenting an increased energy efficiency concerning the computations, our approach further elaborates on the landing of the UAV over a moving platform. It can be easily shown that it is not generally energy- or time-efficient for the UAV to fly back to its base, once the battery reaches a critical level. Some solutions in the literature suggested a set of landing locations scattered around a wide area. Those solutions are extended to accommodate the agricultural scenario presented in this paper, with the UAV being proposed to land on the moving vehicle that is inherently in the proximity of the drone during normal operation. 
 
+% [Ad: I am missing context. Why are you speaking about GPS signal? Is it relevant for what we are doing?]
+% [Ad: cite, there are many papers with this]
+The use of
+% [Ad: ] GPS signal... -> a GPS signal... 
+GPS signal for autonomous landing is not
+% [Ad: grammarly spots those] considered as a... -> considered a... 
+considered as a safe option. The noise and errors of the GPS signal are not predictable and can be further increased by signal reflections from buildings, multipathing errors, bad weather 
+% [Ad: Oxford comma] condition or... -> conditions, or...
+conditions or even by the position of the satellites on a given hour of the day. 
+% [Ad: same]
+Also, GPS signal jammers may be used to hack the drone and guide it to a non-safe location or even crash it. 
+% [Ad: we would still  ideally cite this statement or support it with a set of experiments that shows it {not sure which one applies}]
+% [Ad: ] Therefore... -> Therefore, ...
+Therefore a vision-based autonomous landing system is 
+% [Ad: ] considered as a... -> considered a...
+considered as a more optimal option. A drone equipped with a camera can extract information from the
+% [Ad: ] scene, in... -> scene in 
+scene, in order to find the location of the landing site and guide itself accordingly. Such a system is more suitable for guidance and navigation in GPS-denied locations and is more robust towards hacking attempts.
 
+% [Ad: you mention a lot hacking attempts but I wouldn't be concerned that much in our agricultural use-case except if the farmer on the other side of the fence is little malicious and have a lot of knowledge in GPS spoofing {meaning: not sure the previous paragraph is any relevant}]
 
-*
+% [Ad: relative to (**) up {oh yes, it's here; just move it up and elaborate a little as then you are using it in the later paragraph}]
+% [Ad: paper :)] ...project -> ...paper,
+In this project
+% [Ad: we use generally UAV pretty much everywhere, I would stick on that] ...quadrocopter... -> ...UAV...
+an agricultural case of a quadrocopter tracking and landing on a moving tractor will be studied. Furthermore, the detection and tracking of the moving ground vehicle for inspection purposes will also be studied.
 
 %%%%%%%%%%%%%%%%%%%%%%
 \section{Related Work}
