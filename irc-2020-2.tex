@@ -58,7 +58,7 @@
 
 % [Ad: typo] ...quadrocopter... -> ...quadcopter... {I would actually use multirotor UAV / not only quadrotors}
 % [Ad: little suggestion] An Energy-Efficient Vision-Based Autonomous Tracking and Landing Approach for a Multirotor UAV on a Moving Platform in an Agricultural Use-Case
-\title{Energy efficient vision based autonomous tracking and landing of a quadrocopter on a moving platform for an agricultural application}
+\title{Energy-Sensitive Vision-Based Autonomous Tracking and Landing of a Quadrocopter on a Moving Platform} %for an Agricultural Application %UPS: suggested title, agriculture less important, playing with "energy sensitive" since we know about the energy and can adapt QoS accordingly
 
 %% author names and affiliations
 \author{
@@ -164,34 +164,64 @@ In this project
 an agricultural case of a quadrocopter tracking and landing on a moving tractor will be studied. Furthermore, the detection and tracking of the moving ground vehicle for inspection purposes will also be studied.
 
 %%%%%%%%%%%%%%%%%%%%%%
-\section{Related Work}
-\label{sec:related}
+\section{State of the Art}
+\label{sec:state-of-the-art}
 
-*
+TODO: Georgios: Autonomous landing
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Approach}
+\section{Energy-Sensitive Control of Tracking and Landing}
 \label{sec:approach}
 
-*
+Idea: fairly short section painting the overall picture of our concept
+for making the UAV control be energy sensive. First describe energy
+sensitivity as a concept, based on powprofiler (QoS->energy
+prediction) and the other IEEE RC paper as an example. Then describe
+the overall tracking and landing algorithm abstractly (pseudo code
+outline of what it does) and what the relevant QoS levels are (i.e.,
+rate at which the marker detector runs). Include also a ``black-box''
+workload representing whatever other work is being done as whatever
+QoS, this will be the CNN.
+
+%%%%%%%%%%%%%%%%%%%%
+\section{Vision-Based Autonomous Tracking and Landing}
+\label{sec:landing}
+
+TODO: Georgios: your key contribution here
 
 %%%%%%%%%%%%%%%%%%%%
 \section{Evaluation}
 \label{sec:experimental}
 
-*
+\subsection{Use case: agricultural safety}
+
+Briefly describe the use case and simulation, including the use of CNN
+to detect
+
+\subsection{Experimental setup}
+
+How the experiment will be done concretely, i.e., time to land as a
+function of QoS and wind or whatever.
+
+\subsection{Results}
+
+Results of the experiments
+
+\subsection{Discussion}
+
+Discussion of the results
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion and Future Work}
 \label{sec:conclusion}
 
-*
+What we did, why it was exciting, and what we want to do.
 
 %% acknowledgement
 %%%%%%%%%%%%%%%%%%%%%%%%%
 \section*{Acknowledgment}
 
-This work is supported and partly funded by the European Union’s Horizon2020 research and innovation program under grant agreement No. 779882 (TeamPlay).
+This work is supported and partly funded by the European Union’s Horizon2020 research and innovation program under grant agreement No.~779882 (TeamPlay).
 
 \bibliographystyle{IEEEtran}
 \bibliography{\jobname} 
