@@ -288,17 +288,24 @@ abstract
 %%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 \label{sec:introduction}
-In the last years Unmanned Aerial Vehicles (UAVs), especially multicopter drones, are used for various applications such as monitoring, surveillance, transportation of small payloads and agricultural applications \cite{costa2012use} \cite{salami2014uav}. 
 
-One of the major constraints of such applications is their limited level of autonomy due to battery limitations. It is therefore seen that to further extend the autonomy, the UAV will have to land in order to charge the battery. 
+Unmanned Aerial Vehicles (UAVs) are increasingly used for applications such as monitoring, surveillance, transportation of small payloads, and agricultural applications~\cite{costa2012use,salami2014uav}. 
+%
+One of the major constraints of such applications is their limited level of autonomy due to battery limitations. %It is therefore seen that to further 
+Extending the flying time of a UAV is normally done by having it land in order to replace or charge the battery before continuing the mission. Performing landings autonomously can however be challenging depending on the environment and whether the landing platform is stationary or mobile.
+%
+%Apart from presenting an increased energy efficiency concerning the computations, our approach further elaborates on the landing of the UAV on a moving platform. It can be easily shown that it is not generally energy- or time-efficient for the UAV to fly back to its base, once the battery reaches a critical level. Instead it is proposed that the UAV should land on the moving vehicle that is inherently in the proximity of the UAV during normal operation. 
+%
+Moreover, relying solely on the availability of a GPS signal for autonomous precision landing is not considered safe, since GPS signals can be temporarily lost or even tampered with. %The noise and errors of the GPS signal are not predictable and instead a 
+As an alternative, in this paper we investigate the use of a novel vision-based autonomous landing system, and evaluate its robustness towards environmental conditions such as visual disturbances and wind. %is considered a more optimal option.
 
-The flight extension can be also achieved by implementing energy-efficient computational components, such as efficient computer vision algorithms, by selecting the desired quality of service (QoS) of the computational components \cite{seewald2020mechanical}. With such an approach, combined with an autonomous landing strategy, we aim to reduce the energy consumption of the UAV during flight and therefore increase the level of autonomy.
+Extension of the flight time can be also achieved by using \emph{energy-sensitive algorithms} that can reduce energy consumption by reducing the quality of service (QoS). With this approach, energy-costly computations such as computer vision are adapted by selecting the desired quality of service (QoS) to match the available energy~\cite{seewald2020mechanical}. %With such an approach, 
+By combining energy-sensitive algorithms with autonomous landing capabilities, we aim to increase the total availability of the UAV to perform operations, by extending the flight time and using autonomous recharging when needed.
+%reduce the energy consumption of the UAV during flight and furthermore increase the level of autonomy.
 
-Apart from presenting an increased energy efficiency concerning the computations, our approach further elaborates on the landing of the UAV on a moving platform. It can be easily shown that it is not generally energy- or time-efficient for the UAV to fly back to its base, once the battery reaches a critical level. Instead it is proposed that the UAV should land on the moving vehicle that is inherently in the proximity of the UAV during normal operation. 
-
-The solely use of GPS signal for autonomous precision landing is not considered as a safe option. The noise and errors of the GPS signal are not predictable and instead a vision-based autonomous landing system is considered a more optimal option.
-
-In this project an agricultural case of a quadrocopter UAV, tracking and landing on a moving tractor will be studied.
+The main contribution of this paper concerns the experimental study of a robust, energy-sensitive, vision-based algorithm for autonomous landing in varying environmental conditions. The algorithms are executed on an NVIDIA Jetson Nano companion computer controlling a simulated drone using a hardware-in-the-loop experimental setup. The vision-based landing algorithms provide novel capabilities in terms of tolerance to visual disturbance and varying environmental conditions such as wind.
+%
+Our experiments are based on an agricultural use case where a quadrocopter UAV performs visual identification of ground-based hazards while tracking and landing on a moving tractor. %will be studied.
 
 %%%%%%%%%%%%%%%%%%%%%%
 \section{State of the Art}
