@@ -52,7 +52,6 @@
 
 %% references (generates a bib file for bibtex)
 \begin{filecontents}{\jobname.bib}
-
 @article{salami2014uav,
   title={UAV flight experiments applied to the remote sensing of vegetated areas},
   author={Salam{\'\i}, Esther and Barrado, Cristina and Pastor, Enric},
@@ -63,8 +62,6 @@
   year={2014},
   publisher={Multidisciplinary Digital Publishing Institute}
 }
-
-
 @inproceedings{costa2012use,
   title={The use of unmanned aerial vehicles and wireless sensor network in agricultural applications},
   author={Costa, Fausto G and Ueyama, J{\'o} and Braun, Torsten and Pessin, Gustavo and Os{\'o}rio, Fernando S and Vargas, Patr{\'\i}cia A},
@@ -73,9 +70,6 @@
   year={2012},
   organization={IEEE}
 }
-
-
-
 @inproceedings{seewald2020mechanical,
   title={Mechanical and Computational Energy Estimation of a Fixed-Wing Drone}, 
   author={Seewald, Adam and Garcia de Marina, Hector and Midtiby, Henrik Skov and Schultz, Ulrik Pagh},
@@ -83,8 +77,7 @@
   pages={to appear},
   year={2020},
   organization={IEEE} 
-  }
-
+}
 @inproceedings{saripalli2002vision,
   title={Vision-based autonomous landing of an unmanned aerial vehicle},
   author={Saripalli, Srikanth and Montgomery, James F and Sukhatme, Gaurav S},
@@ -210,11 +203,9 @@
   journal={International Journal of Distributed Sensor Networks},
   volume={14},
   number={9},
-  pages={1550147718800655},
-  year={2018},
+  year={2018}
   publisher={SAGE Publications Sage UK: London, England}
 }
-
 @article{yang2018hybrid,
   title={Hybrid camera array-based uav auto-landing on moving ugv in gps-denied environment},
   author={Yang, Tao and Ren, Qiang and Zhang, Fangbing and Xie, Bolin and Ren, Hailei and Li, Jing and Zhang, Yanning},
@@ -225,7 +216,6 @@
   year={2018},
   publisher={Multidisciplinary Digital Publishing Institute}
 }
-
 @inproceedings{olson2011apriltag,
   title={AprilTag: A robust and flexible visual fiducial system},
   author={Olson, Edwin},
@@ -234,7 +224,87 @@
   year={2011},
   organization={IEEE}
 }
-
+@article{berenz2012autonomous,
+  title={Autonomous battery management for mobile robots based on risk and gain assessment},
+  author={Berenz, Vincent and Tanaka, Fumihide and Suzuki, Kenji},
+  journal={Artificial Intelligence Review},
+  volume={37},
+  number={3},
+  pages={217--237},
+  year={2012},
+  publisher={Springer}
+}
+@inproceedings{mei2005case,
+   title={A case study of mobile robot's energy consumption and conservation techniques},
+  author={Mei, Yongguo and Lu, Yung-Hsiang and Hu, Y Charlie and Lee, CS George},
+  booktitle={ICAR'05. Proceedings., 12th International Conference on Advanced Robotics, 2005.},
+  pages={492--497},
+  year={2005},
+  organization={IEEE}
+}
+@inproceedings{mei2004energy,
+  title={Energy-efficient motion planning for mobile robots},
+  author={Mei, Yongguo and Lu, Yung-Hsiang and Hu, Y Charlie and Lee, CS George},
+  booktitle={IEEE International Conference on Robotics and Automation, 2004. Proceedings. ICRA'04. 2004},
+  volume={5},
+  pages={4344--4349},
+  year={2004},
+  organization={IEEE}
+}
+@article{mei2006deployment,
+  title={Deployment of mobile robots with energy and timing constraints},
+  author={Mei, Yongguo and Lu, Yung-Hsiang and Hu, Yu Charlie and Lee, CS George},
+  journal={IEEE Transactions on robotics},
+  volume={22},
+  number={3},
+  pages={507--522},
+  year={2006},
+  publisher={IEEE}
+}
+@article{morales2009power,
+  title={Power consumption modeling of skid-steer tracked mobile robots on rigid terrain},
+  author={Morales, Jesus and Martinez, Jorge L and Mandow, Anthony and Garc{\'\i}a-Cerezo, Alfonso J and Pedraza, Salvador},
+  journal={IEEE Transactions on Robotics},
+  volume={25},
+  number={5},
+  pages={1098--1108},
+  year={2009},
+  publisher={IEEE}
+}
+@article{seewald2019coarse,
+  title={Coarse-Grained Computation-Oriented Energy Modeling for Heterogeneous Parallel Embedded Systems},
+  author={Seewald, Adam and Schultz, Ulrik Pagh and Ebeid, Emad and Midtiby, Henrik Skov},
+  journal={International Journal of Parallel Programming},
+  pages={1--22},
+  year={2019},
+  publisher={Springer}
+}
+@inproceedings{nardi2015introducing,
+  title={Introducing SLAMBench, a performance and accuracy benchmarking methodology for SLAM},
+  author={Nardi, Luigi and Bodin, Bruno and Zia, M Zeeshan and Mawer, John and Nisbet, Andy and Kelly, Paul HJ and Davison, Andrew J and Luj{\'a}n, Mikel and O'Boyle, Michael FP and Riley, Graham and others},
+  booktitle={2015 IEEE International Conference on Robotics and Automation (ICRA)},
+  pages={5783--5790},
+  year={2015},
+  organization={IEEE}
+}
+@article{sadrpour2013mission,
+  title={Mission Energy Prediction for Unmanned Ground Vehicles Using Real-time Measurements and Prior Knowledge},
+  author={Sadrpour, Amir and Jin, Jionghua and Ulsoy, A Galip},
+  journal={Journal of Field Robotics},
+  volume={30},
+  number={3},
+  pages={399--414},
+  year={2013},
+  publisher={Wiley Online Library}
+}
+@inproceedings{sadrpour2013experimental,
+  title={Experimental validation of mission energy prediction model for unmanned ground vehicles},
+  author={Sadrpour, Amir and Jin, Judy and Ulsoy, A Galip},
+  booktitle={2013 American Control Conference},
+  pages={5960--5965},
+  year={2013},
+  organization={IEEE}
+}
 \end{filecontents}
 
 \begin{document}
@@ -319,15 +389,23 @@ Saripalli et~al.~\cite{saripalli2003landing} also demonstrated the use of a Kalm
 
 The design of the marker and choice of sensors can facilitate doing the computations on-board. %Is this the point of this paragraph?
 %
-Chen et~al.~\cite{chen2016system} utilized a marker consisting of a circle and rectangles of different colors along with a LiDAR scanning range finder for height estimation. The marker was detected by performing color segmentation on the incoming image frame. By fusing the height measurement from the LiDAR into the vision measurement, a relative pose of the UAV from the moving platform was obtained. A color segmentation approach was also implemented by Lee et~al.~\cite{lee2016vision}. A red rectangle was used as a landing marker and a vertically facing camera with a fish-eye lense was used to detect it, and a successful landing from an altitude of 70m was demonstrated. Both teams have used an on-board companion computer to perform all the computation on the UAV. However a color segmentation approach is not considered as a safe option for a realistic (outdoor) case it would be difficult, if not impossible, to ensure that the landing marker will be the only object of a specific color in the scene.
+Chen et~al.~\cite{chen2016system} utilized a marker consisting of a circle and rectangles of different colors along with a LiDAR scanning range finder for height estimation. The marker was detected by performing color segmentation on the incoming image frame. By fusing the height measurement from the LiDAR into the vision measurement, a relative pose of the UAV from the moving platform was obtained. A color segmentation approach was also implemented by Lee et~al.~\cite{lee2016vision}. A red rectangle was used as a landing marker and a vertically facing camera with a fish-eye lens was used to detect it, and a successful landing from an altitude of 70m was demonstrated. Both teams have used an on-board companion computer to perform all the computation on the UAV. However a color segmentation approach is not considered as a safe option for a realistic (outdoor) case it would be difficult, if not impossible, to ensure that the landing marker will be the only object of a specific color in the scene.
 
 The use of a hybrid camera system consisting of a fish-eye IR camera and a stereo camera was demonstrated by Yang et~al.~\cite{yang2018hybrid}. An ArUco marker was used to mark the moving platform and a convolutional neural network (CNN) Yolov3 was trained specifically for marker detection. A similar approach concerning the detection of a landing marker was demonstrated by Nguyen et~al.~\cite{nguyen2018lightdenseyolo}. Here a specific landing marker was used and a specific CNN was used to detect it: successful detection of a 1m$\times$1m marker size was demonstrated from a distance of 50m. An AprilTag marker was used as a landing marker by Kyritsis et~al.~\cite{kyristsis2016towards} for the purpose of ``2016 DJI Developer Challenge''. The identification of the AprilTag marker was performed through Graphics Processing Unit (GPU). The three teams have utilized the companion's computer GPU to detect the landing marker. In the agricultural use case addressed in this paper, the GPU is however needed for a CNN to detect ground hazards, and since the GPU cannot simultaneously run different algorithms, %objects around the moving platform and 
 the CPU should be used for detecting the landing marker. By doing so, a different QoS could be chosen for each algorithm.    
 
+To account for the energy modeling of computer vision algorithms, we considered the work previously carried by Nardi et~al.~\cite{nardi2015introducing}. The authors present SLAMBench, a framework that investigates SLAM algorithms configuration alternatives for energy efficiency. Whereas, we use \powprof{}, a generic energy modeling tool. The tool, presented at an earlier point in our work~\cite{seewald2019coarse}, accounts for measuring the energy impact of different configurations of the ROS based system featuring the agricultural use-case.
+
+Some further energy modeling, such as mission-based energy models studied by Sadrpour et~al.~\cite{sadrpour2013experimental, sadrpour2013mission}, focus mostly on ground-based autonomous vehicles instead of the UAVs. Others investigated extensively the concept of motion, as the work presented by Morales et al.~\cite{morales2009power}, but do not account further on the computation.
+
+Energy modeling of mobile robots specifically, as the work carried by Mei et al.~\cite{mei2006deployment, mei2005case, mei2004energy}, has provided the ground for the concept of modeling computation for energy-sensitive algorithm design. The authors' approach has evolved from an energy-efficient motion planning technique in~\cite{mei2004energy}, a design strategy that allows accounting for motion and computations separately in~\cite{mei2005case}, to an energy-efficient deployment algorithm in~\cite{mei2006deployment}.
+
+The battery in our system is considered in the context of a drone being able to perform its mission while accounting for the eventuality of a battery shortage; to this end, we investigated the approach presented by Berenz et~al.~\cite{berenz2012autonomous}, where a battery management mission-based dynamic recharge approach is presented. A set of recharge stations are used, along with self-docking capable robots. Our approach similarly allows landing on the platform, which is inherently in the proximity of the drone.
+
 Taking into account varying environmental conditions and unpredictable movements of the platform to land on is relevant for the use of landing in outdoor, mobile scenarios.
 Regarading wind conditions, an AprilTag marker was used by Feng et~al.~\cite{feng2018autonomous} with a constant wind speed of 5~m/s as an external disturbance in a simulation environment. Nevertheless, a fluctuation in the wind's magnitude and direction is likely to happen in realistic cases.
 %
-Concerning estimation of the moving platform's position and velocity, a Kalman Filter or Extended Kalman Filter has been used for the estimation~\cite{araar2017vision,feng2018autonomous,falanga2017vision}, whereas Yang et~al.~\cite{yang2018hybrid} constructed a velocity observer algorithm by calculating the actual moving distance of the moving platform over a period of time. 
+Concerning estimation of the moving platform's position and velocity, a Kalman Filter or Extended Kalman Filter has been used for the estimation~\cite{araar2017vision,feng2018autonomous, falanga2017vision}, whereas Yang et~al.~\cite{yang2018hybrid} constructed a velocity observer algorithm by calculating the actual moving distance of the moving platform over a period of time. 
 
 
 
