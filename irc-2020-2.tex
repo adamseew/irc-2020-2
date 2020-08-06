@@ -114,7 +114,6 @@
   year={2016},
   organization={IEEE}
 }
-
 @inproceedings{falanga2017vision,
   title={Vision-based autonomous quadrotor landing on a moving platform},
   author={Falanga, Davide and Zanchettin, Alessio and Simovic, Alessandro and Delmerico, Jeffrey and Scaramuzza, Davide},
@@ -122,8 +121,7 @@
   pages={200--207},
   year={2017},
   organization={IEEE}
-}
-	
+}	
 @article{araar2017vision,
   title={Vision based autonomous landing of multirotor UAV on moving platform},
   author={Araar, Oualid and Aouf, Nabil and Vitanov, Ivan},
@@ -134,7 +132,6 @@
   year={2017},
   publisher={Springer}
 }
-
 @article{feng2018autonomous,
   title={Autonomous landing of a UAV on a moving platform using model predictive control},
   author={Feng, Yi and Zhang, Cong and Baek, Stanley and Rawashdeh, Samir and Mohammadi, Alireza},
@@ -145,7 +142,6 @@
   year={2018},
   publisher={Multidisciplinary Digital Publishing Institute}
 }
-
 @article{kyristsis2016towards,
   title={Towards autonomous modular UAV missions: The detection, geo-location and landing paradigm},
   author={Kyristsis, Sarantis and Antonopoulos, Angelos and Chanialakis, Theofilos and Stefanakis, Emmanouel and Linardos, Christos and Tripolitsiotis, Achilles and Partsinevelos, Panagiotis},
@@ -156,7 +152,6 @@
   year={2016},
   publisher={Multidisciplinary Digital Publishing Institute}
 }
-
 @inproceedings{acuna2018vision,
   title={Vision-based UAV landing on a moving platform in GPS denied environments using motion prediction},
   author={Acuna, Raul and Zhang, Ding and Willert, Volker},
@@ -165,7 +160,6 @@
   year={2018},
   organization={IEEE}
 }
-
 @inproceedings{lee2016vision,
   title={Vision-based UAV landing on the moving vehicle},
   author={Lee, Hanseob and Jung, Seokwoo and Shim, David Hyunchul},
@@ -174,7 +168,6 @@
   year={2016},
   organization={IEEE}
 }
-
 @article{nguyen2018lightdenseyolo,
   title={LightDenseYOLO: A fast and accurate marker tracker for autonomous UAV landing by visible light camera sensor on drone},
   author={Nguyen, Phong Ha and Arsalan, Muhammad and Koo, Ja Hyung and Naqvi, Rizwan Ali and Truong, Noi Quang and Park, Kang Ryoung},
@@ -185,7 +178,6 @@
   year={2018},
   publisher={Multidisciplinary Digital Publishing Institute}
 }
-
 @article{guo2020precision,
   title={Precision Landing Test and Simulation of the Agricultural UAV on Apron},
   author={Guo, Yangyang and Guo, Jiaqian and Liu, Chang and Xiong, Hongting and Chai, Lilong and He, Dongjian},
@@ -196,7 +188,6 @@
   year={2020},
   publisher={Multidisciplinary Digital Publishing Institute}
 }
-
 @article{yuan2018hierarchical,
   title={A hierarchical vision-based localization of rotor unmanned aerial vehicles for autonomous landing},
   author={Yuan, Haiwen and Xiao, Changshi and Xiu, Supu and Zhan, Wenqiang and Ye, Zhenyi and Zhang, Fan and Zhou, Chunhui and Wen, Yuanqiao and Li, Qiliang},
@@ -235,7 +226,7 @@
   publisher={Springer}
 }
 @inproceedings{mei2005case,
-   title={A case study of mobile robot's energy consumption and conservation techniques},
+  title={A case study of mobile robot's energy consumption and conservation techniques},
   author={Mei, Yongguo and Lu, Yung-Hsiang and Hu, Y Charlie and Lee, CS George},
   booktitle={ICAR'05. Proceedings., 12th International Conference on Advanced Robotics, 2005.},
   pages={492--497},
@@ -309,8 +300,11 @@
 
 \begin{document}
 
-% [Ad: typo] ...quadrocopter... -> ...quadcopter... {I would actually use multirotor UAV / not only quadrotors}
-% [Ad: little suggestion] An Energy-Efficient Vision-Based Autonomous Tracking and Landing Approach for a Multirotor UAV on a Moving Platform in an Agricultural Use-Case
+%% [Ad: typo] ...quadrocopter... -> ...quadcopter... {I would actually use multirotor UAV / not only quadrotors}
+%% [Ad: little suggestion] An Energy-Efficient Vision-Based Autonomous Tracking and Landing Approach for a Multirotor UAV on a Moving Platform in an Agricultural Use-Case
+
+
+% [Ad: Quadrocopter; so it should work as well despite what I said earlier, but I checked IEEExplore and Quadrotor is far more used]
 \title{Energy-Sensitive Vision-Based Autonomous Tracking and Landing of a Quadrocopter on a Moving Platform} %for an Agricultural Application %UPS: suggested title, agriculture less important, playing with "energy sensitive" since we know about the energy and can adapt QoS accordingly
 
 %% author names and affiliations
@@ -391,9 +385,10 @@ The design of the marker and choice of sensors can facilitate doing the computat
 %
 Chen et~al.~\cite{chen2016system} utilized a marker consisting of a circle and rectangles of different colors along with a LiDAR scanning range finder for height estimation. The marker was detected by performing color segmentation on the incoming image frame. By fusing the height measurement from the LiDAR into the vision measurement, a relative pose of the UAV from the moving platform was obtained. A color segmentation approach was also implemented by Lee et~al.~\cite{lee2016vision}. A red rectangle was used as a landing marker and a vertically facing camera with a fish-eye lens was used to detect it, and a successful landing from an altitude of 70m was demonstrated. Both teams have used an on-board companion computer to perform all the computation on the UAV. However a color segmentation approach is not considered as a safe option for a realistic (outdoor) case it would be difficult, if not impossible, to ensure that the landing marker will be the only object of a specific color in the scene.
 
-The use of a hybrid camera system consisting of a fish-eye IR camera and a stereo camera was demonstrated by Yang et~al.~\cite{yang2018hybrid}. An ArUco marker was used to mark the moving platform and a convolutional neural network (CNN) Yolov3 was trained specifically for marker detection. A similar approach concerning the detection of a landing marker was demonstrated by Nguyen et~al.~\cite{nguyen2018lightdenseyolo}. Here a specific landing marker was used and a specific CNN was used to detect it: successful detection of a 1m$\times$1m marker size was demonstrated from a distance of 50m. An AprilTag marker was used as a landing marker by Kyritsis et~al.~\cite{kyristsis2016towards} for the purpose of ``2016 DJI Developer Challenge''. The identification of the AprilTag marker was performed through Graphics Processing Unit (GPU). The three teams have utilized the companion's computer GPU to detect the landing marker. In the agricultural use case addressed in this paper, the GPU is however needed for a CNN to detect ground hazards, and since the GPU cannot simultaneously run different algorithms, %objects around the moving platform and 
+The use of a hybrid camera system consisting of a fish-eye IR camera and a stereo camera was demonstrated by Yang et~al.~\cite{yang2018hybrid}. An ArUco marker was used to mark the moving platform and a convolutional neural network (CNN) Yolo~v3 was trained specifically for marker detection. A similar approach concerning the detection of a landing marker was demonstrated by Nguyen et~al.~\cite{nguyen2018lightdenseyolo}. Here a specific landing marker was used and a specific CNN was used to detect it: successful detection of a 1m$\times$1m marker size was demonstrated from a distance of 50m. An AprilTag marker was used as a landing marker by Kyritsis et~al.~\cite{kyristsis2016towards} for the purpose of ``2016 DJI Developer Challenge''. The identification of the AprilTag marker was performed through Graphics Processing Unit (GPU). The three teams have utilized the companion's computer GPU to detect the landing marker. In the agricultural use case addressed in this paper, the GPU is however needed for a CNN to detect ground hazards, and since the GPU cannot simultaneously run different algorithms, %objects around the moving platform and 
 the CPU should be used for detecting the landing marker. By doing so, a different QoS could be chosen for each algorithm.    
 
+% [Ad: energy-sensitive part {begin}]
 To account for the energy modeling of computer vision algorithms, we considered the work previously carried by Nardi et~al.~\cite{nardi2015introducing}. The authors present SLAMBench, a framework that investigates SLAM algorithms configuration alternatives for energy efficiency. Whereas, we use \powprof{}, a generic energy modeling tool. The tool, presented at an earlier point in our work~\cite{seewald2019coarse}, accounts for measuring the energy impact of different configurations of the ROS based system featuring the agricultural use-case.
 
 Some further energy modeling, such as mission-based energy models studied by Sadrpour et~al.~\cite{sadrpour2013experimental, sadrpour2013mission}, focus mostly on ground-based autonomous vehicles instead of the UAVs. Others investigated extensively the concept of motion, as the work presented by Morales et al.~\cite{morales2009power}, but do not account further on the computation.
@@ -401,10 +396,11 @@ Some further energy modeling, such as mission-based energy models studied by Sad
 Energy modeling of mobile robots specifically, as the work carried by Mei et al.~\cite{mei2006deployment, mei2005case, mei2004energy}, has provided the ground for the concept of modeling computation for energy-sensitive algorithm design. The authors' approach has evolved from an energy-efficient motion planning technique in~\cite{mei2004energy}, a design strategy that allows accounting for motion and computations separately in~\cite{mei2005case}, to an energy-efficient deployment algorithm in~\cite{mei2006deployment}.
 
 The battery in our system is considered in the context of a drone being able to perform its mission while accounting for the eventuality of a battery shortage; to this end, we investigated the approach presented by Berenz et~al.~\cite{berenz2012autonomous}, where a battery management mission-based dynamic recharge approach is presented. A set of recharge stations are used, along with self-docking capable robots. Our approach similarly allows landing on the platform, which is inherently in the proximity of the drone.
+% [Ad: energy-sensitive part {end} ]
 
 Taking into account varying environmental conditions and unpredictable movements of the platform to land on is relevant for the use of landing in outdoor, mobile scenarios.
 Regarading wind conditions, an AprilTag marker was used by Feng et~al.~\cite{feng2018autonomous} with a constant wind speed of 5~m/s as an external disturbance in a simulation environment. Nevertheless, a fluctuation in the wind's magnitude and direction is likely to happen in realistic cases.
-%
+%/
 Concerning estimation of the moving platform's position and velocity, a Kalman Filter or Extended Kalman Filter has been used for the estimation~\cite{araar2017vision,feng2018autonomous, falanga2017vision}, whereas Yang et~al.~\cite{yang2018hybrid} constructed a velocity observer algorithm by calculating the actual moving distance of the moving platform over a period of time. 
 
 
@@ -471,18 +467,30 @@ Concerning estimation of the moving platform's position and velocity, a Kalman F
 %In session II the materials will be presented, in session III ... ( and so on) 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
+% [Ad: change in the title of the section] I would actually change the title to something like Energy-Sensitive Mission Deployment, as in the current shape the title does not account for hazard detection (yolo) part
 \section{Energy-Sensitive Control of Tracking and Landing}
 \label{sec:approach}
 
-Idea: fairly short section painting the overall picture of our concept
-for making the UAV control be energy sensive. First describe energy
-sensitivity as a concept, based on powprofiler (QoS->energy
-prediction) and the other IEEE RC paper as an example. Then describe
-the overall tracking and landing algorithm abstractly (pseudo code
-outline of what it does) and what the relevant QoS levels are (i.e.,
-rate at which the marker detector runs). Include also a ``black-box''
-workload representing whatever other work is being done as whatever
-QoS, this will be the CNN.
+% Idea: fairly short section painting the overall picture of our concept
+% for making the UAV control be energy sensive. First describe energy
+% sensitivity as a concept, based on powprofiler (QoS->energy
+% prediction) and the other IEEE RC paper as an example. Then describe
+% the overall tracking and lan/ding algorithm abstractly (pseudo code
+% outline of what it does) and what the relevant QoS levels are (i.e.,
+% rate at which the marker detector runs). Include also a ``black-box''
+% workload representing whatever other work is being done as whatever
+% QoS, this will be the CNN.
+
+% [Ad: added a little description of energy-sensitive design]
+The energy-sensitive design is a mission-oriented concept that adjusts the computations to the mission being performed while taking into account energy requirements, such as the presence of a limited power source. Specifically, in the agricultural use-case, the concept is employed to level the computationally heavy algorithms:  autonomous tracking, landing, and hazard detection, and is achieved in simulation iteratively in three steps. 
+
+First, the developer specifies the maximum and minimum QoS level per each algorithm the use-case is composed of. The levels are statically defined, an automatic generation during different phases of the mission is being currently investigated and is considered future work. The algorithms are wrapped using ROS middleware, requiring the developer to specify the current ROS configuration through a configuration file in a key-value pair format which is then interpreted by \powprof{}.
+
+Second, \powprof{} evaluates the energy consumption empirically evaluating a number of possible combinations and inferring the others by the means of a multivariate linear interpolation. The First two steps are iterated in the simulated environment with different configurations. 
+% [Ad: Georgios, could you check those make sense? I am just sure for the hazard detection, not the others]
+Namely, the autonomous tracking allows changing the QoS tracking step in ms, landing the QoS landing step also in ms, and hazard detection the QoS frames-per-second (FPS) rate the CNN runs at.
+
+In the final step, the model is assessed and the QoS is adjusted to the desired granularity of the algorithms, along with the energy requirements.
 
 %%%%%%%%%%%%%%%%%%%%
 \section{Vision-Based Autonomous Tracking and Landing}
