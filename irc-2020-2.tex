@@ -405,72 +405,10 @@ Regarding wind conditions, an AprilTag marker was used by Feng et~al.~\cite{feng
 %/
 Concerning estimation of the moving platform's position and velocity, a Kalman Filter or Extended Kalman Filter has been used for the estimation~\cite{araar2017vision,feng2018autonomous, falanga2017vision}, whereas Yang et~al.~\cite{yang2018hybrid} constructed a velocity observer algorithm by calculating the actual moving distance of the moving platform over a period of time. 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-%One of the first attempts for a vision-based autonomous landing was conducted by Saripalli et al. \cite{saripalli2002vision} in which a helicopter, with a color camera facing vertically towards the ground, was used as an aerial platform. An "H" shape pattern similar to ones found on a helipad was chosen to mark the landing site and a hierarchical behavior-based control architecture was used to control the helicopter. According to real tests, an "H" landing marker of 122cm X 122cm size, was effectively detected for a maximum altitude of 10m. Saripalli et al. \cite{saripalli2003landing} extended their prior work and used a Kalman Filter to track a moving landing site. Real flights were conducted in both cases.
-
-%An ArUco marker was used by Lee et al. \cite{lee2012autonomous} to detect a moving platform. The control of the UAV is performed based on the error provided by the vision algorithm but all the computations are performed off-board. A hierarchy of behaviors is also implemented by this team. The overall performance of the system is considered satisfactory according to the experimental results, however a detection of the marker at an altitude of around 1m was demonstrated.
-
-%A contribution by Chen at al. \cite{chen2016system} utilizes a marker consisting of a circle and rectangles of different colors along with a LiDAR scanning range finder for height estimation. Both sensors are installed on a self-customized quadcopter UAV. The marker is detected by performing color segmentation on the incoming image frame. By fusing the height measurement from the LiDAR into the vision measurement, a relative pose of the UAV from the moving platform is obtained. Test flights were conducted indoors, at a maximum altitude of 3m, and successful landings were performed on a moving platform with speed of 1 m/s. A limitation of this system is that the quadcopter is not able to localize itself if the marker is not in the view of the on-board vertical camera.
-
-%A red rectangle is used as a landing marker by Lee et al \cite{lee2016vision}. The team has placed on a quadcopter UAV a vertically faced camera with a fish-eye lense. The landing marker is detected by performing color segmentation. The relative distance of the UAV from the moving target is used by the target tracking algorithm to generate the acceleration command for the UAV. Real tests are performed both on static and moving landing platforms at a maximum altitude of 70 meters.
-
-%A hybrid camera system consisting of a fish-eye IR camera and a stereo camera is demonstrated by Yang et al. \cite{yang2018hybrid}. The fish-eye IR camera is used to obtain a wider field of view and the stereo camera to obtain depth information. An ArUco marker is used to mark the moving platform and the convolutional neural network (CNN) Yolov3 is trained to detect the ArUco marker. The team has implemented different filtering algorithms to remove false positive cases concerning the detection of the marker. Simulation and real tests are conducted from an altitude of 8m and 4m respectively.
-
-
-
- 
-%In 2017, Arrar, et al. \cite{araar2017vision} focused on extending the detection range by using an AprilTag  \cite{olson2011apriltag} as a landing marker. The vision-based measurements were fused with the inertial measurements through an Extended Kalman Filter (EKF). Real tests flights, at an altitude of 80cm, were conducted indoors to demonstrate the efficiency of the algorithms. 
-
-
-
-%An AprilTag marker is used as a landing marker by Kyritsis et al. \cite{kyristsis2016towards} for the purpose of "2016 DJI Developer Challenge". The identification of the AprilTag marker is performed through Graphics Processing Unit (GPU) parallelized processing. The team has studied the scenario of a UAV performing a search mission and then landing on a moving target. Real tests with a DJI Matrice 100 UAV platform were conducted. Successful landings are achieved up to a speed of 30 km/h for the moving target, in this case a car.
-
-%An AprilTag marker was also used by Feng et al. \cite{feng2018autonomous}. The team has used a Kalman Filter to estimate the pose and speed of the moving platform and a model predictive control approach for controlling the UAV. A constant wind speed of 5 m/s is used as an external disturbance in simulation environment. A straight and curved path is used for the moving platform. The team has conducted simulation flights and demonstrated the efficiency of their system under noisy measurements and wind disturbances.
-
-%A different approach concerning the detection of a landing marker was demonstrated by Nguyen et al \cite{nguyen2018lightdenseyolo}. The team trained a CNN named lightDenseYOLO to detect a marker's location. An effective detection of a marker size 1m X 1m was demonstrated up to a distance of 50m. Furthermore the team has managed to confirm their method under various environmental conditions and distances but failed to detect the marker under high occlusions and when the target was moving too fast.
-
-
-%A landing marker inspired by a QR code is demonstrated by Yuan et al. \cite{yuan2018hierarchical}. The landing marker consists of three artificial markers, denoted as Top,Right and Bottom. Each one of the artificial markers consists of white and black squares. The team has demonstrated that the landing marker can provide a 6-DOF pose over an altitude range of 0-20m.
-
-
-
-%Concerning agricultural use cases, Guo et al \cite{guo2020precision} has studied the use of UAVs in an agricultural application and especially for landing inside a poultry house. A number of fiducial markers of different sizes is used to mark the landing site and tests were conducted in simulation environment.
-
-
-%Studying the state of the art of vision-based autonomous landing it is concluded that all the previous works lack at least one of the following properties:
-
-%\begin{enumerate}
-
-%\item An evaluation of the system's performance under dynamic wind disturbances.
-
-%\item An evaluation of the system's performance for different update rates and QoS, concerning the computer vision algorithms for detecting the landing marker.
-
-%\item An evaluation of the system's performance for an agricultural outdoor case in which the moving platform is moving irregularly with sudden turns of 180 degrees.
-
-%\end{enumerate}
-
-%Furthermore a new landing marker pattern is proposed that is highly robust to occlusions and can be detected effectively from large distances. 
-
-%To perform this evaluation, a complete structure of algorithms concerning the detection of the landing marker, the estimation of the UAV's relative pose in world coordinates, the estimation of the moving platform's velocity, the path planning, the trajectory generation and the control algorithms will also be presented in this paper.
-
-%In session II the materials will be presented, in session III ... ( and so on) 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % [Ad: change in the title of the section] I would actually change the title to something like Energy-Sensitive Mission Deployment, as in the current shape the title does not account for hazard detection (yolo) part
-\section{Energy-Sensitive Control of Tracking and Landing}
+\section{Energy-Sensitive Mission Execution} % mission execution? "deployment" does not seem to reflect the ability to adapt to changing conditions
+%\section{Energy-Sensitive Control of Tracking and Landing}
 \label{sec:approach}
 
 % Idea: fairly short section painting the overall picture of our concept
