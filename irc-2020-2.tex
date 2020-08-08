@@ -20,8 +20,8 @@
 \usepackage{cite}
 
 %% figures package
-%\usepackage[pdftex]{graphicx}
-%\graphicspath{{figures/}}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
 %\DeclareGraphicsExtensions{.pdf,.jpeg,.png}
 
 %% math package
@@ -194,7 +194,7 @@
   journal={International Journal of Distributed Sensor Networks},
   volume={14},
   number={9},
-  year={2018}
+  year={2018},
   publisher={SAGE Publications Sage UK: London, England}
 }
 @article{yang2018hybrid,
@@ -296,6 +296,21 @@
   year={2013},
   organization={IEEE}
 }
+
+@misc{NfoldMarker,
+    title = "{N-fold marker tracker repository}",
+    author="{Henrik Skov Midtiby}",
+    year = "2015",
+    howpublished = "\url{https://github.com/henrikmidtiby/MarkerLocator}"
+}
+
+@misc{ArUco_marker,
+    title = "{Detection of ArUco markers}",
+    author="{OpenCV}",
+    year = "2020",
+    howpublished = "\url{https://docs.opencv.org/3.4/d5/dae/tutorial_aruco_detection.html}"
+}
+
 \end{filecontents}
 
 \begin{document}
@@ -403,7 +418,7 @@ The battery in our system is considered in the context of a drone being able to 
 Taking into account varying environmental conditions and unpredictable movements of the platform to land on is relevant for the use of landing in outdoor, mobile scenarios.
 Regarding wind conditions, an AprilTag marker was used by Feng et~al.~\cite{feng2018autonomous} with a constant wind speed of 5~m/s as an external disturbance in a simulation environment. Nevertheless, a fluctuation in the wind's magnitude and direction is likely to happen in realistic cases.
 %/
-Concerning estimation of the moving platform's position and velocity, a Kalman Filter or Extended Kalman Filter has been used for the estimation~\cite{araar2017vision,feng2018autonomous, falanga2017vision}, whereas Yang et~al.~\cite{yang2018hybrid} constructed a velocity observer algorithm by calculating the actual moving distance of the moving platform over a period of time. 
+Concerning estimation of the moving platform's position and velocity, a Kalman Filter or Extended Kalman Filter (EKF) has been used for the estimation~\cite{araar2017vision,feng2018autonomous, falanga2017vision}, whereas Yang et~al.~\cite{yang2018hybrid} constructed a velocity observer algorithm by calculating the actual moving distance of the moving platform over a period of time. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 % [Ad: change in the title of the section] I would actually change the title to something like Energy-Sensitive Mission Deployment, as in the current shape the title does not account for hazard detection (yolo) part
@@ -442,6 +457,230 @@ In the final step, the model is assessed and the QoS is adjusted to the desired 
 \label{sec:landing}
 
 TODO: Georgios: your key contribution here
+
+The vision-based autonomous tracking and landing can be split into four main sub-problems, detection of the moving platform, navigation, guidance and control of the UAV.  
+
+%In section \ref{sec:Detection} the computer vision algorithms for detecting the landing marker along with the algorithms used to measure a relative position of the UAV from the moving platform will be presented. In section \ref{sec:Navigation} the sensor fusion algorithms used to estimate the UAV's relative position from the moving platform along with the moving platform's velocity will be presented. In section \ref{sec:Guidance} the algorithms used for UAV's path-planning in 3D space along with the calculation of its desired velocities will be demonstrated. In section \ref{Control} the algorithms used to control the UAV accordingly will be presented.
+
+\subsection{Detection of the moving platform}
+\label{sec:Detection}
+To mark the moving platform a special pattern is constructed, consisting of an n-fold marker \cite{NfoldMarker} along with three ArUco markers \cite{ArUco_marker} of different ids. This pattern from now on will be called the "landing marker" and can be seen in figure \ref{fig:LandingMarker}. The n-fold marker is primarily used to detect the moving platform from a high altitude, while the ArUco markers are used as extra landmarks in case the marker is partially visible in the image frame. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.15]{n-fold-for-landing.png}
+\caption{The landing marker}
+\label{fig:LandingMarker}
+\end{figure}
+
+To extract the pixel coordinates of the tip of the n-fold marker, a kernel size of 16$\times$16 pixels consisting of a real and imaginary part is created. For every pixel in the image, a convolution is performed with this kernel and the magnitude of the convolution is stored. The pixel with the highest magnitude is considered as a candidate tip of the n-fold marker. For that candidate pixel only, an estimation of the orientation/phase of the marker is made and an overall normalized quality score between 0.0 and 1.0 is calculated. If the score is above a desired threshold value then the pixel is accepted as the tip of the n-fold marker. If an n-fold marker is detected, the result will be the pixel coordinates of the tip of the n-fold marker along with its orientation/phase. Furthermore the kernel size can be adaptively changed to compensate for occlusions. Since a convolution is a computational  expensive process, the kernel should be of a small size.
+
+To detect the ArUco markers the standard OpenCV library is used and if any ArUco markers are detected, their central pixel coordinates and pose are stored.
+
+The next step is to convert these pixel coordinates into a real world relative position [X,Y,Z] according to a local coordinate frame. The origin of the local coordinate frame [0,0,0] is defined as the center of the landing marker and the alignment according to NED frame. 
+
+The available sensor measurements and already implemented sensor fusion algorithms from the flight controller will be used in this process. The PX4 flight controller outputs through mavlink messages the altitude of the UAV and the attitude of the UAV (roll,pitch,yaw). For the Z component, the altitude of the UAV from the flight controller's EKF is used. For the X,Y components, an algorithm is constructed to convert pixel coordinates into real world X,Y coordinates, in meters. This algorithm is described below:
+
+\begin{enumerate}
+
+\item The pose of the camera in UAV's BODY frame is calculated by utilizing the roll and pitch IMU data.
+
+\item The normalized coordinates of the four image corners, according to the camera's horizontal, vertical field of view and the camera's BODY pose from step 1, are calculated.
+
+\item The world coordinates of the four image corners are determined by using the normalised coordinates from step 2 along with the UAV's altitude. The result is a projection plane of the image corners on the ground.
+
+\item The perspective homography matrix is calculated between the 2 planes, the image plane and the world plane from step 3.
+
+\item The pixels coordinates are converted into world coordinates by using the homography matrix from step 4.
+
+\item The world coordinates from step 5, are converted from camera's BODY frame into camera's NED frame by using the yaw IMU data from the flight controller.
+
+\item The world coordinates from step 6, are converted from camera's NED frame into the landing site's local coordinate frame.
+
+\item For ArUco markers only, an offset vector in the x,y axis is added depending on the ArUco marker's id. It is assumed that this vector is known prior.
+
+
+\end{enumerate}
+
+The mean measurements from the detected n-fold and/or ArUco markers are used to determine the position and orientation of the landing marker. The result is an [X,Y,Z] relative position of the UAV from the moving platform along with the orientation of the landing marker.
+
+
+
+\subsection{Navigation}
+\label{sec:Navigation}
+
+The purpose of the navigation block is to provide an accurate prediction for the state of the UAV at any given time. This is of great importance because it will allow us to process images at different fps according to a desired QoS. Furthermore the overall robustness of the system is increased in case the moving platform is not detected in every image frame. A velocity estimator for the moving platform will be also implemented as a part of the navigation block.
+
+The variables of interest that describe the state of the UAV for this project are:
+
+\begin{itemize}
+
+\item The relative position of the UAV from the moving platform [X,Y,Z] calculated from section \ref{sec:Detection}.
+
+\item The attitude of the UAV [roll, pitch, yaw], obtained from the flight controller's IMUs.
+
+\item the velocity of the UAV [vx,vy,vz] in NED frame, obtained from the flight controller's EKF.
+
+\item the acceleration of the UAV [ax,ay,az] in NED frame, obtained either from the flight controller's EKF or by differentiating the velocities.
+
+\end{itemize}
+
+The altitude, attitude, velocity and acceleration variables of the UAV's state are obtained from the flight controller's onboard sensors and already implemented sensor fusion algorithms (EKF). To fuse those state variables with the obtained position measurements from section \ref{sec:Detection}, a Kalman Filter will be used. The measurements from the flight controller will be used in the prediction step.
+
+\vspace{5mm}
+Prediction Step:
+\begin{equation} 
+ \begin{array}{l}
+    \hat{x}_{t} = F_{t} * \hat{x}_{t-1} + G_{t} *u_{t} \\ 
+    P_{t} = F_{t}* P_{t-1} * F_{t}^\top + Q_{t}
+  \end{array}
+\end{equation}
+
+where:
+
+\begin{equation}
+\begin{array}{l}
+
+
+ \hat{x}_{t} = \begin{bmatrix} 
+                x_{NED} \\ 
+                y_{NED}
+                \end{bmatrix} ,  \quad
+F_{t} = \begin{bmatrix} 
+                1 & 0 \\ 
+                0 & 1
+                \end{bmatrix}      , \\
+G_{t} =   \begin{bmatrix} 
+                dt & 0 & \frac{dt^{2}}{2} & 0 & -dt & 0\\ 
+                0 & dt & 0 & \frac{dt^{2}}{2} &0 & -dt
+                \end{bmatrix} , \quad
+u_{t} = \begin{bmatrix} 
+                vx_{NED} \\ 
+                vy_{NED} \\
+                ax_{NED} \\
+                ay_{NED} \\
+                vx_{m_{NED}}\\
+                vy_{m_{NED}}
+                \end{bmatrix}  \\ \\
+                
+P_{t} =  \begin{bmatrix} 
+                1 & 0 \\ 
+                0 & 1
+                \end{bmatrix}   , \quad 
+Q_{t}  =\begin{bmatrix} 
+                dt & 0 \\ 
+                0 & dt
+                \end{bmatrix} *\sigma^{2}_{IMU} 
+\end{array} \\
+\end{equation}
+
+where:
+\begin{itemize}
+
+\item  \(x_{NED}, y_{NED} \) is the position of the UAV in the landing site's local coordinate system (aligned with NED frame), 
+\item \(dt\) is the time interval the PX4's EKF outputs the \(vx_{NED},vy_{NED}\) data, usually around 33ms, 
+\item \(vx_{NED},vy_{NED}\) is the linear velocity of the UAV in NED frame, estimated from the PX4's EKF,
+\item \(ax_{NED}, ay_{NED}\) is the linear acceleration of the UAV in NED frame, estimated on the companion computer from differentiating the velocities.
+\item \(vx_{m_{NED}},vy_{m_{NED}}\) is the linear velocity of the moving platform in NED frame, estimated from the velocity estimator for the moving platform,
+\item \(\sigma^{2}_{IMU}\) is the variance of the velocities based estimated by the PX4's EKF.
+\end{itemize}
+
+In the correction step the observed measurements from the vertically positioned camera will be used to correct and update the predicted \(X,Y\) position of the UAV. However due to the computation time needed to detect the landing marker, that incoming measurement will be delayed by some time \(dt_{obs}\). During that time \(dt_{obs}\) the UAV will be relocated by an interval (\(dx_{obs},dy_{obs}\)). To compensate that extra displacement, the  interval (\(dx_{obs},dy_{obs}\)) is calculated and added to the observed measurements.
+Correction step:
+\begin{equation}
+    \begin{array}{l}
+    
+    e_{t} = z_{t} - H_{t}*\hat{x}_{t} \\
+    S_{t} = H_{t}*P_{t}*H_{t}^\top + R_{t} \\
+    K_{t} = P_{t}*H_{t}^\top * S_{t}^{-1} \\
+    \hat{x}_{t} = \hat{x}_{t} + K_{t} * e_{t} \\
+    P_{t} = (I - K_{t}*H_{t}) * P_{t}
+    \end{array}
+\end{equation}
+where:
+
+\begin{equation}
+    \begin{array}{l}
+    z_{t} = \begin{bmatrix} 
+                x_{obs} + dx_{obs} \\ 
+                y_{obs} + dy_{obs}
+                \end{bmatrix}, \quad 
+
+
+    
+    H_{t}= \begin{bmatrix} 
+                1 & 0 \\ 
+                0 & 1
+                \end{bmatrix}, \quad
+    R_{t} = \begin{bmatrix} 
+                1 & 0 \\ 
+                0 & 1
+                \end{bmatrix}*\sigma^{2}_{obs}  \\ \\
+                
+dx_{obs} = vx_{mean_{obs}} * dt_{obs} \quad , \quad
+    dy_{obs} = vy_{mean_{obs}} * dt_{obs} \quad \\
+          
+    \end{array}
+\end{equation}
+
+A velocity estimator is also constructed to determine the magnitude and direction of the moving platform's velocity vector. The magnitude is calculated by differentiating two sequential X,Y position measurements of the moving platform and taking into consideration the UAV's NED velocities according to the PX4's EKF. A low-pass filter is used to provide a smoothest estimation of the magnitude. 
+
+In the agricultural use-case the moving platform is likely to change its direction up to 180 degrees. Furthermore, it is assumed that the moving platform is a nonholonomic system, like a tractor. To compensate for sudden turns, the moving platform's yaw orientation will be taken into account and based on the velocity's magnitude, the moving platform's velocity in \(x,y\) NED frame can be obtained.
+
+% The full process can be described as:
+%
+%\begin{equation}
+%    \begin{array}{l}
+%
+%    vx_{m_{NED(t)}} = 
+%    
+%    k_{1}*(( \frac{X_{(t)} - X_{(t-1)}}{dt}) + vx_{NED_{mean}}) + k_{2} * vx_{m_{NED(t-1)}}
+%    
+%    \\
+%    \\
+%
+%     vy_{m_{NED(t)}} = 
+%    
+%    k_{1}*(( \frac{Y_{(t)} - Y_{(t-1)}}{dt}) + vy_{NED_{mean}}) + k_{2} * vy_{m_{NED(t-1)}}
+%    
+%    \\
+%    \\
+%    
+%  \Vert v_{m_{NED(t)}} \Vert  = \sqrt{vx_{m_{NED(t)}}^2 + vy_{m_{NED(t)}}^2}
+%          
+%    \end{array}
+%\end{equation}
+%
+%
+%where:
+%
+%\begin{itemize}
+%
+%\item  \(vx_{m_{NED(t)}}, vy_{m_{NED(t)}} \) is the velocity of the moving platform at time \(t\) in \(x,y\) NED frame, 
+%
+%\item  \(X_{(t)}, Y_{(t)} \) is the measurement of the moving platform's position at time \(t\) in NED frame, 
+%
+%\item \(dt\) is the time interval between two position measurements at time \(t\) and \((t-1)\),
+% 
+%\item \(vx_{NED_{mean}},vy_{NED_{mean}}\) is the mean linear velocity of the UAV in NED frame between two position measurements at time \(t\) and \((t-1)\), estimated from the PX4's EKF,
+%
+%\item \(k_{1}, k_{2}\) are the gains of the low-pass filter and \( k_{1} + k_{2} = 1.0 \). For a low-pass filter \(k_{1} < k_{2} \).
+%
+%\item \( \Vert v_{m_{NED(t)}} \Vert \) is the magnitude of the moving platform's velocity.
+%
+%\end{itemize}
+
+*
+
+\subsection{Guidance}
+\label{sec:Guidance}
+*
+
+
+\subsection{Control}
+\label{Control}
+*
+
 
 %%%%%%%%%%%%%%%%%%%%
 \section{Evaluation}
