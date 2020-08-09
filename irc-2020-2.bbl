@@ -174,4 +174,12 @@ D.~Falanga, A.~Zanchettin, A.~Simovic, J.~Delmerico, and D.~Scaramuzza,
 {OpenCV}, ``{Detection of ArUco markers},''
   \url{https://docs.opencv.org/3.4/d5/dae/tutorial_aruco_detection.html}, 2020.
 
+\bibitem{Dynamic_pressure_NASA}
+{NASA}, ``{Dynamic pressure (NASA)},''
+  \url{https://www.grc.nasa.gov/WWW/K-12/airplane/dynpress.html}, 2020.
+
+\bibitem{Dynamic_pressure_wikipedia}
+{wikipedia}, ``{Dynamic pressure (wikipedia)},''
+  \url{https://en.wikipedia.org/wiki/Dynamic_pressure}, 2020.
+
 \end{thebibliography}

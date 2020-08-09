@@ -311,6 +311,20 @@
     howpublished = "\url{https://docs.opencv.org/3.4/d5/dae/tutorial_aruco_detection.html}"
 }
 
+@misc{Dynamic_pressure_NASA,
+    title = "{Dynamic pressure (NASA)}",
+    author="{NASA}",
+    year = "2020",
+    howpublished = "\url{https://www.grc.nasa.gov/WWW/K-12/airplane/dynpress.html}"
+}
+
+@misc{Dynamic_pressure_wikipedia,
+    title = "{Dynamic pressure (wikipedia)}",
+    author="{wikipedia}",
+    year = "2020",
+    howpublished = "\url{https://en.wikipedia.org/wiki/Dynamic_pressure}"
+}
+
 \end{filecontents}
 
 \begin{document}
@@ -458,9 +472,8 @@ In the final step, the model is assessed and the QoS is adjusted to the desired 
 
 TODO: Georgios: your key contribution here
 
-The vision-based autonomous tracking and landing can be split into four main sub-problems, detection of the moving platform, navigation, guidance and control of the UAV.  
+The vision-based autonomous tracking and landing can be split into four main sub-problems, detection of the moving platform, navigation, guidance and control of the UAV. From an energy-sensitive design approach, importance is given to the detection of the moving platform and the computer visions algorithms used to detect it, based on a desired QoS. This approach is described in section \ref{sec:Detection}. Furthermore to increase the robustness and overall performance of the system, the navigation block is constructed accordingly and presented in section \ref{sec:Navigation}. A model of dynamically changing wind disturbances is analysed and described in section \ref{WindDisturbances} to test the system for a realistic use case.
 
-%In section \ref{sec:Detection} the computer vision algorithms for detecting the landing marker along with the algorithms used to measure a relative position of the UAV from the moving platform will be presented. In section \ref{sec:Navigation} the sensor fusion algorithms used to estimate the UAV's relative position from the moving platform along with the moving platform's velocity will be presented. In section \ref{sec:Guidance} the algorithms used for UAV's path-planning in 3D space along with the calculation of its desired velocities will be demonstrated. In section \ref{Control} the algorithms used to control the UAV accordingly will be presented.
 
 \subsection{Detection of the moving platform}
 \label{sec:Detection}
@@ -473,7 +486,10 @@ To mark the moving platform a special pattern is constructed, consisting of an n
 \label{fig:LandingMarker}
 \end{figure}
 
-To extract the pixel coordinates of the tip of the n-fold marker, a kernel size of 16$\times$16 pixels consisting of a real and imaginary part is created. For every pixel in the image, a convolution is performed with this kernel and the magnitude of the convolution is stored. The pixel with the highest magnitude is considered as a candidate tip of the n-fold marker. For that candidate pixel only, an estimation of the orientation/phase of the marker is made and an overall normalized quality score between 0.0 and 1.0 is calculated. If the score is above a desired threshold value then the pixel is accepted as the tip of the n-fold marker. If an n-fold marker is detected, the result will be the pixel coordinates of the tip of the n-fold marker along with its orientation/phase. Furthermore the kernel size can be adaptively changed to compensate for occlusions. Since a convolution is a computational  expensive process, the kernel should be of a small size.
+To extract the pixel coordinates of the tip of the n-fold marker, a kernel size of 16$\times$16 pixels consisting of a real and imaginary part is created. For every pixel in the image, a convolution is performed with this kernel and the magnitude of the convolution is stored. The pixel with the highest magnitude is considered as a candidate tip of the n-fold marker. For that candidate pixel only, an estimation of the orientation/phase of the marker is made and an overall normalized quality score between 0.0 and 1.0 is calculated. If the score is above a desired threshold value then the pixel is accepted as the tip of the n-fold marker. If an n-fold marker is detected, the result will be the pixel coordinates of the tip of the n-fold marker along with its orientation/phase. 
+
+The kernel size can be adaptively changed to compensate for occlusions. Since a convolution is a computational  expensive process, an increase in the kernel size would also increase the energy consumption. However a higher energy consumption is preferred over a non-detection of the n-fold marker. To balance between energy consumption and effective marker detection, an adaptive kernel selection function is created to ensure the selection of a proper kernel size based on a threshold quality score value.
+
 
 To detect the ArUco markers the standard OpenCV library is used and if any ArUco markers are detected, their central pixel coordinates and pose are stored.
 
@@ -627,60 +643,56 @@ A velocity estimator is also constructed to determine the magnitude and directio
 
 In the agricultural use-case the moving platform is likely to change its direction up to 180 degrees. Furthermore, it is assumed that the moving platform is a nonholonomic system, like a tractor. To compensate for sudden turns, the moving platform's yaw orientation will be taken into account and based on the velocity's magnitude, the moving platform's velocity in \(x,y\) NED frame can be obtained.
 
-% The full process can be described as:
-%
-%\begin{equation}
-%    \begin{array}{l}
-%
-%    vx_{m_{NED(t)}} = 
-%    
-%    k_{1}*(( \frac{X_{(t)} - X_{(t-1)}}{dt}) + vx_{NED_{mean}}) + k_{2} * vx_{m_{NED(t-1)}}
-%    
-%    \\
-%    \\
-%
-%     vy_{m_{NED(t)}} = 
-%    
-%    k_{1}*(( \frac{Y_{(t)} - Y_{(t-1)}}{dt}) + vy_{NED_{mean}}) + k_{2} * vy_{m_{NED(t-1)}}
-%    
-%    \\
-%    \\
-%    
-%  \Vert v_{m_{NED(t)}} \Vert  = \sqrt{vx_{m_{NED(t)}}^2 + vy_{m_{NED(t)}}^2}
-%          
-%    \end{array}
-%\end{equation}
-%
-%
-%where:
-%
-%\begin{itemize}
-%
-%\item  \(vx_{m_{NED(t)}}, vy_{m_{NED(t)}} \) is the velocity of the moving platform at time \(t\) in \(x,y\) NED frame, 
-%
-%\item  \(X_{(t)}, Y_{(t)} \) is the measurement of the moving platform's position at time \(t\) in NED frame, 
-%
-%\item \(dt\) is the time interval between two position measurements at time \(t\) and \((t-1)\),
-% 
-%\item \(vx_{NED_{mean}},vy_{NED_{mean}}\) is the mean linear velocity of the UAV in NED frame between two position measurements at time \(t\) and \((t-1)\), estimated from the PX4's EKF,
-%
-%\item \(k_{1}, k_{2}\) are the gains of the low-pass filter and \( k_{1} + k_{2} = 1.0 \). For a low-pass filter \(k_{1} < k_{2} \).
-%
-%\item \( \Vert v_{m_{NED(t)}} \Vert \) is the magnitude of the moving platform's velocity.
-%
-%\end{itemize}
-
-*
-
-\subsection{Guidance}
-\label{sec:Guidance}
-*
 
 
-\subsection{Control}
-\label{Control}
-*
+\subsection{Wind Disturbances}
+\label{WindDisturbances}
 
+The exact and accurate estimation of the applied wind forces on a body is a complex matter studied by the field of fluid dynamics. However in this paper a simplified approach will be used. It is assumed that the wind will be applied on an area of 0.09 \(m^2\). Such an area is emulating a UAV with extra payload attached on its frame. Two different wind speeds of 8 m/s and 12 m/s will be used to calculate the applied wind forces on that area. The wind forces are considered to be applied on the center of gravity of the UAV with direction parallel to the ground.
+
+The magnitude of the applied force, corresponding to a certain wind speed is calculated by the following equations \cite{Dynamic_pressure_NASA}, \cite{Dynamic_pressure_wikipedia}:
+
+\begin{equation}
+    \begin{array}{l}
+         F = p_{d}  * A  \\
+         p_{d} = \frac{\varrho * v^2}{2} 
+    \end{array}
+\end{equation}
+
+where: F is the force, \(p_{d}\) is the dynamic pressure, \(A\) is the area of the applied pressure, \(\varrho\) is the density of the air (around 1.2 kg/\(m^3\)), \(v\) is the wind velocity in m/s
+
+By solving the above equations the applied force on the UAV is found to be 3,45 Newton for a 8 m/s wind speed and 7,76 Newton for a 12 m/s wind speed. The wind forces will be applied on the UAV in Gazebo simulation, to test the performance of the whole system. This will be done by constructing a program that will apply the wind forces on the virtual UAV.
+
+To simulate a wind pattern two things have to be defined. The wind direction and the wind magnitude. The wind direction is assumed to remain the same for the whole duration of the tests. That direction vector is defined as [\(0.8, 0.2\)] according to Gazebo's (\(x,y\)) axes. 
+
+The magnitude of the wind is calculated according to the following pattern:
+
+\begin{itemize}
+    \item An initial wind power of 7.0 Newtons is chosen.
+    
+    \item An update cycle of 5.5 second is chosen between two different applied forces.
+    
+    \item A random float number between 0.9 and 1.2 is chosen at every update cycle. This number is defined as \(Random\_noise\).
+    
+    \item The applied wind force is calculated as:\\
+    
+  
+    
+        \(force_{x} = -x_{norm} * power_{init} * Random\_noise \\
+         force_{y} = -y_{norm} * power_{init} * Random\_noise\)\\
+        
+
+    where \(x_{norm }\) = 0.8, \(y_{norm} \) = 0.2 , \(power_{init}\) = 7.0 Newtons
+    
+    \item For a UAV altitude of 6.0 meters and below the power decreases as:
+   \( power = power_{init}* (altitude/ 6.0)  \), where \(power_{init}\) is 7.0 Newtons
+   
+   \item For a UAV altitude of 3 meters and below, \(power\) = 0.5. 
+
+    
+\end{itemize}
+
+This model is created to simulate different scaling in the wind's magnitude and will be used as it is for all simulated tests.
 
 %%%%%%%%%%%%%%%%%%%%
 \section{Evaluation}
