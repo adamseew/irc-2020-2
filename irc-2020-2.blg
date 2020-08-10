@@ -15,37 +15,37 @@ Database file #1: irc-2020-2.bib
 Done.
 You've used 29 entries,
             4087 wiz_defined-function locations,
-            991 strings with 13766 characters,
-and the built_in function-call counts, 24737 in all, are:
-= -- 1962
+            991 strings with 13726 characters,
+and the built_in function-call counts, 24715 in all, are:
+= -- 1955
 > -- 650
 < -- 211
 + -- 361
 - -- 122
-* -- 1181
-:= -- 3509
+* -- 1180
+:= -- 3502
 add.period$ -- 71
 call.type$ -- 29
-change.case$ -- 29
+change.case$ -- 28
 chr.to.int$ -- 489
 cite$ -- 29
-duplicate$ -- 1754
-empty$ -- 1996
+duplicate$ -- 1750
+empty$ -- 2005
 format.name$ -- 140
 if$ -- 5842
 int.to.chr$ -- 0
 int.to.str$ -- 29
-missing$ -- 314
+missing$ -- 312
 newline$ -- 110
 num.names$ -- 29
-pop$ -- 744
+pop$ -- 741
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
 skip$ -- 1907
 stack$ -- 0
-substring$ -- 1231
-swap$ -- 1470
+substring$ -- 1230
+swap$ -- 1466
 text.length$ -- 48
 text.prefix$ -- 0
 top$ -- 5
@@ -53,4 +53,4 @@ type$ -- 29
 warning$ -- 0
 while$ -- 110
 width$ -- 31
-write$ -- 302
+write$ -- 301

@@ -318,11 +318,11 @@
     howpublished = "\url{https://www.grc.nasa.gov/WWW/K-12/airplane/dynpress.html}"
 }
 
-@misc{Dynamic_pressure_wikipedia,
-    title = "{Dynamic pressure (wikipedia)}",
-    author="{wikipedia}",
-    year = "2020",
-    howpublished = "\url{https://en.wikipedia.org/wiki/Dynamic_pressure}"
+@book{anderson2010fundamentals,
+  title={Fundamentals of aerodynamics},
+  author={Anderson Jr, John David},
+  year={2010},
+  publisher={Tata McGraw-Hill Education}
 }
 
 \end{filecontents}
@@ -490,7 +490,7 @@ The kernel size can be adaptively changed to compensate for occlusions. Since a 
 %
 To detect the ArUco markers the standard OpenCV library is used and if any ArUco markers are detected, their central pixel coordinates and pose are stored.
 
-The next step is to convert these pixel coordinates into a real world relative position $[X,Y,Z]$ according to a local coordinate frame. The origin of the local coordinate frame $[0,0,0]$ is defined as the center of the landing marker and alignment according to the \emph{NED} frame. %UPS: @Georgios I'm not sure I understand what the NED frame is, can you rephrase or elaborate?
+The next step is to convert these pixel coordinates into a real world relative position $[X,Y,Z]$ according to a local coordinate frame. The origin of the local coordinate frame $[0,0,0]$ is defined as the center of the landing marker and alignment according to the North, East, Down (\emph{NED}) frame. %UPS: @Georgios I'm not sure I understand what the NED frame is, can you rephrase or elaborate?
 %
 The available sensor measurements and sensor fusion algorithms from the flight controller will be used in this process. The PX4 flight controller outputs through mavlink messages the altitude of the UAV and the attitude of the UAV (roll,pitch,yaw). For the $Z$ component, the altitude of the UAV from the flight controller's EKF is used. For the $X,Y$ components, an algorithm is constructed to convert pixel coordinates into real world $X,Y$ coordinates, in meters: %. This algorithm is described below:
 %
@@ -643,7 +643,7 @@ In the agricultural use-case the moving platform is likely to change its directi
 
 The exact and accurate estimation of the applied wind forces on a body is a complex matter studied by the field of fluid dynamics. We use a simplified approach, as follows. We assume that the wind will be applied on an area of \(0.09 m^2\). Such an area is emulating a UAV with extra payload attached on its frame. Two different wind speeds of $8 m/s$ and $12 m/s$ will be used to calculate the applied wind forces on that area. The wind forces are considered to be applied on the center of gravity of the UAV with direction parallel to the ground.
 
-The magnitude of the applied force, corresponding to a certain wind speed is calculated by the following equations \cite{Dynamic_pressure_NASA,Dynamic_pressure_wikipedia}:
+The magnitude of the applied force, corresponding to a certain wind speed is calculated by the following equations \cite{Dynamic_pressure_NASA,anderson2010fundamentals}:
 
 \begin{equation}
     \begin{array}{l}
