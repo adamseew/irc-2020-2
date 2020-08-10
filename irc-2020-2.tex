@@ -469,14 +469,13 @@ Adam: TODO? Short description of ROS node and combining level 1 models using pow
 \section{Vision-Based Autonomous Tracking and Landing}
 \label{sec:landing}
 
-TODO: Georgios: your key contribution here
-
-The vision-based autonomous tracking and landing can be split into four main sub-problems, detection of the moving platform, navigation, guidance and control of the UAV. From an energy-sensitive design approach, importance is given to the detection of the moving platform and the computer visions algorithms used to detect it, based on a desired QoS. This approach is described in section \ref{sec:Detection}. Furthermore to increase the robustness and overall performance of the system, the navigation block is constructed accordingly and presented in section \ref{sec:Navigation}. A model of dynamically changing wind disturbances is analysed and described in section \ref{WindDisturbances} to test the system for a realistic use case.
+The vision-based autonomous tracking and landing can be split into four main sub-problems: detection of the moving platform, navigation, guidance, and control of the UAV. From an energy-sensitive design approach, our focus is on the detection of the moving platform and the computer visions algorithms used to detect it, and the parameterization by a QoS influencing energy consumption and performance, as described in Section~\ref{sec:Detection}. Furthermore, the navigation block is designed to increase the robustness and overall performance of the system, as described in Section~\ref{sec:Navigation}. Last, a model of dynamically changing wind disturbances is analysed and described in Section~\ref{WindDisturbances}, allowing the system to be tested on a realistic use case.
 
 
 \subsection{Detection of the moving platform}
 \label{sec:Detection}
-To mark the moving platform a special pattern is constructed, consisting of an n-fold marker \cite{NfoldMarker} along with three ArUco markers \cite{ArUco_marker} of different ids. This pattern from now on will be called the "landing marker" and can be seen in figure \ref{fig:LandingMarker}. The n-fold marker is primarily used to detect the moving platform from a high altitude, while the ArUco markers are used as extra landmarks in case the marker is partially visible in the image frame. 
+
+To mark the moving platform a special pattern is constructed, consisting of an n-fold marker~\cite{NfoldMarker} along with three ArUco markers~\cite{ArUco_marker} with different ids. This pattern will be referred to as the ``landing marker'' and can be seen in Figure~\ref{fig:LandingMarker}. The n-fold marker is primarily used to detect the moving platform from a high altitude, while the ArUco markers are used as extra landmarks in case the marker is partially visible in the image frame. 
 
 \begin{figure}[h]
 \centering
@@ -488,19 +487,18 @@ To mark the moving platform a special pattern is constructed, consisting of an n
 To extract the pixel coordinates of the tip of the n-fold marker, a kernel size of 16$\times$16 pixels consisting of a real and imaginary part is created. For every pixel in the image, a convolution is performed with this kernel and the magnitude of the convolution is stored. The pixel with the highest magnitude is considered as a candidate tip of the n-fold marker. For that candidate pixel only, an estimation of the orientation/phase of the marker is made and an overall normalized quality score between 0.0 and 1.0 is calculated. If the score is above a desired threshold value then the pixel is accepted as the tip of the n-fold marker. If an n-fold marker is detected, the result will be the pixel coordinates of the tip of the n-fold marker along with its orientation/phase. 
 
 The kernel size can be adaptively changed to compensate for occlusions. Since a convolution is a computational  expensive process, an increase in the kernel size would also increase the energy consumption. However a higher energy consumption is preferred over a non-detection of the n-fold marker. To balance between energy consumption and effective marker detection, an adaptive kernel selection function is created to ensure the selection of a proper kernel size based on a threshold quality score value.
-
-
+%
 To detect the ArUco markers the standard OpenCV library is used and if any ArUco markers are detected, their central pixel coordinates and pose are stored.
 
-The next step is to convert these pixel coordinates into a real world relative position [X,Y,Z] according to a local coordinate frame. The origin of the local coordinate frame [0,0,0] is defined as the center of the landing marker and the alignment according to NED frame. 
-
-The available sensor measurements and already implemented sensor fusion algorithms from the flight controller will be used in this process. The PX4 flight controller outputs through mavlink messages the altitude of the UAV and the attitude of the UAV (roll,pitch,yaw). For the Z component, the altitude of the UAV from the flight controller's EKF is used. For the X,Y components, an algorithm is constructed to convert pixel coordinates into real world X,Y coordinates, in meters. This algorithm is described below:
+The next step is to convert these pixel coordinates into a real world relative position $[X,Y,Z]$ according to a local coordinate frame. The origin of the local coordinate frame $[0,0,0]$ is defined as the center of the landing marker and alignment according to the \emph{NED} frame. %UPS: @Georgios I'm not sure I understand what the NED frame is, can you rephrase or elaborate?
+%
+The available sensor measurements and sensor fusion algorithms from the flight controller will be used in this process. The PX4 flight controller outputs through mavlink messages the altitude of the UAV and the attitude of the UAV (roll,pitch,yaw). For the $Z$ component, the altitude of the UAV from the flight controller's EKF is used. For the $X,Y$ components, an algorithm is constructed to convert pixel coordinates into real world $X,Y$ coordinates, in meters: %. This algorithm is described below:
 
 \begin{enumerate}
 
-\item The pose of the camera in UAV's BODY frame is calculated by utilizing the roll and pitch IMU data.
+\item The pose of the camera in UAV's \emph{BODY} frame is calculated by utilizing the roll and pitch IMU data.
 
-\item The normalized coordinates of the four image corners, according to the camera's horizontal, vertical field of view and the camera's BODY pose from step 1, are calculated.
+\item The normalized coordinates of the four image corners, according to the camera's horizontal, vertical field of view and the camera's \emph{BODY} pose from step 1, are calculated.
 
 \item The world coordinates of the four image corners are determined by using the normalised coordinates from step 2 along with the UAV's altitude. The result is a projection plane of the image corners on the ground.
 
@@ -508,17 +506,15 @@ The available sensor measurements and already implemented sensor fusion algorith
 
 \item The pixels coordinates are converted into world coordinates by using the homography matrix from step 4.
 
-\item The world coordinates from step 5, are converted from camera's BODY frame into camera's NED frame by using the yaw IMU data from the flight controller.
+\item The world coordinates from step 5, are converted from the camera's \emph{BODY} frame into the camera's \emph{NED} frame by using the yaw IMU data from the flight controller.
 
-\item The world coordinates from step 6, are converted from camera's NED frame into the landing site's local coordinate frame.
+\item The world coordinates from step 6, are converted from camera's \emph{NED} frame into the landing site's local coordinate frame.
 
-\item For ArUco markers only, an offset vector in the x,y axis is added depending on the ArUco marker's id. It is assumed that this vector is known prior.
-
+\item For ArUco markers only, an offset vector in the x,y axis is added depending on the ArUco marker's id. It is assumed that this vector is prior known.
 
 \end{enumerate}
 
-The mean measurements from the detected n-fold and/or ArUco markers are used to determine the position and orientation of the landing marker. The result is an [X,Y,Z] relative position of the UAV from the moving platform along with the orientation of the landing marker.
-
+The mean measurements from the detected n-fold and/or ArUco markers are used to determine the position and orientation of the landing marker. The result is an $[X,Y,Z]$ relative position of the UAV from the moving platform along with the orientation of the landing marker.
 
 
 \subsection{Navigation}
