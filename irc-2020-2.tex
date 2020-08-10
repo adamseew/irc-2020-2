@@ -493,7 +493,7 @@ To detect the ArUco markers the standard OpenCV library is used and if any ArUco
 The next step is to convert these pixel coordinates into a real world relative position $[X,Y,Z]$ according to a local coordinate frame. The origin of the local coordinate frame $[0,0,0]$ is defined as the center of the landing marker and alignment according to the \emph{NED} frame. %UPS: @Georgios I'm not sure I understand what the NED frame is, can you rephrase or elaborate?
 %
 The available sensor measurements and sensor fusion algorithms from the flight controller will be used in this process. The PX4 flight controller outputs through mavlink messages the altitude of the UAV and the attitude of the UAV (roll,pitch,yaw). For the $Z$ component, the altitude of the UAV from the flight controller's EKF is used. For the $X,Y$ components, an algorithm is constructed to convert pixel coordinates into real world $X,Y$ coordinates, in meters: %. This algorithm is described below:
-
+%
 \begin{enumerate}
 
 \item The pose of the camera in UAV's \emph{BODY} frame is calculated by utilizing the roll and pitch IMU data.
@@ -513,32 +513,31 @@ The available sensor measurements and sensor fusion algorithms from the flight c
 \item For ArUco markers only, an offset vector in the x,y axis is added depending on the ArUco marker's id. It is assumed that this vector is prior known.
 
 \end{enumerate}
-
+%
 The mean measurements from the detected n-fold and/or ArUco markers are used to determine the position and orientation of the landing marker. The result is an $[X,Y,Z]$ relative position of the UAV from the moving platform along with the orientation of the landing marker.
 
 
 \subsection{Navigation}
 \label{sec:Navigation}
 
-The purpose of the navigation block is to provide an accurate prediction for the state of the UAV at any given time. This is of great importance because it will allow us to process images at different fps according to a desired QoS. Furthermore the overall robustness of the system is increased in case the moving platform is not detected in every image frame. A velocity estimator for the moving platform will be also implemented as a part of the navigation block.
+The purpose of the navigation block is to provide an accurate prediction for the state of the UAV at any given time. This is  important because it will allow us to process images at different fps according to a desired QoS. Furthermore, the overall robustness of the system is increased in case the moving platform is not detected in every image frame. A velocity estimator for the moving platform will be also implemented as a part of the navigation block.
 
 The variables of interest that describe the state of the UAV for this project are:
-
+%
 \begin{itemize}
 
-\item The relative position of the UAV from the moving platform [X,Y,Z] calculated from section \ref{sec:Detection}.
+\item The relative position of the UAV from the moving platform $[X,Y,Z]$ calculated as described in Section~\ref{sec:Detection}.
 
 \item The attitude of the UAV [roll, pitch, yaw], obtained from the flight controller's IMUs.
 
-\item the velocity of the UAV [vx,vy,vz] in NED frame, obtained from the flight controller's EKF.
+\item the velocity of the UAV $[vx,vy,vz]$ in the \emph{NED} frame, obtained from the flight controller's EKF.
 
-\item the acceleration of the UAV [ax,ay,az] in NED frame, obtained either from the flight controller's EKF or by differentiating the velocities.
+\item the acceleration of the UAV $[ax,ay,az]$ in the \emph{NED} frame, obtained either from the flight controller's EKF or by differentiating the velocities.
 
 \end{itemize}
+%
+The altitude, attitude, velocity and acceleration variables of the UAV's state are obtained from the flight controller's onboard sensors and already implemented sensor fusion algorithms (EKF). To fuse those state variables with the obtained position measurements from Section~\ref{sec:Detection}, a Kalman Filter will be used. The measurements from the flight controller will be used in the prediction step.
 
-The altitude, attitude, velocity and acceleration variables of the UAV's state are obtained from the flight controller's onboard sensors and already implemented sensor fusion algorithms (EKF). To fuse those state variables with the obtained position measurements from section \ref{sec:Detection}, a Kalman Filter will be used. The measurements from the flight controller will be used in the prediction step.
-
-\vspace{5mm}
 Prediction Step:
 \begin{equation} 
  \begin{array}{l}
@@ -549,7 +548,7 @@ Prediction Step:
 
 where:
 
-\begin{equation}
+\begin{equation*}
 \begin{array}{l}
 
 
@@ -583,11 +582,10 @@ Q_{t}  =\begin{bmatrix}
                 0 & dt
                 \end{bmatrix} *\sigma^{2}_{IMU} 
 \end{array} \\
-\end{equation}
+\end{equation*}
 
 where:
 \begin{itemize}
-
 \item  \(x_{NED}, y_{NED} \) is the position of the UAV in the landing site's local coordinate system (aligned with NED frame), 
 \item \(dt\) is the time interval the PX4's EKF outputs the \(vx_{NED},vy_{NED}\) data, usually around 33ms, 
 \item \(vx_{NED},vy_{NED}\) is the linear velocity of the UAV in NED frame, estimated from the PX4's EKF,
@@ -597,6 +595,7 @@ where:
 \end{itemize}
 
 In the correction step the observed measurements from the vertically positioned camera will be used to correct and update the predicted \(X,Y\) position of the UAV. However due to the computation time needed to detect the landing marker, that incoming measurement will be delayed by some time \(dt_{obs}\). During that time \(dt_{obs}\) the UAV will be relocated by an interval (\(dx_{obs},dy_{obs}\)). To compensate that extra displacement, the  interval (\(dx_{obs},dy_{obs}\)) is calculated and added to the observed measurements.
+
 Correction step:
 \begin{equation}
     \begin{array}{l}
@@ -608,9 +607,9 @@ Correction step:
     P_{t} = (I - K_{t}*H_{t}) * P_{t}
     \end{array}
 \end{equation}
-where:
 
-\begin{equation}
+where:
+\begin{equation*}
     \begin{array}{l}
     z_{t} = \begin{bmatrix} 
                 x_{obs} + dx_{obs} \\ 
@@ -632,20 +631,19 @@ dx_{obs} = vx_{mean_{obs}} * dt_{obs} \quad , \quad
     dy_{obs} = vy_{mean_{obs}} * dt_{obs} \quad \\
           
     \end{array}
-\end{equation}
+\end{equation*}
 
-A velocity estimator is also constructed to determine the magnitude and direction of the moving platform's velocity vector. The magnitude is calculated by differentiating two sequential X,Y position measurements of the moving platform and taking into consideration the UAV's NED velocities according to the PX4's EKF. A low-pass filter is used to provide a smoothest estimation of the magnitude. 
+A velocity estimator is also constructed to determine the magnitude and direction of the moving platform's velocity vector. The magnitude is calculated by differentiating two sequential $X,Y$ position measurements of the moving platform and taking into consideration the UAV's \emph{NED} velocities according to the PX4's EKF. A low-pass filter is used to provide a smoothest estimation of the magnitude. 
 
-In the agricultural use-case the moving platform is likely to change its direction up to 180 degrees. Furthermore, it is assumed that the moving platform is a nonholonomic system, like a tractor. To compensate for sudden turns, the moving platform's yaw orientation will be taken into account and based on the velocity's magnitude, the moving platform's velocity in \(x,y\) NED frame can be obtained.
-
+In the agricultural use-case the moving platform is likely to change its direction up to 180 degrees. Furthermore, it is assumed that the moving platform is a nonholonomic system, like a tractor. To compensate for sudden turns, the moving platform's yaw orientation will be taken into account and based on the velocity's magnitude, the moving platform's velocity in $X,Y$ \emph{NED} frame can be obtained.
 
 
 \subsection{Wind Disturbances}
 \label{WindDisturbances}
 
-The exact and accurate estimation of the applied wind forces on a body is a complex matter studied by the field of fluid dynamics. However in this paper a simplified approach will be used. It is assumed that the wind will be applied on an area of 0.09 \(m^2\). Such an area is emulating a UAV with extra payload attached on its frame. Two different wind speeds of 8 m/s and 12 m/s will be used to calculate the applied wind forces on that area. The wind forces are considered to be applied on the center of gravity of the UAV with direction parallel to the ground.
+The exact and accurate estimation of the applied wind forces on a body is a complex matter studied by the field of fluid dynamics. We use a simplified approach, as follows. We assume that the wind will be applied on an area of \(0.09 m^2\). Such an area is emulating a UAV with extra payload attached on its frame. Two different wind speeds of $8 m/s$ and $12 m/s$ will be used to calculate the applied wind forces on that area. The wind forces are considered to be applied on the center of gravity of the UAV with direction parallel to the ground.
 
-The magnitude of the applied force, corresponding to a certain wind speed is calculated by the following equations \cite{Dynamic_pressure_NASA}, \cite{Dynamic_pressure_wikipedia}:
+The magnitude of the applied force, corresponding to a certain wind speed is calculated by the following equations \cite{Dynamic_pressure_NASA,Dynamic_pressure_wikipedia}:
 
 \begin{equation}
     \begin{array}{l}
@@ -654,35 +652,35 @@ The magnitude of the applied force, corresponding to a certain wind speed is cal
     \end{array}
 \end{equation}
 
-where: F is the force, \(p_{d}\) is the dynamic pressure, \(A\) is the area of the applied pressure, \(\varrho\) is the density of the air (around 1.2 kg/\(m^3\)), \(v\) is the wind velocity in m/s
+where: $F$ is the force, \(p_{d}\) is the dynamic pressure, \(A\) is the area of the applied pressure, \(\varrho\) is the density of the air (around 1.2 kg/\(m^3\)), \(v\) is the wind velocity in $m/s$.
 
-By solving the above equations the applied force on the UAV is found to be 3,45 Newton for a 8 m/s wind speed and 7,76 Newton for a 12 m/s wind speed. The wind forces will be applied on the UAV in Gazebo simulation, to test the performance of the whole system. This will be done by constructing a program that will apply the wind forces on the virtual UAV.
+By solving the above equations the applied force on the UAV is found to be $3.45 N$ for an $8 m/s$ wind speed, and $7.76 N$ for a $12 m/s$ wind speed. The wind forces will be applied on the UAV in Gazebo simulation, to test the performance of the whole system. This will be done by constructing a program that will apply the wind forces on the virtual UAV.
 
-To simulate a wind pattern two things have to be defined. The wind direction and the wind magnitude. The wind direction is assumed to remain the same for the whole duration of the tests. That direction vector is defined as [\(0.8, 0.2\)] according to Gazebo's (\(x,y\)) axes. 
-
-The magnitude of the wind is calculated according to the following pattern:
+To simulate a wind pattern the wind direction and magnitude must be defined. The wind direction is assumed to remain the same for the whole duration of the tests. That direction vector is defined as [\(0.8, 0.2\)] according to Gazebo's (\(x,y\)) axes. 
+%
+The magnitude of the wind is calculated as follows: %according to the following pattern:
 
 \begin{itemize}
-    \item An initial wind power of 7.0 Newtons is chosen.
+    \item An initial wind power of $7.0 N$ is chosen.
     
-    \item An update cycle of 5.5 second is chosen between two different applied forces.
+    \item An update cycle of $5.5 s$ is chosen between two different applied forces.
     
-    \item A random float number between 0.9 and 1.2 is chosen at every update cycle. This number is defined as \(Random\_noise\).
+    \item A random float number between 0.9 and 1.2 is chosen at every update cycle. This number is defined as \emph{Random\_noise}.
     
     \item The applied wind force is calculated as:\\
     
   
     
-        \(force_{x} = -x_{norm} * power_{init} * Random\_noise \\
-         force_{y} = -y_{norm} * power_{init} * Random\_noise\)\\
+        \(\mbox{\em force}_{x} = -x_{norm} * \mbox{\em power}_{init} * \mbox{\em Random\_noise} \\
+         \mbox{\em force}_{y} = -y_{norm} * \mbox{\em power}_{init} * \mbox{\em Random\_noise}\)\\
         
 
-    where \(x_{norm }\) = 0.8, \(y_{norm} \) = 0.2 , \(power_{init}\) = 7.0 Newtons
+    where \(x_{norm } = 0.8\), \(y_{norm}  = 0.2\) , \(\mbox{\em power}_{init} = 7.0 N\)
     
     \item For a UAV altitude of 6.0 meters and below the power decreases as:
-   \( power = power_{init}* (altitude/ 6.0)  \), where \(power_{init}\) is 7.0 Newtons
+   \( \mbox{\em power} = \mbox{\em power}_{init}* (\mbox{\em altitude}/ 6.0)  \), where \(\mbox{\em power}_{init}\) is $7.0 N$
    
-   \item For a UAV altitude of 3 meters and below, \(power\) = 0.5. 
+   \item For a UAV altitude of 3 meters and below, \(\mbox{\em power} = 0.5\). 
 
     
 \end{itemize}
