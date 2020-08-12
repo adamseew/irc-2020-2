@@ -484,9 +484,17 @@ To mark the moving platform a special pattern is constructed, consisting of an n
 \label{fig:LandingMarker}
 \end{figure}
 
-To extract the pixel coordinates of the tip of the n-fold marker, a kernel size of 16$\times$16 pixels consisting of a real and imaginary part is created. For every pixel in the image, a convolution is performed with this kernel and the magnitude of the convolution is stored. The pixel with the highest magnitude is considered as a candidate tip of the n-fold marker. For that candidate pixel only, an estimation of the orientation/phase of the marker is made and an overall normalized quality score between 0.0 and 1.0 is calculated. If the score is above a desired threshold value then the pixel is accepted as the tip of the n-fold marker. If an n-fold marker is detected, the result will be the pixel coordinates of the tip of the n-fold marker along with its orientation/phase. 
+To extract the pixel coordinates of the tip of the n-fold marker, a kernel size of 13$\times$13 pixels consisting of a real and imaginary part is created. For every pixel in the image, a convolution is performed with this kernel and the magnitude of the convolution is stored. The pixel with the highest magnitude is considered as a candidate tip of the n-fold marker. For that candidate pixel only, an estimation of the orientation/phase of the marker is made and an overall normalized quality score between 0.0 and 1.0 is calculated. If the score is above a desired threshold value then the pixel is accepted as the tip of the n-fold marker. If an n-fold marker is detected, the result will be the pixel coordinates of the tip of the n-fold marker along with its orientation/phase. 
 
-The kernel size can be adaptively changed to compensate for occlusions. Since a convolution is a computational  expensive process, an increase in the kernel size would also increase the energy consumption. However a higher energy consumption is preferred over a non-detection of the n-fold marker. To balance between energy consumption and effective marker detection, an adaptive kernel selection function is created to ensure the selection of a proper kernel size based on a threshold quality score value.
+Since a convolution is a computational  expensive process, an increase in the kernel size would also increase the computation time and therefore the energy consumption. However a higher energy consumption is preferred over a non-detection of the n-fold marker. To balance between energy consumption and effective marker detection, an adaptive kernel selection function is created to ensure the selection of a proper kernel size based on a threshold quality score value. In figure \ref{fig:NfoldOcclusions} an Intel RealSense D435 Depth camera is used to capture the image and measure also the distance $d$ from the nfold marker. Based on a desired quality $q$, the proper kernel size $k$ is selected. It is seen that an occlusion on the tip of the nfold marker results in a significant increase on the selected kernel size.  
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.25]{nfold_occlusions.png}
+\caption{Detection of the landing marker under different occlusions}
+\label{fig:NfoldOcclusions}
+\end{figure}
+
 %
 To detect the ArUco markers the standard OpenCV library is used and if any ArUco markers are detected, their central pixel coordinates and pose are stored.
 
