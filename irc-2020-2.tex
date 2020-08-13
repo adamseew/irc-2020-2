@@ -469,12 +469,14 @@ The energy-sensitive design is a mission-oriented concept that adjusts the compu
 The energy-sensitive design using \powprof{} relies on empirical experiments to measure the actual power consumption on the robot hardware~\cite{seewald2019coarse}. In this paper we focus on the companion computer, which from the point of view of energy consumption can be studied independently from the specific drone it is mounted in.
 
 First, the developer specifies the maximum and minimum QoS level for each algorithm running on the system. 
-During mission execution the levels are statically defined: automatic adaptation during different phases of the mission is being currently being investigated and is considered future work. 
+During mission execution the levels are statically defined: automatic adaptation during different phases of the mission is being currently investigated and is considered future work. 
 %
 Then, the developer executes the system to empirically determine the power consumption. This can be done in two different ways:
 %
+% [Ad: enumerate?] for some reason I don't think the enumerate env actually ads anything in readability, while I would use it to describe steps of the algorithm, I would just put the following two enumerate as new paragraph with the mode in italic (maybe just me; if others like the enumerate env I am totally fine with it)
 \begin{enumerate}
-\item Automatically using \powprof{} to control the experiment execution~\cite{seewald2020mechanical}. 
+% [Ad: no citation to IRC-2020] we didn't include ROS there, we did for IROS-2020; however the IJPP could work well.
+\item Automatically using \powprof{} to control the experiment execution~\cite{seewald2019coarse}. 
 We assume that the algorithms are wrapped as ROS nodes, and we require the developer to specify the QoS parameters using a ROS configuration.We use a configuration file in a key-value pair format which is then interpreted by \powprof{}, enabling \powprof{} to iterate through all possible combinations and empirically sample the energy consumption of each combination of QoS parameters. Once all combinations have been iterated through, \powprof{} automatically combines the energy consumption data into a complete model.
 \item Semi-automatically using \powprof{} to sample energy and combine the results of all experiments, but allowing the developer to control all aspects of the experiment execution. This approach is new and is described in more detail later in this section. Basically, a ROS node interfaces to \powprof{} and is used by the developer to start/stop sampling in a given configuration. Once all experiments have completed, \powprof{} is invoked by the developer to combine the energy consumption data into a complete model.
 \end{enumerate}
@@ -488,7 +490,13 @@ For example, the autonomous tracking allows changing the tracking algorithm QoS 
 
 \subsection{Semi-automatic energy profiling}
 
-\adam{TODO? Short description of ROS node and combining level 1 models using powprof. Explicit subsection to make clear it's new. Goal is to avoid manual steps such a giving intermediate files magic names or whatever (since this reduces risk of errors). Could show example of what developer code looks like, i.e., what Georgios need to do to use it?}
+%\adam{TODO? Short description of ROS node and combining level 1 models using powprof. Explicit subsection to make clear it's new. Goal is to avoid manual steps such a giving intermediate files magic names or whatever (since this reduces risk of errors). Could show example of what developer code looks like, i.e., what Georgios need to do to use it?}
+
+% [Ad: added description of the semi-automatic mode {begin}]
+A ROS node has been developed for the purposes of the energy-sensitive approach specifically in this paper, allowing to automatically generate an early energy model, a function that maps time to the instantaneous power consumption. The developer publishes on a ROS topic to start the model generation, with \powprof{} accounting for the invocation of an asynchronous thread which collects data from the energy sensors. Alike, the developer publishes on another ROS topic to stop the model generation, while \powprof{} ends collecting data from sensors, builds the early model, and stores it for later elaboration.
+
+Once all the early energy models for some of the desired QoS ranges are collected, a further model that maps the energy consumption to QoS is built by the means of a configuration file. The developer specifies per each line what configuration corresponds to which early model (instantaneous power consumption as a function of time), and runs \powprof{} using such a configuration file as a parameter.
+% [Ad: ... {end}]
 
 %%%%%%%%%%%%%%%%%%%%
 \section{Vision-Based Autonomous Tracking and Landing}
@@ -639,6 +647,7 @@ Correction step:
     \begin{array}{l}
     
     e_{t} = z_{t} - H_{t}*\hat{x}_{t} \\
+    % [Ad: eq] I am not entirely familiar with this notation for EKF but I guess it should be P_t prior to the estimate so I would conveniently call it P_t^- so it does not confuse with P_t after the estimate (last line)
     S_{t} = H_{t}*P_{t}*H_{t}^\top + R_{t} \\
     K_{t} = P_{t}*H_{t}^\top * S_{t}^{-1} \\
     \hat{x}_{t} = \hat{x}_{t} + K_{t} * e_{t} \\
