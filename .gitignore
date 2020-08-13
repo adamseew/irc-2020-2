@@ -1,3 +1,7 @@
 
 irc-2020-2.aux
 irc-2020-2.log
+*.fls
+*.dvi
+*.fdb_latexmk
+
