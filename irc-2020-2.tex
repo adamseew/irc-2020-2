@@ -16,9 +16,10 @@
 \usepackage{flushend}
 \usepackage{tikz}
 \usepackage{todonotes}
-%\setuptodonotes{inline}
+\setuptodonotes{inline}
 \newcommand{\adam}[2][]{\todo[color=orange!20, #1]{ADAM: #2}}
 \newcommand{\hemi}[2][]{\todo[color=green!20, #1]{HEMI: #2}}
+
 
 %% citation packege
 \usepackage{cite}
@@ -499,7 +500,7 @@ The vision-based autonomous tracking and landing can be split into four main sub
 \subsection{Detection of the moving platform}
 \label{sec:Detection}
 
-To mark the moving platform a special pattern is constructed, consisting of an n-fold marker~\cite{NfoldMarker} along with three ArUco markers~\cite{ArUco_marker} with different ids. This pattern will be referred to as the ``landing marker'' and can be seen in Figure~\ref{fig:LandingMarker}. The n-fold marker is primarily used to detect the moving platform from a high altitude, while the ArUco markers are used as extra landmarks in case the marker is partially visible in the image frame.
+To mark the moving platform a special pattern is constructed, consisting of an n-fold marker~\cite{NfoldMarker} along with three ArUco markers~\cite{ArUco_marker} with different ids. This pattern will be referred to as the $landing$ $marker$ and can be seen in Figure~\ref{fig:LandingMarker}. The n-fold marker is primarily used to detect the moving platform from a high altitude, while the ArUco markers are used as extra landmarks in case the marker is partially visible in the image frame.
 
 To evaluate the detection algorithm of the landing marker, real images, of 640$\times$480 pixel size, were captured with an Intel RealSense D435 camera. In gazebo simulation a color camera with the same distortion coefficients as the Intel camera, is used to output a 640$\times$480 pixel image at 10 frames per second (fps).
 \hemi{Add details about the simulated camera.}
@@ -520,7 +521,7 @@ Since a convolution is a computational  expensive process, an increase in the ke
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.25]{nfold_occlusions.png}
-\caption{Detection of the landing marker under different occlusions}
+\caption{Detection of the landing marker under different occlusions. On the left an occlusion on the tip of the n-fold marker and on the right an occlusion on a sector of the n-fold marker.}
 \label{fig:NfoldOcclusions}
 \end{figure}
 
@@ -734,9 +735,13 @@ This model is created to simulate different scaling in the wind's magnitude and 
 \todo[color=red!10]{Briefly describe the use case and simulation, including the use of CNN
 to detect}
 
-A multirotor UAV, with a vertically facing camera, is used to detect a moving platform. The moving platform follows a path similar to a plowing tractor's and no communication link is considered between the moving platform and the UAV. For this agricultural use case, two different UAV actions are tested. 
+We demonstrate the dual use of a multirotor UAV,  for identifying hazardous objects around a moving platform and for landing on the moving platform to recharge. The moving platform is following a path similar to a plowing tractor's and no communication link is considered between the moving platform and the UAV.
 
-The first action is to track and follow the moving platform from a fixed altitude, while detecting and classifying objects on the ground. Four different classes are selected, cars, humans, tractors and cows. Object detection and classification is performed by feeding the input image from the vertically facing camera into a $YOLOV3$ $tiny$ CNN  \cite{yolov3} implemented in ROS \cite{bjelonicYolo2018}. Furthermore, the UAV, based on the CNN's predictions and onboard sensors, maps the detected objects onto a 2D map. The second action is to track and land on the moving platform.
+%For the first use, the UAV will track and follow the moving platform from a desired altitude, while detecting and classifying objects on the ground.
+
+Object detection and classification is performed by feeding the input image from the vertically facing camera into a $YOLOV3$-$tiny$ CNN  \cite{yolov3} implemented in ROS \cite{bjelonicYolo2018}. Four different classes are selected, cars, humans, tractors and cows. Furthermore, the UAV, based on the CNN's predictions and onboard sensors, maps the detected objects onto a 2D map. 
+ 
+%For the second use, the UAV will track and land on the moving platform. 
 
 A simulated field is created in gazebo with objects placed in random positions and orientations as seen in figure \ref{fig:Gazebo}. 
 
@@ -747,7 +752,9 @@ A simulated field is created in gazebo with objects placed in random positions a
 \label{fig:Gazebo}
 \end{figure}
 
-Pre-trained weights for $YOLOV3$ $tiny$, were initially used but the performance on detecting objects from a vertically facing camera was not the expected. Since an available dataset for detecting the above four classes was not available, we created an artificial dataset based on the gazebo models. This dataset consists of 1200 images, 300 for each class. We trained the $YOLOV3$ $tiny$ by its default training parameters for 5000 epochs for an input image size of 416$\times$416 pixels. For all the experiments, the input image to $YOLOV3$ $tiny$ will be resized to a 416$\times$416 pixel size. 
+Pre-trained weights for $YOLOV3$-$tiny$, were initially used but the performance on detecting objects from a vertically facing camera was not the expected. Since a dataset for detecting the above four classes from a top view was not available, we created an artificial dataset based on the gazebo models. The dataset consists of 1200 images, 300 for each class. We trained the $YOLOV3$-$tiny$ by its default training parameters for 5000 epochs, for an input image size of 416$\times$416 pixels. 
+
+%For the following experiments, the input image to $YOLOV3$ $tiny$ will be resized to a 416$\times$416 pixel size. 
 
 
 
@@ -757,11 +764,12 @@ Pre-trained weights for $YOLOV3$ $tiny$, were initially used but the performance
 How the experiment will be done concretely, i.e., time to land as a
 function of QoS and wind or whatever.
 
-All experiments are performed in gazebo simulation under Ubuntu 18.04 OS and ROS Melodic on a i7-8550U 1.8GHz (4.0GHz Boost), 8GB DDR4 laptop. The $PX4$ under SITL Firmware v1.10.2 is used as the flight controller and the $Iris$ quadcopter is used as the UAV platform. A vertically facing RGB camera is placed on the UAV providing a 640$\times$480 pixel image at 10 fps. An Nvidia Jetson Nano with Ubuntu 18.04 OS and ROS Melodic is used as the UAV's companion computer. All the computer vision, guidance and control algorithms needed for an autonomous flight are implemented on the Jetson Nano.
+All experiments are performed in gazebo simulation under Ubuntu 18.04 OS and ROS Melodic on a i7-8550U 1.8GHz (4.0GHz Boost), 8GB DDR4 laptop. The $PX4$ SITL Firmware v1.10.2 is used as the flight controller and the $IRIS$ quadcopter is used as the UAV platform. A vertically facing RGB camera is placed on the UAV providing a 640$\times$480 pixel image at 10 fps. An \emph{Nvidia Jetson Nano} with Ubuntu 18.04 OS and ROS Melodic is used as the UAV's companion computer. All the computer vision, guidance and control algorithms are implemented on the \emph{Nvidia Jetson Nano}.
 
-Two groups of experiments are conducted. The first group evaluates the energy consumption and QoS of the "tracking" mode and the second group evaluates the energy consumption and QoS of the "landing" mode. In both groups, the experiments start with the tractor moving with a constant speed of $0.3 m/s$, according to a square path similar of a plowing tractor, and the UAV taking-off and hovering at an altitude of $25 m$. Once this altitude is reached, the UAV starts searching for the landing marker in the image frame. Once the landing marker is detected the UAV commences its actions. 
+Two groups of experiments are conducted. The first group evaluates the energy consumption and QoS of the $tracking$ mode and the second group evaluates the energy consumption and QoS of the $landing$ mode. For both groups, the experiments start with the tractor moving at a constant speed of $0.3 m/s$, according to a square path similar of a plowing tractor, and the UAV taking-off and hovering at an altitude of $25 m$. After reaching the desired altitude, the UAV starts searching for the landing marker in the image frame. Once the landing marker is detected, the UAV commences its actions. 
 
-On a "tracking" mode, the UAV will fly above the tractor at a fixed altitude and use its vertically facing camera to map the environment while on a "landing" mode, the UAV will position itself above the moving platform and will descend until it lands on it. Both "tracking" and "landing" modes are tested under three different cases of no wind disturbances, wind disturbances of $8 m/s$ and wind disturbances of $12 m/s$ according to the wind model described in section \ref{sec:WindDisturbances}.
+
+On $tracking$ mode, the UAV will follow the moving platform at a fixed altitude and use its vertically facing camera to map the environment while on $landing$ mode, the UAV will  follow the moving platform and gradually lower its altitude until it lands on it. Both $tracking$ and $landing$ modes are tested under three different cases of no wind disturbances, wind disturbances of $8 m/s$ and wind disturbances of $12 m/s$ according to the wind model described in section \ref{sec:WindDisturbances}.
 
 
 
