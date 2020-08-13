@@ -16,7 +16,7 @@
 \usepackage{flushend}
 \usepackage{tikz}
 \usepackage{todonotes}
-\setuptodonotes{inline}
+%\setuptodonotes{inline}
 \newcommand{\adam}[2][]{\todo[color=orange!20, #1]{ADAM: #2}}
 \newcommand{\hemi}[2][]{\todo[color=green!20, #1]{HEMI: #2}}
 
@@ -336,6 +336,13 @@
   year={2018}
 }
 
+@misc{bjelonicYolo2018,
+  author = {Marko Bjelonic},
+  title = {{YOLO ROS}: Real-Time Object Detection for {ROS}},
+  howpublished = {\url{https://github.com/leggedrobotics/darknet_ros}},
+  year = {2016--2018},
+}
+
 \end{filecontents}
 
 \begin{document}
@@ -492,7 +499,9 @@ The vision-based autonomous tracking and landing can be split into four main sub
 \subsection{Detection of the moving platform}
 \label{sec:Detection}
 
-To mark the moving platform a special pattern is constructed, consisting of an n-fold marker~\cite{NfoldMarker} along with three ArUco markers~\cite{ArUco_marker} with different ids. This pattern will be referred to as the ``landing marker'' and can be seen in Figure~\ref{fig:LandingMarker}. The n-fold marker is primarily used to detect the moving platform from a high altitude, while the ArUco markers are used as extra landmarks in case the marker is partially visible in the image frame. 
+To mark the moving platform a special pattern is constructed, consisting of an n-fold marker~\cite{NfoldMarker} along with three ArUco markers~\cite{ArUco_marker} with different ids. This pattern will be referred to as the ``landing marker'' and can be seen in Figure~\ref{fig:LandingMarker}. The n-fold marker is primarily used to detect the moving platform from a high altitude, while the ArUco markers are used as extra landmarks in case the marker is partially visible in the image frame.
+
+To evaluate the detection algorithm of the landing marker, real images, of 640$\times$480 pixel size, were captured with an Intel RealSense D435 camera. In gazebo simulation a color camera with the same distortion coefficients as the Intel camera, is used to output a 640$\times$480 pixel image at 10 frames per second (fps).
 \hemi{Add details about the simulated camera.}
 
 \begin{figure}[h]
@@ -506,6 +515,7 @@ To extract the pixel coordinates of the tip of the n-fold marker, a kernel size 
 
 Since a convolution is a computational  expensive process, an increase in the kernel size would also increase the computation time and therefore the energy consumption. However a higher energy consumption is preferred over a non-detection of the n-fold marker. To balance between energy consumption and effective marker detection, an adaptive kernel selection function is created to ensure the selection of a proper kernel size based on a threshold quality score value. In figure \ref{fig:NfoldOcclusions} an Intel RealSense D435 Depth camera is used to capture the image and measure also the distance $d$ from the nfold marker. Based on a desired quality $q$, the proper kernel size $k$ is selected. It is seen that an occlusion on the tip of the nfold marker results in a significant increase on the selected kernel size.  
 \hemi{To me this looks like a significant \emph{decrease} in kernel size \ldots}
+% Georgios: The kernel size, while having an occlusion on the tip of the nfold marker, is 201x201
 
 \begin{figure}[h]
 \centering
@@ -660,14 +670,14 @@ dx_{obs} = vx_{mean_{obs}} * dt_{obs} \quad , \quad
     \end{array}
 \end{equation*}
 
-A velocity estimator is also constructed to determine the magnitude and direction of the moving platform's velocity vector. The magnitude is calculated by differentiating two sequential $X,Y$ position measurements of the moving platform and taking into consideration the UAV's \emph{NED} velocities according to the PX4's EKF. A low-pass filter is used to provide a smoothest estimation of the magnitude. 
+A velocity estimator is also constructed to determine the magnitude and direction of the moving platform's velocity vector. The magnitude is calculated by differentiating two sequential $X,Y$ position measurements of the moving platform and taking into consideration the UAV's \emph{NED} velocities according to the PX4's EKF. A low-pass filter is used to provide a smooth estimation of the velocity's magnitude by filtering out high frequency noise. High frequency noise can be caused by oscillations of the UAV along with a fast update rate in the landing marker detection algorithm.
 \hemi{Please explain why the signal is the \emph{smoothest}.}
 
 In the agricultural use-case the moving platform is likely to change its direction up to 180 degrees. Furthermore, it is assumed that the moving platform is a nonholonomic system, like a tractor. To compensate for sudden turns, the moving platform's yaw orientation will be taken into account and based on the velocity's magnitude, the moving platform's velocity in $X,Y$ \emph{NED} frame can be obtained.
 
 
 \subsection{Wind Disturbances}
-\label{WindDisturbances}
+\label{sec:WindDisturbances}
 
 The exact and accurate estimation of the applied wind forces on a body is a complex matter studied by the field of fluid dynamics. We use a simplified approach, as follows. We assume that the wind will be applied on an area of \(0.09 m^2\). Such an area is emulating a UAV with extra payload attached on its frame. Two different wind speeds of $8 m/s$ and $12 m/s$ will be used to calculate the applied wind forces on that area. The wind forces are considered to be applied on the center of gravity of the UAV with direction parallel to the ground.
 
@@ -726,22 +736,34 @@ to detect}
 
 A multirotor UAV, with a vertically facing camera, is used to detect a moving platform. The moving platform follows a path similar to a plowing tractor's and no communication link is considered between the moving platform and the UAV. For this agricultural use case, two different UAV actions are tested. 
 
-The first action is to track and follow the moving platform from a fixed altitude, while detecting and classifying objects on the ground. Four different classes are selected, cars, humans, tractors and cows. Object detection and classification is performed by feeding the input image from the vertically facing camera into a $YOLOV3$ $tiny$ CNN  \cite{yolov3}. Furthermore, the UAV, based on the CNN's predictions and onboard sensors, maps the detected objects onto a 2D map. The second action is to track and land on the moving platform.
+The first action is to track and follow the moving platform from a fixed altitude, while detecting and classifying objects on the ground. Four different classes are selected, cars, humans, tractors and cows. Object detection and classification is performed by feeding the input image from the vertically facing camera into a $YOLOV3$ $tiny$ CNN  \cite{yolov3} implemented in ROS \cite{bjelonicYolo2018}. Furthermore, the UAV, based on the CNN's predictions and onboard sensors, maps the detected objects onto a 2D map. The second action is to track and land on the moving platform.
 
 A simulated field is created in gazebo with objects placed in random positions and orientations as seen in figure \ref{fig:Gazebo}. 
 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.2]{gazebo_scalled.png}
-\caption{Top and side view of the gazebo scene}
+\caption{On the left, a top view of the gazebo scene. On the right, a view of the UAV attempting a landing on the moving platform }
 \label{fig:Gazebo}
 \end{figure}
+
+Pre-trained weights for $YOLOV3$ $tiny$, were initially used but the performance on detecting objects from a vertically facing camera was not the expected. Since an available dataset for detecting the above four classes was not available, we created an artificial dataset based on the gazebo models. This dataset consists of 1200 images, 300 for each class. We trained the $YOLOV3$ $tiny$ by its default training parameters for 5000 epochs for an input image size of 416$\times$416 pixels. For all the experiments, the input image to $YOLOV3$ $tiny$ will be resized to a 416$\times$416 pixel size. 
+
+
 
 
 \subsection{Experimental setup}
 
 How the experiment will be done concretely, i.e., time to land as a
 function of QoS and wind or whatever.
+
+All experiments are performed in gazebo simulation under Ubuntu 18.04 OS and ROS Melodic on a i7-8550U 1.8GHz (4.0GHz Boost), 8GB DDR4 laptop. The $PX4$ under SITL Firmware v1.10.2 is used as the flight controller and the $Iris$ quadcopter is used as the UAV platform. A vertically facing RGB camera is placed on the UAV providing a 640$\times$480 pixel image at 10 fps. An Nvidia Jetson Nano with Ubuntu 18.04 OS and ROS Melodic is used as the UAV's companion computer. All the computer vision, guidance and control algorithms needed for an autonomous flight are implemented on the Jetson Nano.
+
+Two groups of experiments are conducted. The first group evaluates the energy consumption and QoS of the "tracking" mode and the second group evaluates the energy consumption and QoS of the "landing" mode. In both groups, the experiments start with the tractor moving with a constant speed of $0.3 m/s$, according to a square path similar of a plowing tractor, and the UAV taking-off and hovering at an altitude of $25 m$. Once this altitude is reached, the UAV starts searching for the landing marker in the image frame. Once the landing marker is detected the UAV commences its actions. 
+
+On a "tracking" mode, the UAV will fly above the tractor at a fixed altitude and use its vertically facing camera to map the environment while on a "landing" mode, the UAV will position itself above the moving platform and will descend until it lands on it. Both "tracking" and "landing" modes are tested under three different cases of no wind disturbances, wind disturbances of $8 m/s$ and wind disturbances of $12 m/s$ according to the wind model described in section \ref{sec:WindDisturbances}.
+
+
 
 \subsection{Results}
 
