@@ -1,9 +1,16 @@
 
 irc-2020-2.aux
 irc-2020-2.log
+irc-2020-2.pdf
 *.fls
 *.dvi
 *.fdb_latexmk
 *.bbl
 *.blg
+*.synctex.gz
+missfont.log
+data visualization/Landing Data.zip
+data visualization/Tracking Data.zip
+data visualization/Landing Data/
+data visualization/Tracking Data/
 
