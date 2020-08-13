@@ -325,6 +325,13 @@
   publisher={Tata McGraw-Hill Education}
 }
 
+@article{yolov3,
+  title={YOLOv3: An Incremental Improvement},
+  author={Redmon, Joseph and Farhadi, Ali},
+  journal = {arXiv},
+  year={2018}
+}
+
 \end{filecontents}
 
 \begin{document}
@@ -703,6 +710,20 @@ This model is created to simulate different scaling in the wind's magnitude and 
 
 Briefly describe the use case and simulation, including the use of CNN
 to detect
+
+In the agricultural use case of this project a multirotor UAV, with a vertically facing camera, is used to detect a moving platform. The moving platform follows a path similar to a plowing tractor's and no communication link is considered between the moving platform and the UAV. For this agricultural use case, two different UAV actions are tested. 
+
+The first action is to track and follow the moving platform from a fixed altitude, while detecting and classifying objects on the ground. Four different classes are selected, cars, humans, tractors and cows. Object detection and classification is performed by feeding the input image from the vertically facing camera into a $YOLOV3$ $tiny$ CNN  \cite{yolov3}. Furthermore, the UAV, based on the CNN's predictions and onboard sensors, maps the detected objects onto a 2D map. The second action is to track and land on the moving platform.
+
+A simulated field is created in gazebo with objects placed in random positions and orientations as seen in figure \ref{fig:Gazebo}. 
+
+\begin{figure}[h]
+\centering
+\includegraphics[scale=0.2]{gazebo_scalled.png}
+\caption{Top and side view of the gazebo scene}
+\label{fig:Gazebo}
+\end{figure}
+
 
 \subsection{Experimental setup}
 

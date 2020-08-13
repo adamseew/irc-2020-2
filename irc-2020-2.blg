@@ -13,44 +13,44 @@ Database file #1: irc-2020-2.bib
 -- See the "IEEEtran_bst_HOWTO.pdf" manual for usage information.
 
 Done.
-You've used 29 entries,
+You've used 30 entries,
             4087 wiz_defined-function locations,
-            991 strings with 13726 characters,
-and the built_in function-call counts, 24715 in all, are:
-= -- 1955
-> -- 650
+            995 strings with 13802 characters,
+and the built_in function-call counts, 25109 in all, are:
+= -- 1987
+> -- 659
 < -- 211
-+ -- 361
-- -- 122
-* -- 1180
-:= -- 3502
-add.period$ -- 71
-call.type$ -- 29
-change.case$ -- 28
++ -- 365
+- -- 124
+* -- 1196
+:= -- 3574
+add.period$ -- 73
+call.type$ -- 30
+change.case$ -- 29
 chr.to.int$ -- 489
-cite$ -- 29
-duplicate$ -- 1750
-empty$ -- 2005
-format.name$ -- 140
-if$ -- 5842
+cite$ -- 30
+duplicate$ -- 1786
+empty$ -- 2042
+format.name$ -- 143
+if$ -- 5930
 int.to.chr$ -- 0
-int.to.str$ -- 29
-missing$ -- 312
-newline$ -- 110
-num.names$ -- 29
-pop$ -- 741
+int.to.str$ -- 30
+missing$ -- 318
+newline$ -- 113
+num.names$ -- 30
+pop$ -- 758
 preamble$ -- 1
 purify$ -- 0
 quote$ -- 2
-skip$ -- 1907
+skip$ -- 1938
 stack$ -- 0
-substring$ -- 1230
-swap$ -- 1466
+substring$ -- 1231
+swap$ -- 1485
 text.length$ -- 48
 text.prefix$ -- 0
 top$ -- 5
-type$ -- 29
+type$ -- 30
 warning$ -- 0
-while$ -- 110
-width$ -- 31
-write$ -- 301
+while$ -- 111
+width$ -- 32
+write$ -- 309

@@ -182,4 +182,8 @@ D.~Falanga, A.~Zanchettin, A.~Simovic, J.~Delmerico, and D.~Scaramuzza,
 J.~D. Anderson~Jr, \emph{Fundamentals of aerodynamics}.\hskip 1em plus 0.5em
   minus 0.4em\relax Tata McGraw-Hill Education, 2010.
 
+\bibitem{yolov3}
+J.~Redmon and A.~Farhadi, ``Yolov3: An incremental improvement,'' \emph{arXiv},
+  2018.
+
 \end{thebibliography}
