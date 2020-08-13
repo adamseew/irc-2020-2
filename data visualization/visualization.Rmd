@@ -1,0 +1,169 @@
+---
+title: "R Notebook"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+```{r}
+library(knitr)
+library(tidyverse)
+library(cowplot)
+theme_set(theme_cowplot())
+```
+
+```{r}
+landings <- readODS::read_ods('landing_data_reformatted.ods', 
+                              sheet=1, 
+                              col_names = TRUE)
+```
+
+
+```{r}
+landings %>%
+  ggplot() +
+  aes(y = measure, 
+      x = measured_value) + 
+  geom_point()
+```
+
+
+```{r}
+head(landings)
+```
+
+
+```{r}
+landings %>%
+  separate(measure, c("coordinate", "alt", "other"), sep='[()]') %>%
+  extract(condition, c("experiment", "update_rate", "wind"), "(\\d). (.*?) (.*)") %>%
+  select(-other) %>%
+  mutate(alt = fct_relevel(alt, "alt 0-5", "alt 5-10", "alt 10-20", "alt 20+")) %>%
+  mutate(update_rate = fct_relevel(update_rate, "nfold_10fps", "nfold_2fps", "nfold_1fps", "nfold_0.5fps")) ->
+  landings_formatted
+```
+
+
+```{r}
+unique(landings_formatted$update_rate)
+```
+
+
+```{r}
+colnames(landings_formatted)
+```
+
+
+
+```{r}
+landings_formatted %>%
+  ggplot() + 
+  aes(x = measured_value, 
+      y = alt, 
+      color=coordinate) + 
+  geom_point() + 
+  facet_wrap(~update_rate) + 
+  labs(x = 'Mean squared error [meter^2]', 
+       y = 'Altitude [meter]')
+```
+
+```{r}
+landings_formatted %>%
+  ggplot() + 
+  aes(x = measured_value, 
+      y = update_rate, 
+      color=coordinate) + 
+  geom_point() + 
+  facet_wrap(~alt) + 
+  labs(x = 'Mean squared error [meter^2]', 
+       y = 'Altitude [meter]')
+```
+
+
+```{r}
+object_detection_raw <- readODS::read_ods('object_detection_reformatted.ods', 
+                                          col_names = TRUE,
+                                          col_types = cols(
+                                            condition = col_character(),
+                                            object_number = col_double(),
+                                            object_class = col_double(),
+                                            detected = col_character(),
+                                            correct = col_character(),
+                                            mse_x = col_double(),
+                                            mse_y = col_double()
+                                          ))
+```
+
+```{r}
+head(object_detection_raw)
+```
+
+
+
+```{r}
+object_detection_raw %>%
+  extract(condition, 
+          c("experiment", "yolo_fps", "nfold_fps", "wind"), 
+          "(\\d). \\(Yolo_(.*)fps\\) \\(nfold_(.*)fps\\) \\((.*)\\)") %>%
+  mutate(wind = fct_recode(wind, 
+                           "0" = "NoWindSpeed", 
+                           "8" = "WindSpeed_8m/s", 
+                           "8" = "WindSpeed 8m/s", 
+                           "12" = "WindSpeed 12m/s", 
+                           "12" = "WindSpeed 12 m/s", 
+                           "12" = "WindSpeed_12m/s")) %>%
+  mutate(wind = fct_relevel(wind, "0", "8", "12")) %>%
+  mutate(yolo_fps = factor(as.numeric(yolo_fps))) %>%
+  mutate(nfold_fps = factor(as.numeric(nfold_fps))) %>%
+  mutate(object_number = factor(object_number)) %>%
+  mutate(object_class = factor(object_class)) %>%
+  mutate(detected = factor(detected)) %>%
+  mutate(correct = correct == 'yes') ->
+  object_detection
+```
+
+```{r}
+object_detection %>%
+  ggplot() + 
+  aes(x = mse_x, 
+      y = mse_y) + 
+  geom_point(aes(color = wind)) + 
+  facet_grid(yolo_fps ~ nfold_fps) + 
+  labs(x = "Mean Squared Error x (meter)",
+       y = "Mean Squared Error y (meter)", 
+       title = "Error in x and y directions", 
+       subtitle = "Faceted on yolo fps (0.1 and 4) and nfold fps (0.5 and 10)")
+```
+
+I see not direction relation between the errors in x and y directions 
+in this plot.
+
+
+
+
+
+```{r}
+object_detection %>%
+  group_by(experiment, wind, yolo_fps, nfold_fps) %>%
+  summarise(correct = sum(correct), 
+            .groups = "drop_last") %>%
+  arrange(desc(correct))
+```
+
+```{r}
+object_detection %>%
+  group_by(experiment, wind, yolo_fps, nfold_fps) %>%
+  summarise(correct = sum(correct), 
+            .groups = "drop_last") %>%
+  ggplot() +
+  aes(x = correct, 
+      y = wind, 
+      size = yolo_fps, 
+      shape = nfold_fps) + 
+  geom_point()
+```
+
+Observations: 
+1. The number of correct detections increase when the wind is reduced.
+2. The number of correct detections increase when the yolo frame rate is increased.
+3. There are no clear relation with the nfold edge frame rate.
