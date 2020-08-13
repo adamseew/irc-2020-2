@@ -711,7 +711,7 @@ This model is created to simulate different scaling in the wind's magnitude and 
 Briefly describe the use case and simulation, including the use of CNN
 to detect
 
-In the agricultural use case of this project a multirotor UAV, with a vertically facing camera, is used to detect a moving platform. The moving platform follows a path similar to a plowing tractor's and no communication link is considered between the moving platform and the UAV. For this agricultural use case, two different UAV actions are tested. 
+A multirotor UAV, with a vertically facing camera, is used to detect a moving platform. The moving platform follows a path similar to a plowing tractor's and no communication link is considered between the moving platform and the UAV. For this agricultural use case, two different UAV actions are tested. 
 
 The first action is to track and follow the moving platform from a fixed altitude, while detecting and classifying objects on the ground. Four different classes are selected, cars, humans, tractors and cows. Object detection and classification is performed by feeding the input image from the vertically facing camera into a $YOLOV3$ $tiny$ CNN  \cite{yolov3}. Furthermore, the UAV, based on the CNN's predictions and onboard sensors, maps the detected objects onto a 2D map. The second action is to track and land on the moving platform.
 
