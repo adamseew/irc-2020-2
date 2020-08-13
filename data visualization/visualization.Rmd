@@ -13,10 +13,24 @@ theme_set(theme_cowplot())
 ```
 
 ```{r}
-landings <- readODS::read_ods('landing_data_reformatted.ods', 
+landings_raw <- readODS::read_ods('landing_data_reformatted.ods', 
                               sheet=1, 
                               col_names = TRUE)
 ```
+
+```{r}
+landings_raw %>%
+  mutate(wind = fct_recode(wind, 
+                           "0" = "NoWindSpeed", 
+                           "8" = "WindSpeed_8m/s", 
+                           "8" = "WindSpeed 8m/s", 
+                           "12" = "WindSpeed 12m/s", 
+                           "12" = "WindSpeed 12 m/s", 
+                           "12" = "WindSpeed_12m/s")) %>%
+  mutate(wind = fct_relevel(wind, "0", "8", "12")) ->
+  landings
+```
+
 
 
 ```{r}
@@ -76,8 +90,41 @@ landings_formatted %>%
   geom_point() + 
   facet_wrap(~alt) + 
   labs(x = 'Mean squared error [meter^2]', 
-       y = 'Altitude [meter]')
+       y = 'Altitude [meter]') -> p
+p
+ggsave('QoSLanding.pdf', p, width = 11, height=7, units = "cm")
 ```
+
+
+```{r}
+landing_precision_raw <- readODS::read_ods('landing_precision_reformatted.ods', sheet = 1)
+```
+
+```{r}
+landing_precision_raw %>%
+  extract(condition, c("experiment", "update_rate", "wind"), "(\\d). (.*?) (.*)") %>%
+  mutate(wind = fct_recode(wind, 
+                           "0" = "nowind", 
+                           "8" = "wind 8m/s", 
+                           "12" = "wind 12m/s")) %>%
+  mutate(update_rate = fct_recode(update_rate, 
+                           "0.5" = "nfold_0.5fps", 
+                           "1" = "nfold_1fps", 
+                           "2" = "nfold_2fps", 
+                           "10" = "nfold_10fps")) ->
+  landing_precision
+```
+
+
+```{r}
+landing_precision %>%
+  ggplot() + 
+  aes(x = accuracy_x, 
+      y = wind) + 
+  geom_point()
+```
+
+
 
 
 ```{r}
