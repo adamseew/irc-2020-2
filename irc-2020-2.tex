@@ -15,6 +15,10 @@
 \usepackage{booktabs}
 \usepackage{flushend}
 \usepackage{tikz}
+\usepackage{todonotes}
+\setuptodonotes{inline}
+\newcommand{\adam}[2][]{\todo[color=orange!20, #1]{ADAM: #2}}
+\newcommand{\hemi}[2][]{\todo[color=green!20, #1]{HEMI: #2}}
 
 %% citation packege
 \usepackage{cite}
@@ -418,6 +422,8 @@ Vision-based autonomous landing on a marker has been extensively studied by many
 For stationary platforms, one of the first experiments with vision-based autonomous landing was conducted by Saripalli et~al.~\cite{saripalli2002vision}. Here, a helicopter with a color camera facing vertically towards the ground would land on an ”H”-shape pattern (similar to ones found on a helipad) using a hierarchical behavior-based control architecture. In physical tests a marker of 122cm$\times$122cm size was detected for a maximum altitude of 10m. A landing marker inspired by a QR code but consisting of three artificial markers is demonstrated by Yuan et~al.~\cite{yuan2018hierarchical}, and was shown to provide a 6-DOF pose over an altitude range of 0-20m. Our work is however focused on the ability to land on moving platforms.
 
 Saripalli et~al.~\cite{saripalli2003landing} also demonstrated the use of a Kalman Filter to track a moving platform. However all the computations were performed offline. Similarly, an ArUco marker was used as a landing marker by Lee et~al.~\cite{lee2012autonomous} to detect a moving platform. The control of the UAV is performed based on the error provided by the vision algorithm but all the computations were performed off-board. Arrar, et~al.~\cite{araar2017vision} focus on extending the detection range by using an AprilTag~\cite{olson2011apriltag} as a landing marker. Again all the computer vision algorithms were also executed off-board. A crucial aspect of our application is to perform all the computations on-board, and to evaluate them according to their energy efficiency as a function of QoS.
+\hemi{I think the last sentence mixes what others have done
+and what we want to do in the paper.}
 
 The design of the marker and choice of sensors can facilitate doing the computations on-board. %Is this the point of this paragraph?
 %
@@ -425,6 +431,10 @@ Chen et~al.~\cite{chen2016system} utilized a marker consisting of a circle and r
 
 The use of a hybrid camera system consisting of a fish-eye IR camera and a stereo camera was demonstrated by Yang et~al.~\cite{yang2018hybrid}. An ArUco marker was used to mark the moving platform and a convolutional neural network (CNN) Yolo~v3 was trained specifically for marker detection. A similar approach concerning the detection of a landing marker was demonstrated by Nguyen et~al.~\cite{nguyen2018lightdenseyolo}. Here a specific landing marker was used and a specific CNN was used to detect it: successful detection of a 1m$\times$1m marker size was demonstrated from a distance of 50m. An AprilTag marker was used as a landing marker by Kyritsis et~al.~\cite{kyristsis2016towards} for the purpose of ``2016 DJI Developer Challenge''. The identification of the AprilTag marker was performed through Graphics Processing Unit (GPU). The three teams have utilized the companion's computer GPU to detect the landing marker. In the agricultural use case addressed in this paper, the GPU is however needed for a CNN to detect ground hazards, and since the GPU cannot simultaneously run different algorithms, %objects around the moving platform and 
 the CPU should be used for detecting the landing marker. By doing so, a different QoS could be chosen for each algorithm.    
+\hemi{I though that the cores on a GPU could be assigned 
+different jobs that could run simultaneous. 
+This is of cause more difficult to implement in practice, 
+but I think it is possible to do so.}
 
 % [Ad: energy-sensitive part {begin}]
 To account for the energy modeling of computer vision algorithms, we considered the work previously carried by Nardi et~al.~\cite{nardi2015introducing}. The authors present SLAMBench, a framework that investigates SLAM algorithms configuration alternatives for energy efficiency. Whereas, we use \powprof{}, a generic energy modeling tool~\cite{seewald2019coarse}. This tool enables measuring the energy impact of different configurations of the ROS-based system implementing the agricultural use-case. In this paper we present extensions to \powprof{} that facilitates the initial exploration of the energy usage of complex, ROS-based robotic systems.
@@ -446,7 +456,7 @@ Concerning estimation of the moving platform's position and velocity, a Kalman F
 
 \subsection{Overall approach}
 
-The energy-sensitive design is a mission-oriented concept that adjusts the computations to the mission being performed while taking into account energy requirements, including energy consumed by actuation, computation, and the presence of a limited power source. Specifically, in the agricultural use-case, the concept is employed to adapt the computationally heavy algorithms performing autonomous tracking, landing, and hazard detection. This adaptation enables energy-sensitivity, in the sense that QoS parameters can be modified to enable the mission to be completed at the highest possible QoS level that does not exceed the available energy budget. Tradeoffs between QoS parameters can be performed by and end-user, i.e., trading the robustness towards wind during landing for precision of hazard detection.
+The energy-sensitive design is a mission-oriented concept that adjusts the computations to the mission being performed while taking into account energy requirements, including energy consumed by actuation, computation, and the presence of a limited power source. Specifically, in the agricultural use-case, the concept is employed to adapt the computationally heavy algorithms performing autonomous tracking, landing, and hazard detection. This adaptation enables energy-sensitivity, in the sense that QoS parameters can be modified to enable the mission to be completed at the highest possible QoS level that does not exceed the available energy budget. Tradeoffs between QoS parameters can be performed by an end-user, i.e., trading the robustness towards wind during landing for precision of hazard detection.
 
 The energy-sensitive design using \powprof{} relies on empirical experiments to measure the actual power consumption on the robot hardware~\cite{seewald2019coarse}. In this paper we focus on the companion computer, which from the point of view of energy consumption can be studied independently from the specific drone it is mounted in.
 
@@ -470,19 +480,20 @@ For example, the autonomous tracking allows changing the tracking algorithm QoS 
 
 \subsection{Semi-automatic energy profiling}
 
-Adam: TODO? Short description of ROS node and combining level 1 models using powprof. Explicit subsection to make clear it's new. Goal is to avoid manual steps such a giving intermediate files magic names or whatever (since this reduces risk of errors). Could show example of what developer code looks like, i.e., what Georgios need to do to use it?
+\adam{TODO? Short description of ROS node and combining level 1 models using powprof. Explicit subsection to make clear it's new. Goal is to avoid manual steps such a giving intermediate files magic names or whatever (since this reduces risk of errors). Could show example of what developer code looks like, i.e., what Georgios need to do to use it?}
 
 %%%%%%%%%%%%%%%%%%%%
 \section{Vision-Based Autonomous Tracking and Landing}
 \label{sec:landing}
 
-The vision-based autonomous tracking and landing can be split into four main sub-problems: detection of the moving platform, navigation, guidance, and control of the UAV. From an energy-sensitive design approach, our focus is on the detection of the moving platform and the computer visions algorithms used to detect it, and the parameterization by a QoS influencing energy consumption and performance, as described in Section~\ref{sec:Detection}. Furthermore, the navigation block is designed to increase the robustness and overall performance of the system, as described in Section~\ref{sec:Navigation}. Last, a model of dynamically changing wind disturbances is analysed and described in Section~\ref{WindDisturbances}, allowing the system to be tested on a realistic use case.
+The vision-based autonomous tracking and landing can be split into four main sub-problems: detection of the moving platform, navigation, guidance, and control of the UAV. From an energy-sensitive design approach, our focus is on the detection of the moving platform and the computer vision algorithms used to detect it, and the parameterization by a QoS influencing energy consumption and performance, as described in Section~\ref{sec:Detection}. Furthermore, the navigation block is designed to increase the robustness and overall performance of the system, as described in Section~\ref{sec:Navigation}. Last, a model of dynamically changing wind disturbances is analysed and described in Section~\ref{WindDisturbances}, allowing the system to be tested on a realistic use case.
 
 
 \subsection{Detection of the moving platform}
 \label{sec:Detection}
 
 To mark the moving platform a special pattern is constructed, consisting of an n-fold marker~\cite{NfoldMarker} along with three ArUco markers~\cite{ArUco_marker} with different ids. This pattern will be referred to as the ``landing marker'' and can be seen in Figure~\ref{fig:LandingMarker}. The n-fold marker is primarily used to detect the moving platform from a high altitude, while the ArUco markers are used as extra landmarks in case the marker is partially visible in the image frame. 
+\hemi{Add details about the simulated camera.}
 
 \begin{figure}[h]
 \centering
@@ -494,6 +505,7 @@ To mark the moving platform a special pattern is constructed, consisting of an n
 To extract the pixel coordinates of the tip of the n-fold marker, a kernel size of 13$\times$13 pixels consisting of a real and imaginary part is created. For every pixel in the image, a convolution is performed with this kernel and the magnitude of the convolution is stored. The pixel with the highest magnitude is considered as a candidate tip of the n-fold marker. For that candidate pixel only, an estimation of the orientation/phase of the marker is made and an overall normalized quality score between 0.0 and 1.0 is calculated. If the score is above a desired threshold value then the pixel is accepted as the tip of the n-fold marker. If an n-fold marker is detected, the result will be the pixel coordinates of the tip of the n-fold marker along with its orientation/phase. 
 
 Since a convolution is a computational  expensive process, an increase in the kernel size would also increase the computation time and therefore the energy consumption. However a higher energy consumption is preferred over a non-detection of the n-fold marker. To balance between energy consumption and effective marker detection, an adaptive kernel selection function is created to ensure the selection of a proper kernel size based on a threshold quality score value. In figure \ref{fig:NfoldOcclusions} an Intel RealSense D435 Depth camera is used to capture the image and measure also the distance $d$ from the nfold marker. Based on a desired quality $q$, the proper kernel size $k$ is selected. It is seen that an occlusion on the tip of the nfold marker results in a significant increase on the selected kernel size.  
+\hemi{To me this looks like a significant \emph{decrease} in kernel size \ldots}
 
 \begin{figure}[h]
 \centering
@@ -535,7 +547,7 @@ The mean measurements from the detected n-fold and/or ArUco markers are used to 
 \subsection{Navigation}
 \label{sec:Navigation}
 
-The purpose of the navigation block is to provide an accurate prediction for the state of the UAV at any given time. This is  important because it will allow us to process images at different fps according to a desired QoS. Furthermore, the overall robustness of the system is increased in case the moving platform is not detected in every image frame. A velocity estimator for the moving platform will be also implemented as a part of the navigation block.
+The purpose of the navigation block is to provide an accurate prediction for the state of the UAV at any given time. This is  important because it will allow us to process images at different fps according to a desired QoS. Furthermore, the overall robustness of the system is increased in case the moving platform is not detected in every image frame. A velocity estimator for the moving platform will also be implemented as a part of the navigation block.
 
 The variables of interest that describe the state of the UAV for this project are:
 %
@@ -649,6 +661,7 @@ dx_{obs} = vx_{mean_{obs}} * dt_{obs} \quad , \quad
 \end{equation*}
 
 A velocity estimator is also constructed to determine the magnitude and direction of the moving platform's velocity vector. The magnitude is calculated by differentiating two sequential $X,Y$ position measurements of the moving platform and taking into consideration the UAV's \emph{NED} velocities according to the PX4's EKF. A low-pass filter is used to provide a smoothest estimation of the magnitude. 
+\hemi{Please explain why the signal is the \emph{smoothest}.}
 
 In the agricultural use-case the moving platform is likely to change its direction up to 180 degrees. Furthermore, it is assumed that the moving platform is a nonholonomic system, like a tractor. To compensate for sudden turns, the moving platform's yaw orientation will be taken into account and based on the velocity's magnitude, the moving platform's velocity in $X,Y$ \emph{NED} frame can be obtained.
 
@@ -708,8 +721,8 @@ This model is created to simulate different scaling in the wind's magnitude and 
 
 \subsection{Use case: agricultural safety}
 
-Briefly describe the use case and simulation, including the use of CNN
-to detect
+\todo[color=red!10]{Briefly describe the use case and simulation, including the use of CNN
+to detect}
 
 A multirotor UAV, with a vertically facing camera, is used to detect a moving platform. The moving platform follows a path similar to a plowing tractor's and no communication link is considered between the moving platform and the UAV. For this agricultural use case, two different UAV actions are tested. 
 
