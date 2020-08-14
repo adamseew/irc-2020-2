@@ -1187,7 +1187,7 @@ fps rates for the $landing$ $marker$ detection ROS node
 In the first case, the kernel size remains fixed at 
 22$\times$22 pixels and in the second case an adaptive selection 
 kernel size algorithm is used. 
-The landing time is also taken under consideration as seen in figure \ref{fig:PowerDuringLanding}.
+The landing time is also taken under consideration as seen in figure \ref{fig:PowerDuringLanding}. The largest difference in the power consumption is $0.14 W$ and is observed between the 0.5fps and the 10fps update rate for the $landing$ $marker$ detection. However the landing time is reduced by $30 sec$ when using the 10fps update rate. Therefore although the computer vision algorithm might be more "expensive" by $0.14W$, the UAV will save more energy because of a reduced flight time. The adaptive kernel size seems to outperform in most cases the fixed kernel size by $0.11 W$. Furthermore the adaptive kernel size can compensate for marker occlusions which will increase the overall robustness of the system.
 
 For the QoS evaluation, twelve tests were executed for different 
 fps rates for the $landing$ $marker$ detection ROS node 
@@ -1202,8 +1202,7 @@ Four different altitude bins were used as seen in figure
 \centering
 \includegraphics{data_visualization/PowerLanding.pdf}
 \caption{Power consumption during landing mode. 
-Black: fixed kernel size. 
-Grey: adaptable kernel size.}
+The black circles denote a fixed kernel size while the grey circles denote an adaptive kernel size.}
 \label{fig:PowerDuringLanding}
 \end{figure}
 
