@@ -493,8 +493,7 @@ AprilTag~\cite{olson2011apriltag} as a landing marker. Again all the
 computer vision algorithms were also executed off-board. A crucial
 aspect of our application is to perform all the computations on-board,
 and to evaluate them according to their energy efficiency as a
-function of QoS.  \hemi{I think the last sentence mixes what others
-  have done and what we want to do in the paper.}
+function of QoS. 
 
 The design of the marker and choice of sensors can facilitate doing the computations on-board. %Is this the point of this paragraph?
 %
@@ -733,7 +732,7 @@ marker, real images, of 640$\times$480 pixel size, were captured with
 an Intel RealSense D435 camera. In Gazebo simulation a color camera
 with the same distortion coefficients as the Intel camera, is used to
 output a 640$\times$480 pixel image at 10 frames per second (fps).
-\hemi{Add details about the simulated camera.}
+
 
 \begin{figure}[h]
 \centering
@@ -767,10 +766,6 @@ to capture the image and measure also the distance $d$ from the n-fold
 marker. Based on a desired quality $q$, the proper kernel size $k$ is
 selected. It is seen that an occlusion on the tip of the n-fold marker
 results in a significant increase on the selected kernel size.
-\hemi{To me this looks like a significant \emph{decrease} in kernel
-  size \ldots}
-%
-% Georgios: The kernel size, while having an occlusion on the tip of the nfold marker, is 201x201
 
 \begin{figure}[h]
 \centering
@@ -976,8 +971,7 @@ UAV's \emph{NED} velocities according to the PX4's EKF. A low-pass
 filter is used to provide a smooth estimation of the velocity's
 magnitude by filtering out high frequency noise. High frequency noise
 can be caused by oscillations of the UAV along with a fast update rate
-in the landing marker detection algorithm.  \hemi{Please explain why
-  the signal is the \emph{smoothest}.}
+in the landing marker detection algorithm.  
 
 In the agricultural use-case the moving platform is likely to change
 its direction up to 180 degrees. Furthermore, it is assumed that the
