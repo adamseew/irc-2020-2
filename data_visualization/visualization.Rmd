@@ -230,6 +230,27 @@ power_landing <- readr::read_csv("../figures/source/energy/landing/plot_data.csv
                                  col_names = c("framerate", "fixed_kernel", "adaptable_kernel", "duration"))
 ```
 
+```{r}
+power_landing %>%
+  ggplot() + 
+  aes(x = framerate, 
+      y = fixed_kernel, 
+      size=duration) + 
+  geom_point() + 
+  geom_point(aes(y = adaptable_kernel), color="red") + 
+  scale_y_continuous(limits = c(3.25, 3.50)) + 
+  scale_size_continuous(breaks = c(90, 120, 150)) + 
+  labs(x = "Marker detection [fps]", 
+       y = "Power consumption [watt]", 
+       size = "Landing duration [s]") +
+  theme_cowplot(font_size = 8) +
+  theme(legend.position = c(1-0.025, 0.025), 
+        legend.justification = c(1, 0)) -> p
+p
+ggsave('PowerLanding.pdf', p, width = 8, height=4.5, unit="cm")
+```
+
+
 
 # Plotting power consuption during object detection
 
