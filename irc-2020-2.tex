@@ -1055,32 +1055,36 @@ This model is created to simulate different scaling in the wind's magnitude and 
 \section{Evaluation}
 \label{sec:experimental}
 
+We evaluate our approach in terms of energy efficiency and the QoS
+delivered. All algorithms are executed on an embedded companion
+computer interfaced to a simulation running on a standard computer.
+
 \subsection{Use case: agricultural safety}
 
-\todo[color=red!10]{Briefly describe the use case and simulation, including the use of CNN
-to detect}
-
-We demonstrate the dual use of a multirotor UAV, for identifying
-hazardous objects around a moving platform and for landing on the
+We evaluate our approach based on a simulated use case where %We demonstrate the use of 
+a multirotor UAV identifies
+hazardous objects around a moving platform, and lands on the
 moving platform to recharge.
 %
 %The moving platform is following a path similar to a plowing tractor's and 
 %
-No communication link is considered between the moving platform and the UAV.
+No communication link is considered between the moving platform and the UAV
+and no GNSS positioning is assumed to be available. The system can thus be
+considered as a fallback for fault-tolerance.
 
 %For the first use, the UAV will track and follow the moving platform from a desired altitude, while detecting and classifying objects on the ground.
 
 Object detection and classification is performed by feeding the input
 image from the downward facing camera into a $YOLOv3$-$tiny$ CNN
 \cite{yolov3} implemented in ROS \cite{bjelonicYolo2018}. Four
-different classes are selected, cars, humans, tractors and
-cows. Furthermore, the UAV, based on the CNN's predictions and onboard
-sensors, maps the detected objects onto a 2D map.
+different classes are selected: cars, humans, tractors, and
+cows. Based on the CNN's predictions and onboard
+sensors, the UAV maps the detected objects onto a 2D map.
  
 %For the second use, the UAV will track and land on the moving platform. 
 
 A simulated field is created in Gazebo with objects placed in random
-positions and orientations as seen in figure \ref{fig:Gazebo}.
+positions and orientations as seen in Figure~\ref{fig:Gazebo}.
 
 \begin{figure}[h]
 \centering
@@ -1091,7 +1095,7 @@ positions and orientations as seen in figure \ref{fig:Gazebo}.
 
 Pre-trained weights for $YOLOv3$-$tiny$, were initially used but the
 performance on detecting objects from a downward facing camera was
-not the expected. Since a dataset for detecting the above four classes
+not satisfactory. Since a dataset for detecting the above four classes
 from a top view was not available, we created an artificial dataset
 based on the Gazebo models. The dataset consists of 1200 images, 300
 for each class. We trained the $YOLOV3$-$tiny$ by its default training
@@ -1100,62 +1104,54 @@ pixels.
 
 %For the following experiments, the input image to $YOLOV3$ $tiny$ will be resized to a 416$\times$416 pixel size. 
 
-
-
-
 \subsection{Experimental setup}
-
-How the experiment will be done concretely, i.e., time to land as a
-function of QoS and wind or whatever.
 
 All experiments are performed in Gazebo simulation under Ubuntu 18.04
 and ROS Melodic on a i7-8550U 1.8GHz (4.0GHz Boost), 8GB DDR4
 laptop. The $PX4$ Software in the Loop (SITL) Firmware v1.10.2 is used as the flight
 controller and the $IRIS$ quadcopter is used as the UAV platform. A
 vertically facing RGB camera is placed on the UAV providing a
-640$\times$480 pixel image at 10 fps. An \emph{Nvidia Jetson Nano}
+640$\times$480 pixel image at 10~fps. An \emph{Nvidia Jetson Nano}
 with Ubuntu 18.04 and ROS Melodic is used as the UAV's companion
-computer. All the computer vision, guidance and control algorithms are
-implemented on the \emph{Nvidia Jetson Nano}.
+computer. All the computer vision, guidance, and control algorithms 
+execute on the \emph{Nvidia Jetson Nano}, similar to how they would
+be deployed if the Nano was a companion computer in a physical drone.
 
 Two groups of experiments are conducted. The first group evaluates the
-energy consumption and QoS of the $tracking$ mode and the second group
-evaluates the energy consumption and QoS of the $landing$ mode. For
+energy consumption and QoS of the \emph{tracking} mode and the second group
+evaluates the energy consumption and QoS of the \emph{landing} mode. For
 both groups, the experiments start with the tractor moving at a
-constant speed of $0.3 m/s$, according to a square path similar of a
-plowing tractor, and the UAV taking-off and hovering at an altitude of
-$25 m$. After reaching the desired altitude, the UAV starts searching
+constant speed of $0.3~m/s$, according to a square path similar to that of a
+plowing tractor, and the UAV taking off and hovering at an altitude of
+$25~m$. After reaching the desired altitude, the UAV starts searching
 for the landing marker in the image frame. Once the landing marker is
 detected, the UAV commences its actions.
 
-
-On $tracking$ mode, the UAV will follow the moving platform at a fixed
+On \emph{tracking} mode, the UAV will follow the moving platform at a fixed
 altitude and use its vertically facing camera to map the environment
-while on $landing$ mode, the UAV will follow the moving platform and
-gradually lower its altitude until it lands on it. Both $tracking$ and
-$landing$ modes are tested under three different cases of no wind
-disturbances, wind disturbances of $8 m/s$ and wind disturbances of
-$12 m/s$ according to the wind model described in section
-\ref{sec:WindDisturbances}.
-
+while on \emph{landing} mode, the UAV will follow the moving platform and
+gradually lower its altitude until it lands on it. Both \emph{tracking} and
+\emph{landing} modes are tested under three different cases of no wind
+disturbances, wind disturbances of \emph{8~m/s} and wind disturbances of
+\emph{12~m/s} according to the wind model described in Section~\ref{sec:WindDisturbances}.
 
 
 \subsection{Results}
 
 The first group of experiments was conducted to evaluate the 
-energy efficiency and QoS of the $tracking$ mode. For the energy 
+energy efficiency and QoS of the \emph{tracking} mode. For the energy 
 evaluation, eight tests were executed for different fps rates 
 for $YOLOv3$-$tiny$ ROS node (4fps, 1fps, 0.5fps, 0.1fps) and 
 the $landing$ $marker$ detection ROS node (10fps, 0.5fps) as 
-seen in figure \ref{fig:PowerDuringTracking}. For a 4fps update rate for $YOLOv3$-$tiny$, a power consumption of $6.30 W$ is observed while for a 1fps and 0.1fps update rates, the power consumption drops to $4.8W$ and $3.9W$ accordingly. By reducing the update rate for $landing$ $marker$ detection, from 10fps to 0.5fps, a further power saving of $0.15W$ - $0.19W$ is achieved.
+seen in Figure~\ref{fig:PowerDuringTracking}. For a 4fps update rate for $YOLOv3$-$tiny$, a power consumption of $6.30 W$ is observed while for a 1fps and 0.1fps update rates, the power consumption drops to $4.8W$ and $3.9W$ accordingly. By reducing the update rate for \emph{landing marker} detection, from 10fps to 0.5fps, a further power saving of $0.15W$ - $0.19W$ is achieved.
 
 
 
 For the QoS evaluation, twelve tests were executed for different 
-fps rates for $YOLOv3$-$tiny$ ROS node (4fps, 0.1fps) and for 
-the $landing$ $marker$ detection ROS node (10fps, 0.5fps) under 
+fps rates for the $YOLOv3$-$tiny$ ROS node (4fps, 0.1fps) and for 
+the \emph{landing marker} detection ROS node (10fps, 0.5fps) under 
 three different cases of wind disturbances. 
-The QoS is determined as the number of correctly detected objects. An object is considered to be correctly detected if it is detected within a distance of $2m$ from the its actual position and classified with the correct class. The detection results can be seen in figure \ref{fig:NCorrectObjectDetections}. The best results were obtained for a high fps update rate in $YOLOv3$-$tiny$ and $landing$ $marker$ detection, under no wind disturbances, since 28 out of the 32 objects were detected. Instead, for the same high fps values, but for a wind speed of $12 m/s$, only 18 out of 32 objects were correctly detected. 
+The QoS is determined as the number of correctly detected objects. An object is considered to be correctly detected if it is detected within a distance of $2m$ from the its actual position and classified with the correct class. The detection results can be seen in Figure~\ref{fig:NCorrectObjectDetections}. The best results were obtained for a high fps update rate in $YOLOv3$-$tiny$ and $landing$ $marker$ detection, under no wind disturbances, since 28 out of the 32 objects were detected. Nevertheless, for the same high fps values but with a wind speed of $12 m/s$, only 18 out of 32 objects were correctly detected. 
 
 %than the fps update rates since for higher wind speed, less objects are correctly detected.
 
@@ -1181,23 +1177,22 @@ rate in the $landing$ $marker$ detection ROS node.}
 
 
 The second group of experiments was conducted to evaluate the 
-energy efficiency and QoS of the $landing$ mode. 
+energy efficiency and QoS of the \emph{landing} mode. 
 For the energy evaluation, eight tests were executed for different 
-fps rates for the $landing$ $marker$ detection ROS node 
+fps rates for the \emph{landing marker} detection ROS node 
 (10fps, 2fps, 1fps, 0.5fps) under two cases. 
 In the first case, the kernel size remains fixed at 
 22$\times$22 pixels and in the second case an adaptive selection 
 kernel size algorithm is used. 
-The landing time is also taken under consideration as seen in figure \ref{fig:PowerDuringLanding}. The largest difference in the power consumption is $0.14 W$ and is observed between the 0.5fps and the 10fps update rate for the $landing$ $marker$ detection. However the landing time is reduced by $30 sec$ when using the 10fps update rate. Therefore although the computer vision algorithm might be more "expensive" by $0.14W$, the UAV will save more energy because of a reduced flight time. The adaptive kernel size seems to outperform in most cases the fixed kernel size by $0.11 W$. Furthermore the adaptive kernel size can compensate for marker occlusions which will increase the overall robustness of the system.
+The landing time is also taken under consideration as seen in Figure~\ref{fig:PowerDuringLanding}. The largest difference in the power consumption is $0.14 W$ and is observed between the 0.5fps and the 10fps update rate for the \emph{landing marker} detection. However the landing time is reduced by $30 sec$ when using the 10fps update rate. The adaptive kernel size in most cases outperforms the fixed kernel size by $0.11 W$. Furthermore the adaptive kernel size can compensate for marker occlusions which will increase the overall robustness of the system.
 
 For the QoS evaluation, twelve tests were executed for different 
-fps rates for the $landing$ $marker$ detection ROS node 
+fps rates for the \emph{landing marker} detection ROS node 
 (10fps, 2fps, 1fps, 0.5fps) under three different cases of wind
 disturbances. The QoS is determined as the  mean squared error (MSE) 
 between the predicted position of the moving platform, 
 from the navigation block, and the moving platform's actual position. 
-Four different altitude bins were used as seen in figure 
-\ref{fig:PositionErrorDuringLanding}.
+Four different altitude bins were used as seen in Figure~\ref{fig:PositionErrorDuringLanding}.
 
 \begin{figure}[h]
 \centering
@@ -1221,8 +1216,9 @@ errors in the y direction.}
 
 \subsection{Discussion}
 
-Discussion of the results
+%Discussion of the results
 
+Therefore although the computer vision algorithm might be more "expensive" by $0.14W$, the UAV will save more energy because of a reduced flight time. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion and Future Work}
