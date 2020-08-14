@@ -353,7 +353,9 @@
 
 
 % [Ad: Quadrocopter; so it should work as well despite what I said earlier, but I checked IEEExplore and Quadrotor is far more used]
-\title{Energy-Sensitive Vision-Based Autonomous Tracking and Landing of a Multirotor on a Moving Platform} %for an Agricultural Application %UPS: suggested title, agriculture less important, playing with "energy sensitive" since we know about the energy and can adapt QoS accordingly
+\title{Energy-Sensitive Vision-Based Autonomous Tracking and Landing of a Multirotor on a Moving Platform} 
+%\title{Vision-Based Autonomous Tracking and Landing of a Multirotor on a Moving Platform} 
+%for an Agricultural Application %UPS: suggested title, agriculture less important, playing with "energy sensitive" since we know about the energy and can adapt QoS accordingly
 %UPS: suggesting multirotor, we don't care how many rotors it has...
 %\title{Energy-Sensitive Vision-Based Autonomous Tracking and Landing of a Quadrocopter on a Moving Platform} %for an Agricultural Application %UPS: suggested title, agriculture less important, playing with "energy sensitive" since we know about the energy and can adapt QoS accordingly
 
@@ -446,7 +448,7 @@ recharging when needed.
 %reduce the energy consumption of the UAV during flight and furthermore increase the level of autonomy.
 
 The main contribution of this paper concerns the experimental study of
-a robust, energy-sensitive, vision-based algorithm for autonomous
+a robust vision-based algorithm for autonomous
 tracking and landing in varying environmental conditions. The
 algorithms are executed on an NVIDIA Jetson Nano companion computer
 controlling a simulated drone. The vision-based tracking and landing
@@ -607,7 +609,7 @@ The energy-sensitive design is a mission-oriented concept that adjusts
 the computations to the mission being performed while taking into
 account energy requirements, including energy consumed by actuation,
 computation, and the presence of a limited power source. Specifically,
-in the agricultural use-case, the concept is employed to adapt the
+in the agricultural use-case, the concept is employed to profile and eventually adapt the
 computationally heavy algorithms performing autonomous tracking,
 landing, and hazard detection. This adaptation enables
 energy-sensitivity, in the sense that QoS parameters can be modified
@@ -620,8 +622,9 @@ detection.
 The energy-sensitive design using \powprof{} relies on empirical
 experiments to measure the actual power consumption on the robot
 hardware~\cite{seewald2019coarse}. In this paper we focus on the
-companion computer, which from the point of view of energy consumption
-can be studied independently from the specific drone it is mounted in.
+initial profiling using of energy usage of the companion computer
+(which from the point of view of energy consumption
+can be studied independently from the specific drone it is mounted in).
 
 First, the developer specifies the maximum and minimum QoS level for
 each algorithm running on the system.  During mission execution the
@@ -678,8 +681,8 @@ hazard detection QoS in terms of frequency.
 
 % [Ad: added description of the semi-automatic mode {begin}]
 %
-A ROS node has been developed for the purposes of the energy-sensitive
-approach described in this paper, allowing automatic
+A ROS node has been developed for the purposes of the semi-automatic %energy-sensitive
+approach described in this paper. This node allows automatic
 generation of the basic energy models that map time to the
 instantaneous power consumption. To activate this functionality, the developer simply publishes on a ROS
 topic to start the model generation, with \powprof{} accounting for
@@ -690,8 +693,8 @@ sensors, builds the basic energy model, and stores it for later processing.
 
 Once all the basic energy models for the desired QoS ranges have been
 collected, a model that maps the energy consumption to QoS
-is built following the model specification in a configuration file. Here, the developer specifies
-what configuration corresponds to which basic model
+is specified in a configuration file. Here, the developer defines
+what QoS configuration corresponds to which basic model
 (instantaneous power consumption as a function of time), and runs
 \powprof{} using this configuration file as a parameter.
 %
@@ -1057,9 +1060,10 @@ This model is created to simulate different scaling in the wind's magnitude and 
 \section{Evaluation}
 \label{sec:experimental}
 
-We evaluate our approach in terms of energy efficiency and the QoS
-delivered. All algorithms are executed on an embedded companion
-computer interfaced to a simulation running on a standard computer.
+We evaluate our approach in terms of the quality of the overall
+functionality and the energy efficiency of the algorithms. All
+algorithms are executed on an embedded companion computer interfaced
+to a simulation running on a standard computer.
 
 \subsection{Use case: agricultural safety}
 
@@ -1253,7 +1257,9 @@ that can adapt its QoS by changing the fps values for the
 \emph{YOLOv3-tiny} and \emph{landing marker} ROS nodes should be seen
 in relation to the total energy consumption of the UAV. As a concrete
 example, consider a DJI Phantom 4 multirotor and a Sky-Watch Cumulus
-fixed-wing. We estimate\footnote{From information on the respective
+fixed-wing (the fixed-wing would need to circle while tracking and 
+would need VTOL capabilities to land, but we nevertheless include it 
+for comparison). We estimate\footnote{From information on the respective
   product pages regarding battery capacity and maximal flight time.}
 that the Phantom uses roughly 140W while cruising whereas the Cumulus
 uses roughly 40W while cruising. The maximal saving gained from
@@ -1276,7 +1282,18 @@ overall save energy because of a reduced flight time.
 \section{Conclusion and Future Work}
 \label{sec:conclusion}
 
+In this paper we presented a robust, energy-sensitive, vision-based
+algorithm for autonomous tracking and landing in varying environmental
+conditions. Our experients show that the tracking and landing
+algorithms can be run at the highest QoS level with only a marginal
+energy overhead, whereas adapting the QoS level of all on-board
+algorithms results in a significant power saving for the system as a
+whole if it was executing on a fixed-wing drone, but only a marginal
+power saving on a multirotor drone.
 
+In terms of future work, we are interested in automatically adapting
+the QoS level to the available battery, and in testing this approach
+on a physical drone.
 
 %% acknowledgement
 %%%%%%%%%%%%%%%%%%%%%%%%%
