@@ -1140,18 +1140,18 @@ disturbances, wind disturbances of \emph{8~m/s} and wind disturbances of
 
 \subsection{Results}
 
-The first group of experiments was conducted to evaluate the 
-energy efficiency and QoS of the \emph{tracking} mode. For the energy 
+The first group of experiments was conducted to test the the \emph{tracking} mode and evaluate its 
+energy efficiency and QoS. For the energy 
 evaluation, eight tests were executed for different fps rates 
-for $YOLOv3$-$tiny$ ROS node (4fps, 1fps, 0.5fps, 0.1fps) and 
-the $landing$ $marker$ detection ROS node (10fps, 0.5fps) as 
+for \emph{YOLOv3-tiny} ROS node (4fps, 1fps, 0.5fps, 0.1fps) and 
+the \emph{landing marker} detection ROS node (10fps, 0.5fps) as 
 %
 seen in Figure~\ref{fig:PowerDuringTracking}. For a 4fps update rate
-for $YOLOv3$-$tiny$, a power consumption of $6.30 W$ is observed while
+for \emph{YOLOv3-tiny}, a power consumption of $6.30 W$ is observed while
 for a 1fps and 0.1fps update rates, the power consumption drops to
 $4.8W$ and $3.9W$ accordingly. By reducing the update rate for
 \emph{landing marker} detection, from 10fps to 0.5fps, a further power
-saving of $0.15W$ - $0.19W$ is achieved.
+saving of $0.15W - 0.19W$ is achieved.
 
 
 
@@ -1194,8 +1194,8 @@ rate in the $landing$ $marker$ detection ROS node.}
 \end{figure}
 
 
-The second group of experiments was conducted to evaluate the 
-energy efficiency and QoS of the \emph{landing} mode. 
+The second group of experiments was conducted to test the \emph{landing} mode
+and evaluate its energy efficiency and QoS.
 For the energy evaluation, eight tests were executed for different 
 fps rates for the \emph{landing marker} detection ROS node 
 (10fps, 2fps, 1fps, 0.5fps) under two cases. 
@@ -1239,19 +1239,44 @@ errors in the y direction.}
 \label{fig:PositionErrorDuringLanding}
 \end{figure}
 
-
-
 \subsection{Discussion}
 
-%Discussion of the results
+The experiments show that both tracking mode and landing mode are
+supported by the system, in a simulated environment with a moving
+platform and random wind conditions. Moreover, the performance of both
+modes is sensitive to the QoS, with a high success rate of both mdoes
+at high QoS levels, and significantly lower performance at lower QoS
+levels.
 
-Therefore although the computer vision algorithm might be more "expensive" by $0.14W$, the UAV will save more energy because of a reduced flight time. 
+The potential energy savings from having an energy-sensitive algorithm
+that can adapt its QoS by changing the fps values for the
+\emph{YOLOv3-tiny} and \emph{landing marker} ROS nodes should be seen
+in relation to the total energy consumption of the UAV. As a concrete
+example, consider a DJI Phantom 4 multirotor and a Sky-Watch Cumulus
+fixed-wing. We estimate\footnote{From information on the respective
+  product pages regarding battery capacity and maximal flight time.}
+that the Phantom uses roughly 140W while cruising whereas the Cumulus
+uses roughly 40W while cruising. The maximal saving gained from
+changing the \emph{YOLOv3-tiny} rate is $6.30W-3.9W=2.4W$ whereas the
+maximal saving gained from changing the \emph{landing marker} rate is
+$0.2W$. For the Cumulus, there is thus a 6.5\% potential energy
+saving, whereas the potential energy saving only is 1.9\% for the
+Phantom. For the Cumulus this saving is thus large enough to
+significantly impact the flying time of the drone, with a total energy
+saving of 23.4kJ. For the Cumulus, the potential saving from adapting
+the \emph{landing marker} QoS is however only 0.5\%. 
+
+For the tracking mode, changing the \emph{landing marker} rate
+provided a minor saving of $0.14W$, but at the cost of increased
+landing time. Therefore, although the higher-QoS computer vision
+algorithm is marginally more expensive by $0.14W$, the UAV will
+overall save energy because of a reduced flight time.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion and Future Work}
 \label{sec:conclusion}
 
-What we did, why it was exciting, and what we want to do.
+
 
 %% acknowledgement
 %%%%%%%%%%%%%%%%%%%%%%%%%
