@@ -205,14 +205,16 @@ object_detection %>%
   scale_color_manual(values = c("0.1 fps" = "grey", 
                                 "4 fps" = "black")) + 
   scale_x_continuous(limits = c(15, 32)) +
-  labs(color = "Detection", 
-       shape = "Marker",
+  labs(color = "YOLOv3 tiny", 
+       shape = "n-fold",
        y = "Wind [m/s]", 
        x = "Number of correct detections (max 32)") +
   theme_cowplot(font_size = 8) +
   theme(legend.position = c(1.0, 1.0), 
         legend.justification=c(1,1), 
-        legend.box = "horizontal") +
+        legend.box = "horizontal", 
+        legend.box.background = element_rect(color='black', size=0.2), 
+        legend.box.margin = margin(0.1, 0.1, 0.1, 0.1, 'cm')) +
   guides(color = guide_legend(order = 1), 
          shape = guide_legend(order = 2)) -> p
 p
@@ -238,8 +240,8 @@ power_landing %>%
   aes(x = framerate, 
       y = fixed_kernel, 
       size=duration) + 
-  geom_point() + 
   geom_point(aes(y = adaptable_kernel), color="grey") + 
+  geom_point() + 
   scale_y_continuous(limits = c(3.25, 3.50)) + 
   scale_size_continuous(breaks = c(90, 120, 150)) + 
   labs(x = "Marker detection [fps]", 
@@ -247,7 +249,9 @@ power_landing %>%
        size = "Landing duration [s]") +
   theme_cowplot(font_size = 8) +
   theme(legend.position = c(1-0.025, 0.025), 
-        legend.justification = c(1, 0)) -> p
+        legend.justification = c(1, 0),
+        legend.box.background = element_rect(color='black', size=0.2), 
+        legend.box.margin = margin(0.1, 0.1, 0.1, 0.1, 'cm')) -> p
 p
 ggsave('PowerLanding.pdf', p, width = 8, height=4.5, unit="cm")
 ```
@@ -272,13 +276,15 @@ power_detection %>%
   geom_point() + 
   scale_color_manual(values = c("0.5 fps" = "grey", 
                                 "10 fps" = "black")) + 
-  labs(x = "Detection frame rate [fps]", 
+  labs(x = "YOLOv3 Tiny [fps]", 
        y = "Power comsumption [watt]", 
-       shape = "Marker", 
-       color = "Marker") + 
+       shape = "n-fold", 
+       color = "n-fold") + 
   theme_cowplot(font_size = 8) +
   theme(legend.position = c(1-0.025, 0.025), 
-        legend.justification = c(1, 0)) -> p
+        legend.justification = c(1, 0), 
+        legend.box.background = element_rect(color='black', size=0.2), 
+        legend.box.margin = margin(0.1, 0.1, 0.1, 0.1, 'cm')) -> p
 p
 ggsave('PowerDetection.pdf', p, width = 8, height=4.5, unit="cm")
 ```
