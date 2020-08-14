@@ -197,16 +197,22 @@ object_detection %>%
   ggplot() +
   aes(x = correct, 
       y = wind, 
-      color = yolo_fps, 
-      shape = nfold_fps) + 
+      color = sprintf("%s fps", yolo_fps), 
+      shape = sprintf("%s fps", nfold_fps)) + 
   geom_point() + 
-  scale_color_manual(values = c("0.1" = "grey", 
-                                "4" = "black")) + 
-  labs(shape = "Marker fps",
-       color = "Detection fps", 
+  scale_color_manual(values = c("0.1 fps" = "grey", 
+                                "4 fps" = "black")) + 
+  scale_x_continuous(limits = c(15, 32)) +
+  labs(color = "Detection", 
+       shape = "Marker",
        y = "Wind [m/s]", 
        x = "Number of correct detections (max 32)") +
-  theme_cowplot(font_size = 8) -> p
+  theme_cowplot(font_size = 8) +
+  theme(legend.position = c(1.0, 1.0), 
+        legend.justification=c(1,1), 
+        legend.box = "horizontal") +
+  guides(color = guide_legend(order = 1), 
+         shape = guide_legend(order = 2)) -> p
 p
 ggsave('QoSDetection.pdf', p, width = 8, height=4.5, unit="cm")
 ```
@@ -215,3 +221,44 @@ Observations:
 1. The number of correct detections increase when the wind is reduced.
 2. The number of correct detections increase when the yolo frame rate is increased.
 3. There are no clear relation with the nfold edge frame rate.
+
+
+# Plotting power consumption during landing
+
+```{r}
+power_landing <- readr::read_csv("../figures/source/energy/landing/plot_data.csv", 
+                                 col_names = c("framerate", "fixed_kernel", "adaptable_kernel", "duration"))
+```
+
+
+# Plotting power consuption during object detection
+
+```{r}
+power_detection <- readr::read_csv("../figures/source/energy/tracking/plot_data_power.csv", 
+                                   col_names = c("yolo", "nfold", "power")) %>%
+  mutate(nfold = factor(nfold))
+```
+
+```{r}
+power_detection %>%
+  ggplot() + 
+  aes(x = yolo, 
+      shape = sprintf("%s fps", nfold), 
+      color = sprintf("%s fps", nfold), 
+      y = power) + 
+  geom_point() + 
+  scale_color_manual(values = c("0.5 fps" = "grey", 
+                                "10 fps" = "black")) + 
+  labs(x = "Detection frame rate [fps]", 
+       y = "Power comsumption [watt]", 
+       shape = "Marker", 
+       color = "Marker") + 
+  theme_cowplot(font_size = 8) +
+  theme(legend.position = c(1-0.025, 0.025), 
+        legend.justification = c(1, 0)) -> p
+p
+ggsave('PowerDetection.pdf', p, width = 8, height=4.5, unit="cm")
+```
+
+
+
