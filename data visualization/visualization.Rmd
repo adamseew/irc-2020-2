@@ -18,42 +18,29 @@ landings_raw <- readODS::read_ods('landing_data_reformatted.ods',
                               col_names = TRUE)
 ```
 
+
 ```{r}
 landings_raw %>%
-  mutate(wind = fct_recode(wind, 
-                           "0" = "NoWindSpeed", 
-                           "8" = "WindSpeed_8m/s", 
-                           "8" = "WindSpeed 8m/s", 
-                           "12" = "WindSpeed 12m/s", 
-                           "12" = "WindSpeed 12 m/s", 
-                           "12" = "WindSpeed_12m/s")) %>%
-  mutate(wind = fct_relevel(wind, "0", "8", "12")) ->
-  landings
-```
-
-
-
-```{r}
-landings %>%
-  ggplot() +
-  aes(y = measure, 
-      x = measured_value) + 
-  geom_point()
-```
-
-
-```{r}
-head(landings)
-```
-
-
-```{r}
-landings %>%
   separate(measure, c("coordinate", "alt", "other"), sep='[()]') %>%
   extract(condition, c("experiment", "update_rate", "wind"), "(\\d). (.*?) (.*)") %>%
   select(-other) %>%
   mutate(alt = fct_relevel(alt, "alt 0-5", "alt 5-10", "alt 10-20", "alt 20+")) %>%
-  mutate(update_rate = fct_relevel(update_rate, "nfold_10fps", "nfold_2fps", "nfold_1fps", "nfold_0.5fps")) ->
+  mutate(update_rate = fct_relevel(update_rate, "nfold_10fps", "nfold_2fps", "nfold_1fps", "nfold_0.5fps")) %>%
+  mutate(wind = fct_recode(wind, 
+                           "0" = "nowind", 
+                           "8" = "wind 8m/s", 
+                           "12" = "wind 12m/s")) %>%
+  mutate(wind = fct_relevel(wind, "0", "8", "12")) %>%
+  mutate(update_rate = fct_recode(update_rate, 
+                                  "10" = "nfold_10fps", 
+                                  "2" = "nfold_2fps", 
+                                  "1" = "nfold_1fps", 
+                                  "0.5" = "nfold_0.5fps")) %>%
+  mutate(alt = fct_recode(alt, 
+                          "0m - 5m" = "alt 0-5", 
+                          "5m - 10m" = "alt 5-10", 
+                          "10m - 20m" = "alt 10-20", 
+                          "20m - " = "alt 20+")) ->
   landings_formatted
 ```
 
@@ -81,18 +68,23 @@ landings_formatted %>%
        y = 'Altitude [meter]')
 ```
 
-```{r}
+```{r, fig.width=6, fig.height=4}
 landings_formatted %>%
   ggplot() + 
   aes(x = measured_value, 
       y = update_rate, 
-      color=coordinate) + 
+      shape=coordinate) + 
   geom_point() + 
   facet_wrap(~alt) + 
   labs(x = 'Mean squared error [meter^2]', 
-       y = 'Altitude [meter]') -> p
+       y = 'Update rate [fps]') + 
+  theme_cowplot(font_size = 8) + 
+  theme(legend.position = "none", 
+        legend.background = element_rect(fill="NA",
+                                  size=0.2, linetype="solid", 
+                                  colour ="black")) -> p
 p
-ggsave('QoSLanding.pdf', p, width = 11, height=7, units = "cm")
+ggsave('QoSLanding.pdf', p, width = 6, height=4, unit="cm")
 ```
 
 
