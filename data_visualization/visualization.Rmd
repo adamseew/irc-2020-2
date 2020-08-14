@@ -84,7 +84,7 @@ landings_formatted %>%
                                   size=0.2, linetype="solid", 
                                   colour ="black")) -> p
 p
-ggsave('QoSLanding.pdf', p, width = 8, height=4, unit="cm")
+ggsave('QoSLanding.pdf', p, width = 8, height=4.5, unit="cm")
 ```
 
 
@@ -197,9 +197,18 @@ object_detection %>%
   ggplot() +
   aes(x = correct, 
       y = wind, 
-      size = yolo_fps, 
+      color = yolo_fps, 
       shape = nfold_fps) + 
-  geom_point()
+  geom_point() + 
+  scale_color_manual(values = c("0.1" = "grey", 
+                                "4" = "black")) + 
+  labs(shape = "Marker fps",
+       color = "Detection fps", 
+       y = "Wind [m/s]", 
+       x = "Number of correct detections (max 32)") +
+  theme_cowplot(font_size = 8) -> p
+p
+ggsave('QoSDetection.pdf', p, width = 8, height=4.5, unit="cm")
 ```
 
 Observations: 
