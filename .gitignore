@@ -9,8 +9,8 @@ irc-2020-2.pdf
 *.blg
 *.synctex.gz
 missfont.log
-data visualization/Landing Data.zip
-data visualization/Tracking Data.zip
-data visualization/Landing Data/
-data visualization/Tracking Data/
+data_visualization/Landing Data.zip
+data_visualization/Tracking Data.zip
+data_visualization/Landing Data/
+data_visualization/Tracking Data/
 
