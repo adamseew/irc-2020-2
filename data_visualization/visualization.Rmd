@@ -73,9 +73,12 @@ landings_formatted %>%
   ggplot() + 
   aes(x = measured_value, 
       y = update_rate, 
-      shape=coordinate) + 
+      shape=coordinate, 
+      color=coordinate) + 
   geom_point() + 
   facet_wrap(~alt) + 
+  scale_color_manual(values = c("mse_x" = "grey", 
+                                "mse_y" = "black")) + 
   labs(x = 'Mean squared error [meter^2]', 
        y = 'Update rate [fps]') + 
   theme_cowplot(font_size = 8) + 
