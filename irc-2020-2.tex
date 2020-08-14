@@ -433,7 +433,7 @@ Extension of the flight time can be also achieved by using
 \emph{energy-sensitive algorithms} that can reduce energy consumption
 by reducing the quality of service (QoS). With this approach,
 energy-costly computations such as computer vision are adapted by
-selecting the desired quality of service (QoS) to match the available
+selecting the desired quality of service to match the available
 energy~\cite{seewald2020mechanical}.
 %
 %With such an approach,
@@ -477,7 +477,7 @@ behavior-based control architecture. In physical tests a marker of
 122cm$\times$122cm size was detected for a maximum altitude of 10m. A
 landing marker inspired by a QR code but consisting of three
 artificial markers is demonstrated by Yuan
-et~al.~\cite{yuan2018hierarchical}, and was shown to provide a 6-DOF
+et~al.~\cite{yuan2018hierarchical}, and was shown to provide a 6-Degree Of Freedom (DOF)
 pose over an altitude range of 0-20m. Our work is however focused on
 the ability to land on moving platforms.
 
@@ -518,7 +518,7 @@ scene.
 The use of a hybrid camera system consisting of a fish-eye IR camera
 and a stereo camera was demonstrated by Yang
 et~al.~\cite{yang2018hybrid}. An ArUco marker was used to mark the
-moving platform and a convolutional neural network (CNN) Yolo~v3 was
+moving platform and a convolutional neural network (CNN) YOLO~v3 was
 trained specifically for marker detection. A similar approach
 concerning the detection of a landing marker was demonstrated by
 Nguyen et~al.~\cite{nguyen2018lightdenseyolo}. Here a specific landing
@@ -536,23 +536,20 @@ GPU cannot simultaneously run different algorithms,
 %objects around the moving platform and
 %
 the CPU should be used for detecting the landing marker. By doing so,
-a different QoS could be chosen for each algorithm.  \hemi{I though
-  that the cores on a GPU could be assigned different jobs that could
-  run simultaneous.  This is of cause more difficult to implement in
-  practice, but I think it is possible to do so.}
+a different QoS could be chosen for each algorithm.  
 
 % [Ad: energy-sensitive part {begin}]
 %
 To account for the energy modeling of computer vision algorithms, we
 considered the work previously carried by Nardi
 et~al.~\cite{nardi2015introducing}. The authors present SLAMBench, a
-framework that investigates SLAM algorithms configuration alternatives
+framework that investigates Simultaneous Localisation and Mapping (SLAM) algorithms configuration alternatives
 for energy efficiency. Whereas, we use \powprof{}, a generic energy
 modeling tool~\cite{seewald2019coarse}. This tool enables measuring
 the energy impact of different configurations of the ROS-based system
 implementing the agricultural use-case. In this paper we present
 extensions to \powprof{} that facilitates the initial exploration of
-the energy usage of complex, ROS-based robotic systems.
+the energy usage of complex, Robot Operative System (ROS)--based robotic systems.
 
 Other approaches to energy modeling, such as the mission-based energy
 models studied by Sadrpour et~al.~\cite{sadrpour2013experimental,
@@ -733,9 +730,8 @@ marker, real images, of 640$\times$480 pixel size, were captured with
 an Intel RealSense D435 camera. In Gazebo simulation a color camera
 with the same distortion coefficients as the Intel camera, is used to
 output a 640$\times$480 pixel image at 10 frames per second (fps).
-\hemi{Add details about the simulated camera.}
 
-\begin{figure}[h]
+\begin{figure}
 \centering
 \includegraphics[scale=0.15]{n-fold-for-landing.png}
 \caption{The landing marker}
@@ -920,8 +916,8 @@ where:
 \item \(\sigma^{2}_{IMU}\) is the variance of the velocities based estimated by the PX4's EKF.
 \end{itemize}
 
-In the correction step the observed measurements from the vertically
-positioned camera will be used to correct and update the predicted
+In the correction step the observed measurements from the downward
+looking camera will be used to correct and update the predicted
 \(X,Y\) position of the UAV. However due to the computation time
 needed to detect the landing marker, that incoming measurement will be
 delayed by some time \(dt_{obs}\). During that time \(dt_{obs}\) the
@@ -1075,7 +1071,7 @@ No communication link is considered between the moving platform and the UAV.
 %For the first use, the UAV will track and follow the moving platform from a desired altitude, while detecting and classifying objects on the ground.
 
 Object detection and classification is performed by feeding the input
-image from the vertically facing camera into a $YOLOV3$-$tiny$ CNN
+image from the downward facing camera into a $YOLOv3$-$tiny$ CNN
 \cite{yolov3} implemented in ROS \cite{bjelonicYolo2018}. Four
 different classes are selected, cars, humans, tractors and
 cows. Furthermore, the UAV, based on the CNN's predictions and onboard
@@ -1093,8 +1089,8 @@ positions and orientations as seen in figure \ref{fig:Gazebo}.
 \label{fig:Gazebo}
 \end{figure}
 
-Pre-trained weights for $YOLOV3$-$tiny$, were initially used but the
-performance on detecting objects from a vertically facing camera was
+Pre-trained weights for $YOLOv3$-$tiny$, were initially used but the
+performance on detecting objects from a downward facing camera was
 not the expected. Since a dataset for detecting the above four classes
 from a top view was not available, we created an artificial dataset
 based on the Gazebo models. The dataset consists of 1200 images, 300
@@ -1113,12 +1109,12 @@ How the experiment will be done concretely, i.e., time to land as a
 function of QoS and wind or whatever.
 
 All experiments are performed in Gazebo simulation under Ubuntu 18.04
-OS and ROS Melodic on a i7-8550U 1.8GHz (4.0GHz Boost), 8GB DDR4
-laptop. The $PX4$ SITL Firmware v1.10.2 is used as the flight
+and ROS Melodic on a i7-8550U 1.8GHz (4.0GHz Boost), 8GB DDR4
+laptop. The $PX4$ Software in the Loop (SITL) Firmware v1.10.2 is used as the flight
 controller and the $IRIS$ quadcopter is used as the UAV platform. A
 vertically facing RGB camera is placed on the UAV providing a
 640$\times$480 pixel image at 10 fps. An \emph{Nvidia Jetson Nano}
-with Ubuntu 18.04 OS and ROS Melodic is used as the UAV's companion
+with Ubuntu 18.04 and ROS Melodic is used as the UAV's companion
 computer. All the computer vision, guidance and control algorithms are
 implemented on the \emph{Nvidia Jetson Nano}.
 
@@ -1146,16 +1142,25 @@ $12 m/s$ according to the wind model described in section
 
 \subsection{Results}
 
-The first group of experiments was conducted to evaluate the energy efficiency and QoS of the $tracking$ mode. For the energy evaluation, eight tests were executed for different fps rates for $YOLOV3$-$tiny$ ROS node (4fps, 1fps, 0.5fps, 0.1fps) and the $landing$ $marker$ detection ROS node (10fps, 0.5fps) as seen in figure \ref{fig:PowerDuringTracking}.
+The first group of experiments was conducted to evaluate the 
+energy efficiency and QoS of the $tracking$ mode. For the energy 
+evaluation, eight tests were executed for different fps rates 
+for $YOLOv3$-$tiny$ ROS node (4fps, 1fps, 0.5fps, 0.1fps) and 
+the $landing$ $marker$ detection ROS node (10fps, 0.5fps) as 
+seen in figure \ref{fig:PowerDuringTracking}.
 
-For the QoS evaluation, twelve tests were executed for different fps rates for $YOLOV3$-$tiny$ ROS node (4fps, 0.1fps) and for the $landing$ $marker$ detection ROS node (10fps, 0.5fps) under three different cases of wind
-disturbances. The QoS is determined as the number of correctly detected and classified objects as seen in figure \ref{fig:NCorrectObjectDetections}.
+For the QoS evaluation, twelve tests were executed for different 
+fps rates for $YOLOv3$-$tiny$ ROS node (4fps, 0.1fps) and for 
+the $landing$ $marker$ detection ROS node (10fps, 0.5fps) under 
+three different cases of wind disturbances. 
+The QoS is determined as the number of correctly detected and 
+classified objects as seen in figure \ref{fig:NCorrectObjectDetections}.
 
 
 \begin{figure}[h]
 \centering
 \includegraphics{data_visualization/PowerDetection.pdf}
-\caption{Power consumption during tracking mode}
+\caption{Power consumption during tracking mode.}
 \label{fig:PowerDuringTracking}
 \end{figure}
 
@@ -1163,15 +1168,33 @@ disturbances. The QoS is determined as the number of correctly detected and clas
 \centering
 \includegraphics{data_visualization/QoSDetection.pdf}
 \caption{Number of correctly detected objects
-under different conditions. Grey color denotes a 0.1fps and black color denotes a 4fps update rate in $YOLOV3$-$tiny$ ROS node. Circles denote a 0.5fps and triangles denote a 10fps update rate in the $landing$ $marker$ detection ROS node }
+under different conditions. 
+Grey color denotes a 0.1fps and black color denotes a 4fps 
+update rate in $YOLOv3$-$tiny$ ROS node. 
+Circles denote a 0.5fps and triangles denote a 10fps update 
+rate in the $landing$ $marker$ detection ROS node.}
 \label{fig:NCorrectObjectDetections}
 \end{figure}
 
 
-The second group of experiments was conducted to evaluate the energy efficiency and QoS of the $landing$ mode. For the energy evaluation, eight tests were executed for different fps rates for the $landing$ $marker$ detection ROS node (10fps, 2fps, 1fps, 0.5fps) under two cases. In the first case, the kernel size remains fixed at 22$\times$22 pixels and in the second case an adaptive selection kernel size algorithm is used. The landing time is also taken under consideration  as seen in figure \ref{fig:PowerDuringLanding}.
+The second group of experiments was conducted to evaluate the 
+energy efficiency and QoS of the $landing$ mode. 
+For the energy evaluation, eight tests were executed for different 
+fps rates for the $landing$ $marker$ detection ROS node 
+(10fps, 2fps, 1fps, 0.5fps) under two cases. 
+In the first case, the kernel size remains fixed at 
+22$\times$22 pixels and in the second case an adaptive selection 
+kernel size algorithm is used. 
+The landing time is also taken under consideration as seen in figure \ref{fig:PowerDuringLanding}.
 
-For the QoS evaluation, twelve tests were executed for different fps rates for the $landing$ $marker$ detection ROS node (10fps,2fps, 1fps, 0.5fps) under three different cases of wind
-disturbances. The QoS is determined as the  mean squared error (MSE) between the predicted position of the moving platform, from the navigation block, and the moving platform's actual position. Four different altitude bins were used as seen in figure \ref{fig:PositionErrorDuringLanding}.
+For the QoS evaluation, twelve tests were executed for different 
+fps rates for the $landing$ $marker$ detection ROS node 
+(10fps, 2fps, 1fps, 0.5fps) under three different cases of wind
+disturbances. The QoS is determined as the  mean squared error (MSE) 
+between the predicted position of the moving platform, 
+from the navigation block, and the moving platform's actual position. 
+Four different altitude bins were used as seen in figure 
+\ref{fig:PositionErrorDuringLanding}.
 
 \begin{figure}[h]
 \centering
