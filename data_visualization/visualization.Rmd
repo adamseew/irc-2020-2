@@ -237,7 +237,7 @@ power_landing %>%
       y = fixed_kernel, 
       size=duration) + 
   geom_point() + 
-  geom_point(aes(y = adaptable_kernel), color="red") + 
+  geom_point(aes(y = adaptable_kernel), color="grey") + 
   scale_y_continuous(limits = c(3.25, 3.50)) + 
   scale_size_continuous(breaks = c(90, 120, 150)) + 
   labs(x = "Marker detection [fps]", 
