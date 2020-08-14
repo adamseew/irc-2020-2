@@ -1147,14 +1147,16 @@ energy efficiency and QoS of the $tracking$ mode. For the energy
 evaluation, eight tests were executed for different fps rates 
 for $YOLOv3$-$tiny$ ROS node (4fps, 1fps, 0.5fps, 0.1fps) and 
 the $landing$ $marker$ detection ROS node (10fps, 0.5fps) as 
-seen in figure \ref{fig:PowerDuringTracking}.
+seen in figure \ref{fig:PowerDuringTracking}. The most significant factor causing an increase in the power consumption is the high update  rate of $YOLOv3$-$tiny$. For a 4fps update rate, a power consumption of $6.30 W$ is observed. However a small update rate of 0.5fps for the $landing$ $marker$ detection combined with a 0.5fps or 1.0fps update  rate of $YOLOv3$-$tiny$, results in a power saving of $0.15W$ - $0.19W$  accordingly.
 
 For the QoS evaluation, twelve tests were executed for different 
 fps rates for $YOLOv3$-$tiny$ ROS node (4fps, 0.1fps) and for 
 the $landing$ $marker$ detection ROS node (10fps, 0.5fps) under 
 three different cases of wind disturbances. 
 The QoS is determined as the number of correctly detected and 
-classified objects as seen in figure \ref{fig:NCorrectObjectDetections}.
+classified objects as seen in figure \ref{fig:NCorrectObjectDetections}. A high fps update rate in $YOLOv3$-$tiny$ and $landing$ $marker$ detection combined with no wind disturbances, results in the largest observed number of correctly detected objects, since 28 out of 32 were detected. However the wind disturbances seem to have a bigger influence on the number of correctly detected objects than both fps update rates do. For the same high fps values, but for a wind speed of $12 m/s$, only 18 out of 32 objects were correctly detected. 
+
+%than the fps update rates since for higher wind speed, less objects are correctly detected.
 
 
 \begin{figure}[h]
