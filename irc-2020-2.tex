@@ -1143,7 +1143,13 @@ energy efficiency and QoS of the \emph{tracking} mode. For the energy
 evaluation, eight tests were executed for different fps rates 
 for $YOLOv3$-$tiny$ ROS node (4fps, 1fps, 0.5fps, 0.1fps) and 
 the $landing$ $marker$ detection ROS node (10fps, 0.5fps) as 
-seen in Figure~\ref{fig:PowerDuringTracking}. For a 4fps update rate for $YOLOv3$-$tiny$, a power consumption of $6.30 W$ is observed while for a 1fps and 0.1fps update rates, the power consumption drops to $4.8W$ and $3.9W$ accordingly. By reducing the update rate for \emph{landing marker} detection, from 10fps to 0.5fps, a further power saving of $0.15W$ - $0.19W$ is achieved.
+%
+seen in Figure~\ref{fig:PowerDuringTracking}. For a 4fps update rate
+for $YOLOv3$-$tiny$, a power consumption of $6.30 W$ is observed while
+for a 1fps and 0.1fps update rates, the power consumption drops to
+$4.8W$ and $3.9W$ accordingly. By reducing the update rate for
+\emph{landing marker} detection, from 10fps to 0.5fps, a further power
+saving of $0.15W$ - $0.19W$ is achieved.
 
 
 
@@ -1151,7 +1157,17 @@ For the QoS evaluation, twelve tests were executed for different
 fps rates for the $YOLOv3$-$tiny$ ROS node (4fps, 0.1fps) and for 
 the \emph{landing marker} detection ROS node (10fps, 0.5fps) under 
 three different cases of wind disturbances. 
-The QoS is determined as the number of correctly detected objects. An object is considered to be correctly detected if it is detected within a distance of $2m$ from the its actual position and classified with the correct class. The detection results can be seen in Figure~\ref{fig:NCorrectObjectDetections}. The best results were obtained for a high fps update rate in $YOLOv3$-$tiny$ and $landing$ $marker$ detection, under no wind disturbances, since 28 out of the 32 objects were detected. Nevertheless, for the same high fps values but with a wind speed of $12 m/s$, only 18 out of 32 objects were correctly detected. 
+%
+The QoS is determined as the number of correctly detected objects. An
+object is considered to be correctly detected if it is detected within
+a distance of $2m$ from the its actual position and classified with
+the correct class. The detection results can be seen in
+Figure~\ref{fig:NCorrectObjectDetections}. The best results were
+obtained for a high fps update rate in $YOLOv3$-$tiny$ and $landing$
+$marker$ detection, under no wind disturbances, since 28 out of the 32
+objects were detected. Nevertheless, for the same high fps values but
+with a wind speed of $12 m/s$, only 18 out of 32 objects were
+correctly detected.
 
 %than the fps update rates since for higher wind speed, less objects are correctly detected.
 
@@ -1184,7 +1200,16 @@ fps rates for the \emph{landing marker} detection ROS node
 In the first case, the kernel size remains fixed at 
 22$\times$22 pixels and in the second case an adaptive selection 
 kernel size algorithm is used. 
-The landing time is also taken under consideration as seen in Figure~\ref{fig:PowerDuringLanding}. The largest difference in the power consumption is $0.14 W$ and is observed between the 0.5fps and the 10fps update rate for the \emph{landing marker} detection. However the landing time is reduced by $30 sec$ when using the 10fps update rate. The adaptive kernel size in most cases outperforms the fixed kernel size by $0.11 W$. Furthermore the adaptive kernel size can compensate for marker occlusions which will increase the overall robustness of the system.
+%
+The landing time is also taken under consideration as seen in
+Figure~\ref{fig:PowerDuringLanding}. The largest difference in the
+power consumption is $0.14 W$ and is observed between the 0.5fps and
+the 10fps update rate for the \emph{landing marker} detection. However
+the landing time is reduced by $30 sec$ when using the 10fps update
+rate. The adaptive kernel size in most cases outperforms the fixed
+kernel size by $0.11 W$. Furthermore the adaptive kernel size can
+compensate for marker occlusions which will increase the overall
+robustness of the system.
 
 For the QoS evaluation, twelve tests were executed for different 
 fps rates for the \emph{landing marker} detection ROS node 
