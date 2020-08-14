@@ -84,7 +84,7 @@ landings_formatted %>%
                                   size=0.2, linetype="solid", 
                                   colour ="black")) -> p
 p
-ggsave('QoSLanding.pdf', p, width = 6, height=4, unit="cm")
+ggsave('QoSLanding.pdf', p, width = 8, height=4, unit="cm")
 ```
 
 
