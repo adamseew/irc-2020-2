@@ -490,11 +490,13 @@ the error provided by the vision algorithm but all the computations
 were performed off-board. Arrar, et~al.~\cite{araar2017vision} focus
 on extending the detection range by using an
 AprilTag~\cite{olson2011apriltag} as a landing marker. Again all the
-computer vision algorithms were also executed off-board. A crucial
+computer vision algorithms were also executed off-board. Conversely, a crucial
 aspect of our application is to perform all the computations on-board,
 and to evaluate them according to their energy efficiency as a
-function of QoS.  \hemi{I think the last sentence mixes what others
-  have done and what we want to do in the paper.}
+function of QoS.
+
+%\hemi{I think the last sentence mixes what others
+%  have done and what we want to do in the paper.}
 
 The design of the marker and choice of sensors can facilitate doing the computations on-board. %Is this the point of this paragraph?
 %
@@ -509,8 +511,8 @@ et~al.~\cite{lee2016vision}. A red rectangle was used as a landing
 marker and a vertically facing camera with a fish-eye lens was used to
 detect it, and a successful landing from an altitude of 70m was
 demonstrated. Both teams have used an on-board companion computer to
-perform all the computation on the UAV. However a color segmentation
-approach is not considered as a safe option for a realistic (outdoor)
+perform all the computation on the UAV. However we in this work do not consider a color segmentation
+approach as a safe option, since for a realistic (outdoor)
 case it would be difficult, if not impossible, to ensure that the
 landing marker will be the only object of a specific color in the
 scene.
@@ -561,7 +563,7 @@ robot, but do not account for on the energy required for computation.
 Energy modeling of mobile robots as carried by Mei et
 al.~\cite{mei2006deployment, mei2005case, mei2004energy} has provided
 the ground for the concept of modeling computation for
-energy-sensitive algorithm design. The authors' approach has evolved
+energy-sensitive algorithm design. Indeed, the approach employed in this paper has evolved
 from an energy-efficient motion planning technique
 in~\cite{mei2004energy}, a design strategy that allows accounting for
 motion and computations separately in~\cite{mei2005case}, to an
@@ -590,7 +592,7 @@ simulation environment. Nevertheless, a fluctuation in the wind's
 magnitude and direction is likely to happen in realistic cases.
 %/
 Concerning estimation of the moving platform's position and velocity,
-a Kalman Filter or Extended Kalman Filter (EKF) has been used for the
+similar to our approach a Kalman Filter or Extended Kalman Filter (EKF) has been used for the
 estimation~\cite{araar2017vision,feng2018autonomous,
   falanga2017vision}, whereas Yang et~al.~\cite{yang2018hybrid}
 constructed a velocity observer algorithm by calculating the actual
@@ -677,21 +679,21 @@ hazard detection QoS in terms of frequency.
 % [Ad: added description of the semi-automatic mode {begin}]
 %
 A ROS node has been developed for the purposes of the energy-sensitive
-approach specifically in this paper, allowing to automatically
-generate an early energy model, a function that maps time to the
-instantaneous power consumption. The developer publishes on a ROS
+approach described in this paper, allowing automatic
+generation of the basic energy models that map time to the
+instantaneous power consumption. To activate this functionality, the developer simply publishes on a ROS
 topic to start the model generation, with \powprof{} accounting for
 the invocation of an asynchronous thread which collects data from the
-energy sensors. Alike, the developer publishes on another ROS topic to
-stop the model generation, while \powprof{} ends collecting data from
-sensors, builds the early model, and stores it for later elaboration.
+energy sensors. Similarly, the developer publishes on another ROS topic to
+stop the model generation, while \powprof{} finalizes collecting data from
+sensors, builds the basic energy model, and stores it for later processing.
 
-Once all the early energy models for some of the desired QoS ranges
-are collected, a further model that maps the energy consumption to QoS
-is built by the means of a configuration file. The developer specifies
-per each line what configuration corresponds to which early model
+Once all the basic energy models for the desired QoS ranges have been
+collected, a model that maps the energy consumption to QoS
+is built following the model specification in a configuration file. Here, the developer specifies
+what configuration corresponds to which basic model
 (instantaneous power consumption as a function of time), and runs
-\powprof{} using such a configuration file as a parameter.
+\powprof{} using this configuration file as a parameter.
 %
 % [Ad: ... {end}]
 
