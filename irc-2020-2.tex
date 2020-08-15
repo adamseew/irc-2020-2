@@ -356,7 +356,8 @@
 
 
 % [Ad: Quadrocopter; so it should work as well despite what I said earlier, but I checked IEEExplore and Quadrotor is far more used]
-\title{Energy-Sensitive Vision-Based Autonomous Tracking and Landing of a Multirotor on a Moving Platform} 
+%\title{Energy-Sensitive Vision-Based Autonomous Tracking and Landing of a Multirotor on a Moving Platform} 
+\title{Energy-Sensitive Vision-Based Autonomous\\Tracking and Landing of a UAV} 
 %\title{Vision-Based Autonomous Tracking and Landing of a Multirotor on a Moving Platform} 
 %for an Agricultural Application %UPS: suggested title, agriculture less important, playing with "energy sensitive" since we know about the energy and can adapt QoS accordingly
 %UPS: suggesting multirotor, we don't care how many rotors it has...
@@ -367,7 +368,7 @@
 \IEEEauthorblockN{Georgios Zamanakos, Adam Seewald, Henrik Skov Midtiby, and Ulrik Pagh Schultz}
 \IEEEauthorblockA{SDU UAS Center, M{\ae}rsk Mc-Kinney M{\o}ller Institute\\
 University of Southern Denmark\\
-Email: \{*\}@mmmi.sdu.dk
+Contact email: ups@mmmi.sdu.dk
 }}
 
 %% make the title area
@@ -380,13 +381,13 @@ Email: \{*\}@mmmi.sdu.dk
 In this paper we present a robust, vision-based %Ulrik: downplaying the energy-sensitive thingie slightly
 algorithm for autonomous tracking and landing on a moving platform 
 in varying environmental conditions. We use
-a new landing marker robust to occlusions to track the moving
+a novel landing marker robust to occlusions to track the moving
 platform and the YOLOv3-tiny CNN to detect ground-based hazards in an agricultural use case. We
-perform all computations on \emph{Nvidia Jetson Nano} and analyse %we attempt to
+perform all computations on-board using an \emph{Nvidia Jetson Nano} and analyse %we attempt to
 the impact on the flight time by profiling the energy consumption of the
 landing marker detection algorithm and YOLOv3-tiny CNN. %We conduct
 Experiments are conducted in Gazebo simulation using the \emph{powprofiler} energy
-modeling tool to measure the energy cost as a function of quality of service. %for autonomous
+modeling tool to measure the energy cost as a function of Quality of Service (QoS). %for autonomous
 %tracking and landing. 
 Our experiments test the energy efficiency and
 robustness of our system in various dynamic wind
@@ -396,7 +397,7 @@ detection algorithm can be run at the highest QoS with only a marginal
 energy overhead whereas adapting the QoS level of YOLOv3-tiny CNN
 results in a considerable power saving for the system as a whole. The
 power saving is significant for a system executing on a
-fixed-wind UAV but only marginal if executing on a multirotor UAV.
+fixed-wind UAV but only marginal if executing on a standard multirotor UAV.
 
 
 \end{abstract}
@@ -545,12 +546,12 @@ was performed through Graphics Processing Unit (GPU). The three teams
 have utilized the companion's computer GPU to detect the landing
 marker. In the agricultural use case addressed in this paper, the GPU
 is however needed for a CNN to detect ground hazards, and since the
-GPU cannot simultaneously run different algorithms,
+GPU cannot normally run different algorithms simultaneously,
 %
 %objects around the moving platform and
 %
 the CPU should be used for detecting the landing marker. By doing so,
-a different QoS could be chosen for each algorithm.  
+a different QoS can be chosen for each algorithm.  
 
 % [Ad: energy-sensitive part {begin}]
 %
@@ -558,12 +559,12 @@ To account for the energy modeling of computer vision algorithms, we
 considered the work previously carried by Nardi
 et~al.~\cite{nardi2015introducing}. The authors present SLAMBench, a
 framework that investigates Simultaneous Localisation and Mapping (SLAM) algorithms configuration alternatives
-for energy efficiency. Whereas, we use \powprof{}, a generic energy
+for energy efficiency. In our work we use \powprof{}, a generic energy
 modeling tool~\cite{seewald2019coarse}. This tool enables measuring
 the energy impact of different configurations of the ROS-based system
 implementing the agricultural use-case. In this paper we present
 extensions to \powprof{} that facilitates the initial exploration of
-the energy usage of complex, Robot Operative System (ROS)--based robotic systems.
+the energy usage of complex ROS-based systems.
 
 Other approaches to energy modeling, such as the mission-based energy
 models studied by Sadrpour et~al.~\cite{sadrpour2013experimental,
@@ -632,14 +633,14 @@ detection.
 The energy-sensitive design using \powprof{} relies on empirical
 experiments to measure the actual power consumption on the robot
 hardware~\cite{seewald2019coarse}. In this paper we focus on the
-initial profiling using of energy usage of the companion computer
-(which from the point of view of energy consumption
-can be studied independently from the specific drone it is mounted in).
+initial profiling using of energy usage of the companion computer,
+which from the point of view of energy consumption
+can be studied independently from the specific drone it is mounted in.
 
 First, the developer specifies the maximum and minimum QoS level for
 each algorithm running on the system.  During mission execution the
 levels are statically defined: automatic adaptation during different
-phases of the mission is being currently investigated and is
+phases of the mission is currently being investigated and is
 considered future work.
 %
 Then, the developer executes the system to empirically determine the
@@ -651,7 +652,7 @@ power consumption. This can be done in two different ways:
 \item Automatically using \powprof{} to control the experiment
   execution~\cite{seewald2019coarse}.  We assume that the algorithms
   are wrapped as ROS nodes, and we require the developer to specify
-  the QoS parameters using a ROS configuration.We use a configuration
+  the QoS parameters using a ROS configuration. We use a configuration
   file in a key-value pair format which is then interpreted by
   \powprof{}, enabling \powprof{} to iterate through all possible
   combinations and empirically sample the energy consumption of each
@@ -670,7 +671,7 @@ power consumption. This can be done in two different ways:
 \end{enumerate}
 %
 Regardless of the approach, \powprof{} builds a single model mapping
-QoS to total system energy consumption. Coarse-grained sample is
+QoS to total system energy consumption. Coarse-grained sampling is
 employed to reduce the number of experiments, and missing values are
 automatically inferred from the others by the means of a multivariate
 linear interpolation.
@@ -686,6 +687,7 @@ hazard detection QoS in terms of frequency.
 %In the final step, the model is assessed and the QoS is adjusted to the desired granularity of the algorithms, along with the energy requirements.
 
 \subsection{Semi-automatic energy profiling}
+\label{sec:semi-automatic}
 
 %\adam{TODO? Short description of ROS node and combining level 1 models using powprof. Explicit subsection to make clear it's new. Goal is to avoid manual steps such a giving intermediate files magic names or whatever (since this reduces risk of errors). Could show example of what developer code looks like, i.e., what Georgios need to do to use it?}
 
@@ -728,6 +730,13 @@ Section~\ref{sec:WindDisturbances}, allowing the system to be tested
 on a realistic use case.
 
 
+\begin{figure}
+\centering
+\includegraphics[scale=0.15]{n-fold-for-landing.png}
+\caption{The landing marker}
+\label{fig:LandingMarker}
+\end{figure}
+
 \subsection{Detection of the moving platform}
 \label{sec:Detection}
 
@@ -742,16 +751,9 @@ visible in the image frame.
 
 To evaluate the computer vision algorithm for detecting the landing
 marker, real images, of 640$\times$480 pixel size, were captured with
-an Intel RealSense D435 camera. In Gazebo simulation a color camera
-with the same distortion coefficients as the Intel camera, is used to
+an Intel RealSense D435 camera. In the Gazebo simulation a color camera
+with the same distortion coefficients as the Intel camera is used to
 output a 640$\times$480 pixel image at 10 frames per second (fps).
-
-\begin{figure}
-\centering
-\includegraphics[scale=0.15]{n-fold-for-landing.png}
-\caption{The landing marker}
-\label{fig:LandingMarker}
-\end{figure}
 
 To extract the pixel coordinates of the tip of the n-fold marker, a
 kernel size of 13$\times$13 pixels consisting of a real and imaginary
@@ -921,7 +923,7 @@ Q_{t}  =\begin{bmatrix}
 \end{array} \\
 \end{equation*}
 
-where:
+%where:
 \begin{itemize}
 \item  \(x_{NED}, y_{NED} \) is the position of the UAV in the landing site's local coordinate system (aligned with NED frame), 
 \item \(dt\) is the time interval the PX4's EKF outputs the \(vx_{NED},vy_{NED}\) data, usually around 33ms, 
@@ -1021,7 +1023,7 @@ speed is calculated by the following equations
     \end{array}
 \end{equation}
 
-where: $F$ is the force, \(p_{d}\) is the dynamic pressure, \(A\) is
+\noindent where $F$ is the force, \(p_{d}\) is the dynamic pressure, \(A\) is
 the area of the applied pressure, \(\varrho\) is the density of the
 air (around \SI{1.2}{\kg \per \m^3}), \(v\) is the wind velocity in \SI{}{\m \per \s}.
 
@@ -1063,8 +1065,8 @@ The magnitude of the wind is calculated as follows: %according to the following 
 
     
 \end{itemize}
-
-This model is created to simulate different scaling in the wind's magnitude and will be used as it is for all simulated tests.
+%
+This model is created to simulate different scaling in the wind's magnitude and will be used for all simulated tests.
 
 %%%%%%%%%%%%%%%%%%%%
 \section{Evaluation}
@@ -1132,6 +1134,9 @@ with Ubuntu 18.04 and ROS Melodic is used as the UAV's companion
 computer. All the computer vision, guidance, and control algorithms 
 execute on the \emph{Nvidia Jetson Nano}, similar to how they would
 be deployed if the Nano was a companion computer in a physical drone.
+%
+Energy profiling is performed directly on the \emph{Nvidia Jetson
+  Nano} using \powprof{} as outlined in Section~\ref{sec:semi-automatic}.
 
 Two groups of experiments are conducted. The first group evaluates the
 energy consumption and QoS of the \emph{tracking} mode and the second group
@@ -1143,9 +1148,9 @@ plowing tractor, and the UAV taking off and hovering at an altitude of
 for the landing marker in the image frame. Once the landing marker is
 detected, the UAV commences its actions.
 
-On \emph{tracking} mode, the UAV will follow the moving platform at a fixed
-altitude and use its vertically facing camera to map the environment
-while on \emph{landing} mode, the UAV will follow the moving platform and
+In \emph{tracking} mode, the UAV will follow the moving platform at a fixed
+altitude and use its vertically facing camera to map the environment,
+while in \emph{landing} mode the UAV will follow the moving platform and
 gradually lower its altitude until it lands on it. Both \emph{tracking} and
 \emph{landing} modes are tested under three different cases of no wind
 disturbances, wind disturbances of \SI{8}{\meter \per \second} and wind disturbances of
@@ -1157,7 +1162,7 @@ disturbances, wind disturbances of \SI{8}{\meter \per \second} and wind disturba
 The first group of experiments was conducted to test the \emph{tracking} mode and evaluate its 
 energy efficiency and QoS. For the energy 
 evaluation, eight tests were executed for different fps rates 
-for \emph{YOLOv3-tiny} ROS node (4fps, 1fps, 0.5fps, 0.1fps) and 
+for the \emph{YOLOv3-tiny} ROS node (4fps, 1fps, 0.5fps, 0.1fps) and 
 the \emph{landing marker} detection ROS node (10fps, 0.5fps) as 
 %
 seen in Figure~\ref{fig:PowerDuringTracking}. For a 4fps update rate
@@ -1190,7 +1195,8 @@ correctly detected.
 \begin{figure}[t]
 \centering
 \includegraphics{data_visualization/PowerDetection.pdf}
-\caption{Power consumption during tracking mode.}
+\caption{Power consumption during tracking mode. YOLOv3 Tiny fps:
+  0=0.1fps, 1=0.5fps, 2=1fps, 3=4fps.}
 \label{fig:PowerDuringTracking}
 \end{figure}
 
@@ -1211,7 +1217,7 @@ The second group of experiments was conducted to test the \emph{landing} mode
 and evaluate its energy efficiency and QoS.
 For the energy evaluation, eight tests were executed for different 
 fps rates for the \emph{landing marker} detection ROS node 
-(10fps, 2fps, 1fps, 0.5fps) under two cases. 
+(10fps, 2fps, 1fps, 0.5fps) using two different cases. 
 In the first case, the kernel size remains fixed at 
 22$\times$22 pixels and in the second case an adaptive selection 
 kernel size algorithm is used. 
@@ -1232,7 +1238,7 @@ fps rates for the \emph{landing marker} detection ROS node
 disturbances. The QoS is determined as the  mean squared error (MSE) 
 between the predicted position of the moving platform, 
 from the navigation block, and the moving platform's actual position. 
-Four different altitude bins were used as seen in Figure~\ref{fig:PositionErrorDuringLanding}. A large MSE of around \SI{3}{\square\meter} is observed for an altitude greater than \SI{20}{\meter} for a 0.5fps rate, while a MSE close to zero is observed for an altitude of less than \SI{5}{\meter} for an update rate of 10fps. Furthermore, wind disturbances don't seem to have an influence on the MSE. An overall larger MSE for the \emph{y} coordinates than the \emph{x} coordinates is probably caused by a sudden change of the moving platform's direction on the \emph{y} axis.
+Four different altitude bins were used as seen in Figure~\ref{fig:PositionErrorDuringLanding}. A large MSE of around \SI{3}{\square\meter} is observed for an altitude greater than \SI{20}{\meter} for a 0.5fps rate, while an MSE close to zero is observed for an altitude of less than \SI{5}{\meter} for an update rate of 10fps. Furthermore, wind disturbances do not seem to have an influence on the MSE. We believe the larger MSE for the \emph{y} coordinates compared to the \emph{x} coordinates is caused by a sudden change of the moving platform's direction on the \emph{y} axis.
 
 \begin{figure}[t]
 \centering
@@ -1276,7 +1282,7 @@ changing the \emph{YOLOv3-tiny} rate is $6.30W-3.9W=2.4W$ whereas the
 maximal saving gained from changing the \emph{landing marker} rate is
 \SI{0.2}{\watt}. For the Cumulus, there is thus a 6.5\% potential energy
 saving, whereas the potential energy saving only is 1.9\% for the
-Phantom. For the Cumulus this saving is thus large enough to
+Phantom. For the Cumulus this saving is considered large enough to
 significantly impact the flying time of the drone, with a total energy
 saving of \SI{23.4}{\kilo \joule}. For the Cumulus, the potential saving from adapting
 the \emph{landing marker} QoS is however only 0.5\%. 
@@ -1293,8 +1299,8 @@ overall save energy because of a reduced flight time.
 
 In this paper we presented a robust, energy-sensitive, vision-based
 algorithm for autonomous tracking and landing in varying environmental
-conditions by executing all the necessary algorithms on the \emph{Nvidia Jetson Nano} companion computer.
-
+conditions, by experimentally executing all the necessary algorithms on the \emph{Nvidia Jetson Nano} companion computer.
+%
 % Proposed text by George:
 Our experiments show that the proposed computer vision algorithms for detecting the moving platform can be run at the highest QoS level with only a marginal
 energy overhead, whereas adapting the QoS level of \emph{YOLOv3-tiny} CNN results in a considerable power saving for the system as a whole. This power saving is significant if the system was executing on a fixed-wing UAV, %
