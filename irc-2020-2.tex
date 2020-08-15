@@ -20,8 +20,8 @@
 \DeclareSIUnit\fps{fps}
 \usepackage{todonotes}
 \setuptodonotes{inline}
-\newcommand{\adam}[2][]{\todo[color=orange!20, #1]{ADAM: #2}}
-\newcommand{\hemi}[2][]{\todo[color=green!20, #1]{HEMI: #2}}
+%\newcommand{\adam}[2][]{\todo[color=orange!20, #1]{ADAM: #2}}
+%\newcommand{\hemi}[2][]{\todo[color=green!20, #1]{HEMI: #2}}
 
 
 %% citation packege
@@ -778,12 +778,12 @@ to capture the image and measure also the distance \emph{d} from the n-fold
 marker. Based on a desired quality \emph{q}, the proper kernel size \emph{k} is
 selected. It is seen that an occlusion on the tip of the n-fold marker
 results in a significant increase on the selected kernel size.
-\hemi{To me this looks like a significant \emph{decrease} in kernel
-  size \ldots}
+%\hemi{To me this looks like a significant \emph{decrease} in kernel
+%  size \ldots}
 %
 % Georgios: The kernel size, while having an occlusion on the tip of the nfold marker, is 201x201
 
-\begin{figure}[h]
+\begin{figure}[t]
 \centering
 \includegraphics[scale=0.25]{nfold_occlusions.png}
 \caption{Detection of the landing marker under different
@@ -1102,7 +1102,7 @@ sensors, the UAV maps the detected objects onto a 2D map.
 A simulated field is created in Gazebo with objects placed in random
 positions and orientations as seen in Figure~\ref{fig:Gazebo}.
 
-\begin{figure}[h]
+\begin{figure}[t]
 \centering
 \includegraphics[scale=0.2]{gazebo_scalled.png}
 \caption{On the left, a top view of the Gazebo scene. On the right, a view of the UAV attempting a landing on the moving platform }
@@ -1187,14 +1187,14 @@ correctly detected.
 %than the fps update rates since for higher wind speed, less objects are correctly detected.
 
 
-\begin{figure}[h]
+\begin{figure}[t]
 \centering
 \includegraphics{data_visualization/PowerDetection.pdf}
 \caption{Power consumption during tracking mode.}
 \label{fig:PowerDuringTracking}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[t]
 \centering
 \includegraphics{data_visualization/QoSDetection.pdf}
 \caption{Number of correctly detected objects
@@ -1234,7 +1234,7 @@ between the predicted position of the moving platform,
 from the navigation block, and the moving platform's actual position. 
 Four different altitude bins were used as seen in Figure~\ref{fig:PositionErrorDuringLanding}. A large MSE of around \SI{3}{\square\meter} is observed for an altitude greater than \SI{20}{\meter} for a 0.5fps rate, while a MSE close to zero is observed for an altitude of less than \SI{5}{\meter} for an update rate of 10fps. Furthermore, wind disturbances don't seem to have an influence on the MSE. An overall larger MSE for the \emph{y} coordinates than the \emph{x} coordinates is probably caused by a sudden change of the moving platform's direction on the \emph{y} axis.
 
-\begin{figure}[h]
+\begin{figure}[t]
 \centering
 \includegraphics{data_visualization/PowerLanding.pdf}
 \caption{Power consumption during landing mode. 
@@ -1242,7 +1242,7 @@ The black circles denote a fixed kernel size while the grey circles denote an ad
 \label{fig:PowerDuringLanding}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[t]
 \centering
 \includegraphics{data_visualization/QoSLanding.pdf}
 \caption{Position error during landing and how it depends 
