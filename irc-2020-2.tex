@@ -15,6 +15,9 @@
 \usepackage{booktabs}
 \usepackage{flushend}
 \usepackage{tikz}
+\usepackage{siunitx}
+\sisetup{per-mode = symbol}
+\DeclareSIUnit\fps{fps}
 \usepackage{todonotes}
 \setuptodonotes{inline}
 \newcommand{\adam}[2][]{\todo[color=orange!20, #1]{ADAM: #2}}
@@ -1127,7 +1130,7 @@ Two groups of experiments are conducted. The first group evaluates the
 energy consumption and QoS of the \emph{tracking} mode and the second group
 evaluates the energy consumption and QoS of the \emph{landing} mode. For
 both groups, the experiments start with the tractor moving at a
-constant speed of $0.3~m/s$, according to a square path similar to that of a
+constant speed of \SI{0.3}{\meter\per\second}, according to a square path similar to that of a
 plowing tractor, and the UAV taking off and hovering at an altitude of
 $25~m$. After reaching the desired altitude, the UAV starts searching
 for the landing marker in the image frame. Once the landing marker is
