@@ -1286,12 +1286,19 @@ overall save energy because of a reduced flight time.
 
 In this paper we presented a robust, energy-sensitive, vision-based
 algorithm for autonomous tracking and landing in varying environmental
-conditions. Our experience show that the tracking and landing
-algorithms can be run at the highest QoS level with only a marginal
-energy overhead, whereas adapting the QoS level of all on-board
-algorithms results in a significant power saving for the system as a
-whole if it was executing on a fixed-wing drone, but only a marginal
-power saving on a multirotor drone.
+conditions by executing all the necessary algorithms on the \emph{Nvidia Jetson Nano} companion computer.
+
+% Proposed text by George:
+Our experience show that the computer vision algorithms for detecting the moving platform can be run at the highest QoS level with only a marginal
+energy overhead, whereas adapting the QoS level of \emph{YOLOv3-tiny} CNN results in a considerable power saving for the system as a whole. This power saving is more significant if the system was executing on a fixed-wing UAV, than if it was executing on a multirotor UAV.
+
+%Original text by Ulrik:
+%Our experience show that the tracking and landing
+%algorithms can be run at the highest QoS level with only a marginal
+%energy overhead, whereas adapting the QoS level of all on-board
+%algorithms results in a significant power saving for the system as a
+%whole if it was executing on a fixed-wing drone, but only a marginal
+%power saving on a multirotor drone.
 
 In terms of future work, we are interested in automatically adapting
 the QoS level to the available battery, and in testing this approach
