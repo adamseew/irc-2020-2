@@ -27,15 +27,16 @@ landings_raw %>%
   mutate(alt = fct_relevel(alt, "alt 0-5", "alt 5-10", "alt 10-20", "alt 20+")) %>%
   mutate(update_rate = fct_relevel(update_rate, "nfold_10fps", "nfold_2fps", "nfold_1fps", "nfold_0.5fps")) %>%
   mutate(wind = fct_recode(wind, 
-                           "0" = "nowind", 
-                           "8" = "wind 8m/s", 
-                           "12" = "wind 12m/s")) %>%
-  mutate(wind = fct_relevel(wind, "0", "8", "12")) %>%
+                           "0 m/s" = "nowind", 
+                           "8 m/s" = "wind 8m/s", 
+                           "12 m/s" = "wind 12m/s")) %>%
+  mutate(wind = fct_relevel(wind, "0 m/s", "8 m/s", "12 m/s")) %>%
   mutate(update_rate = fct_recode(update_rate, 
                                   "10" = "nfold_10fps", 
                                   "2" = "nfold_2fps", 
                                   "1" = "nfold_1fps", 
                                   "0.5" = "nfold_0.5fps")) %>%
+  mutate(coordinate = str_replace(coordinate, "mse_", "")) %>%
   mutate(alt = fct_recode(alt, 
                           "0m - 5m" = "alt 0-5", 
                           "5m - 10m" = "alt 5-10", 
@@ -43,48 +44,29 @@ landings_raw %>%
                           "20m - " = "alt 20+")) ->
   landings_formatted
 ```
-
-
-```{r}
-unique(landings_formatted$update_rate)
-```
-
-
-```{r}
-colnames(landings_formatted)
-```
-
-
-
 ```{r}
 landings_formatted %>%
-  ggplot() + 
-  aes(x = measured_value, 
-      y = alt, 
-      color=coordinate) + 
-  geom_point() + 
-  facet_wrap(~update_rate) + 
-  labs(x = 'Mean squared error [meter^2]', 
-       y = 'Altitude [meter]')
+  head()
 ```
 
-```{r, fig.width=6, fig.height=4}
+
+
+```{r QoSLanding, fig.width=6, fig.height=4}
 landings_formatted %>%
   ggplot() + 
   aes(x = measured_value, 
       y = update_rate, 
       shape=coordinate, 
-      color=coordinate) + 
+      color=wind) + 
   geom_point() + 
   facet_wrap(~alt) + 
-  scale_color_manual(values = c("grey", "black")) + 
+  #scale_color_manual(values = c("grey", "black")) + 
   labs(x = 'Mean squared error [meter^2]', 
-       y = 'Update rate [fps]') + 
+       y = 'Update rate [fps]', 
+       color = 'Wind', 
+       shape = 'Coordinate') + 
   theme_cowplot(font_size = 8) + 
-  theme(legend.position = "none", 
-        legend.background = element_rect(fill="NA",
-                                  size=0.2, linetype="solid", 
-                                  colour ="black")) -> p
+  theme() -> p
 p
 ggsave('QoSLanding.pdf', p, width = 8, height=4.5, unit="cm")
 ```
@@ -196,12 +178,21 @@ object_detection %>%
   group_by(experiment, wind, yolo_fps, nfold_fps) %>%
   summarise(correct = sum(correct), 
             .groups = "drop_last") %>%
+  filter(wind == 8)
+```
+
+
+```{r QoSDetection}
+object_detection %>%
+  group_by(experiment, wind, yolo_fps, nfold_fps) %>%
+  summarise(correct = sum(correct), 
+            .groups = "drop_last") %>%
   ggplot() +
   aes(x = correct, 
       y = wind, 
       color = sprintf("%s fps", yolo_fps), 
       shape = sprintf("%s fps", nfold_fps)) + 
-  geom_point() + 
+  geom_jitter(height = 0, width=0.2) + 
   scale_color_manual(values = c("0.1 fps" = "grey", 
                                 "4 fps" = "black")) + 
   scale_x_continuous(limits = c(15, 32)) +
@@ -234,7 +225,7 @@ power_landing <- readr::read_csv("../figures/source/energy/landing/plot_data.csv
                                  col_names = c("framerate", "fixed_kernel", "adaptable_kernel", "duration"))
 ```
 
-```{r}
+```{r PowerLanding}
 power_landing %>%
   ggplot() + 
   aes(x = framerate, 
@@ -266,7 +257,7 @@ power_detection <- readr::read_csv("../figures/source/energy/tracking/plot_data_
   mutate(nfold = factor(nfold))
 ```
 
-```{r}
+```{r PowerDetection}
 power_detection %>%
   ggplot() + 
   aes(x = yolo, 
