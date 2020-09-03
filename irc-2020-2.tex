@@ -812,7 +812,7 @@ markers are used as extra landmarks in case the marker is partially
 visible in the image frame.
 
 To evaluate the computer vision algorithm for detecting the landing
-marker, real images, of 640$\times$480 pixel size, were captured with
+marker, real images of 640$\times$480 pixel size were captured with
 an Intel RealSense D435 camera. In the Gazebo simulation a color camera
 with the same distortion coefficients as the Intel camera is used to
 output a 640$\times$480 pixel image at 10 frames per second (fps).
@@ -840,7 +840,7 @@ therefore the energy consumption. However, a higher computation time and energy 
 is preferred over a non-detection of the n-fold marker. To balance
 between energy consumption and effective marker detection, an adaptive
 kernel selection function is created to ensure the selection of a
-proper kernel size based on a threshold quality score value. In figure
+proper kernel size based on a threshold quality score value. In Figure
 \ref{fig:NfoldOcclusions} an Intel RealSense D435 Depth camera is used
 to capture the image and measure also the distance \emph{d} from the n-fold
 marker. Based on a desired quality \emph{q}, the proper kernel size \emph{k} is
@@ -875,7 +875,7 @@ To detect the ArUco markers the standard OpenCV library is used and if
 any ArUco markers are detected, their central pixel coordinates and
 pose are stored.
 
-The next step is to convert these pixel coordinates into a real world
+The next step is to convert these pixel coordinates into a real-world
 relative position \emph{[X,Y,Z]} according to a local coordinate frame. The
 origin of the local coordinate frame \emph{[0,0,0]} is defined as the
 center of the landing marker and alignment according to the North,
@@ -888,7 +888,7 @@ the flight controller are used in this process. The PX4 flight
 controller outputs through mavlink messages the altitude and the attitude of the UAV (roll,pitch,yaw). For the \emph{Z} component,
 the altitude of the UAV from the flight controller's EKF is used. To
 obtain the \emph{X,Y} components, an algorithm is constructed to convert
-pixel coordinates into real world \emph{X,Y} coordinates, in meters:
+pixel coordinates into real world \emph{X,Y} coordinates in meters:
 %
 %. This algorithm is described below:
 %
