@@ -960,9 +960,7 @@ system is increased in case the moving platform is not detected in
 every image frame. A velocity estimator for the moving platform will
 also be implemented as a part of the navigation block.
 
-The variables of interest that describe the state of the UAV are:
-%<- paper?
-
+The variables of interest that describe the state of the UAV for this project are:
 %
 \begin{itemize}
 
@@ -986,55 +984,131 @@ The variables of interest that describe the state of the UAV are:
 %
 The altitude, attitude, velocity and acceleration variables of the
 UAV's state are obtained from the flight controller's onboard sensors
-and already implemented sensor fusion algorithm (EKF). To fuse those
+and already implemented sensor fusion algorithms (EKF). To fuse those
 state variables with the obtained position measurements from
 Section~\ref{sec:Detection}, a Kalman Filter is implemented. The
 measurements from the flight controller are used in the prediction
 step.
 
-% [Ad2:] it's confusing when we use EKF ourselves *since we have a discrete KF...* and when the EKF from PX4 [I am confused so I can immagine the reader...]
 % [Ad2:] will be used -> was used {not sure I'd go with future, as normally we use past}
 %[Georgios2:] Changed "will be used" into "is implemented"
 
-Prediction step of the Kalman Filter is
+Prediction Step:
 \begin{equation} 
  \begin{array}{l}
-    \hat{x}_{t} = F \cdot \hat{x}_{t-1} + u_{t} \cdot G_{t}, \\ 
-    P_{t} = F \cdot P_{t-1} \cdot F^T + Q_{t},
+    \hat{x}_{t} = F_{t} * \hat{x}_{t-1} + G_{t} *u_{t} \\ 
+    P_{t} = F_{t}* P_{t-1} * F_{t}^\top + Q_{t}
   \end{array}
 \end{equation}
 
-where $x_t\in\mathbb{R}^2$ is the position of the UAV in NED coordinates keeping a constant altitude, $\hat{x}_{t}$ is the estimated position, $u_t=\begin{bmatrix}{\dot{x}}_t^q & {\ddot{x}}_t^q & {\dot{x}}_t^m \end{bmatrix}$ is the control with the values ${\dot{x}}_t,{\ddot{x}}_t$ being retrieved from the flight controller at time $t$ while ${x}_t^q,{x}_t^m$ are the positions of the UAV and the moving platform respectively. Let us further define $G_t,Q_t$ as follows
-\begin{equation} 
-G_t:=\begin{bmatrix} d_tI & d_t^2I/2 & -d_tI \end{bmatrix}^T,\,\,\,
-Q_t:=d_t\sigma^{2}_{\text{IMU}}I,
-\end{equation}
-where $I:=I_2$ is a 2$\times$2 identity matrix, $d_t\in\mathbb{R}_{\geq 0}$ is the time interval the flight controller output the data (usually around \SI{33}{ms}), and \(\sigma^{2}_{\text{IMU}}\in\mathbb{R}\) is the variance of the velocities retrieved from the flight controller's reading. 
+where:
 
-The step is initialized with $F=P_0=I$.
+\begin{equation*}
+\begin{array}{l}
 
-In the correction step, the observed measurements from the downward
-looking camera are used to correct and update the estimated
-position of the UAV $\hat{x}_t^q$. However due to the computation time
-needed to detect the landing marker, the incoming measurement is
-delayed by a time \(d_t^{\text{obs}}\in\mathbb{R}_{\geq 0}\). Physically, let us define the displacement $\tilde{x}_t^{\text{obs}}\in\mathbb{R}$ as
-\begin{equation}
-  \tilde{x}_t^{\text{obs}}:=\bar{\dot{x}}_t\,d_t^{\text{obs}}, %lol why not->|{\hat{x}_t-\hat{x}_v}|\text{ with }v:=t-d_t^{\text{obs}}, seems you loose the amplitude of the velocity???
-\end{equation}
-where $\bar{\dot{x}}_t\in\mathbb{R}$ is the mean velocity measured empirically. Such displacement is later employed in the observed measurements. The correction step of the Kalman Filter is
+
+ \hat{x}_{t} = \begin{bmatrix} 
+                x_{NED} \\ 
+                y_{NED}
+                \end{bmatrix} ,  \quad
+F_{t} = \begin{bmatrix} 
+                1 & 0 \\ 
+                0 & 1
+                \end{bmatrix}      , \\
+G_{t} =   \begin{bmatrix} 
+                dt & 0 & \frac{dt^{2}}{2} & 0 & -dt & 0\\ 
+                0 & dt & 0 & \frac{dt^{2}}{2} &0 & -dt
+                \end{bmatrix} , \quad
+u_{t} = \begin{bmatrix} 
+                vx_{NED} \\ 
+                vy_{NED} \\
+                ax_{NED} \\
+                ay_{NED} \\
+                vx_{m_{NED}}\\
+                vy_{m_{NED}}
+                \end{bmatrix}  \\ \\
+                
+P_{t} =  \begin{bmatrix} 
+                1 & 0 \\ 
+                0 & 1
+                \end{bmatrix}   , \quad 
+Q_{t}  =\begin{bmatrix} 
+                dt & 0 \\ 
+                0 & dt
+                \end{bmatrix} *\sigma^{2}_{IMU} 
+\end{array} \\
+\end{equation*}
+
+%where:
+\begin{itemize}
+\item  \(x_{NED}, y_{NED} \) is the position of the UAV in the landing site's local coordinate system (aligned with NED frame), 
+\item \(dt\) is the time interval the PX4's EKF outputs the \(vx_{NED},vy_{NED}\) data, usually around 33ms, 
+\item \(vx_{NED},vy_{NED}\) is the linear velocity of the UAV in NED frame, estimated from the PX4's EKF,
+
+% [Ad2:] NED frame -> NED coordinates
+
+\item \(ax_{NED}, ay_{NED}\) is the linear acceleration of the UAV in NED frame, estimated on the companion computer from differentiating the velocities.
+
+% [Ad2:] NED frame -> NED coordinates
+
+\item \(vx_{m_{NED}},vy_{m_{NED}}\) is the linear velocity of the moving platform in NED frame, estimated from the velocity estimator for the moving platform,
+
+% [Ad2:] NED frame -> NED coordinates
+
+\item \(\sigma^{2}_{IMU}\) is the variance of the velocities based estimated by the PX4's EKF.
+\end{itemize}
+
+In the correction step the observed measurements from the downward
+looking camera will be used to correct and update the predicted
+\emph{X,Y} position of the UAV. However due to the computation time
+needed to detect the landing marker, that incoming measurement will be
+delayed by some time \(dt_{obs}\). During that time \(dt_{obs}\) the
+UAV will be relocated by an interval (\(dx_{obs},dy_{obs}\)). To
+compensate that extra displacement, the interval
+(\(dx_{obs},dy_{obs}\)) is calculated and added to the observed
+measurements.
+
+Correction step:
 \begin{equation}
     \begin{array}{l}
     
-    %e_{t} = x^{\text{obs}}_t+\tilde{x}_t - H\cdot\hat{x}_{t} \\<-not necessary
-    %S_{t} = H\cdot P_{t}\cdot H^T + R_{t} \\<-easier...
-    K_{t} = P_{t}\cdot H^T(H\cdot P_{t}\cdot H^T + R_{t})^{-1}, \\
-    \hat{x}_{t}^f = \hat{x}_{t} + K_{t}(x^{\text{obs}}_t+\tilde{x}^{\text{obs}}_t - \hat{x}_{t}), \\ %<- TBH not entirely sure why there as there is no system but directly estimate (you would compare the system with the measurement at this step) but ok; if it works that I am fine with it :) [just confirm it does]
-    P_{t}^f = (I - K_{t}\cdot H) P_{t},
+    e_{t} = z_{t} - H_{t}*\hat{x}_{t} \\
+    % [Ad: eq] I am not entirely familiar with this notation for EKF but I guess it should be P_t prior to the estimate so I would conveniently call it P_t^- so it does not confuse with P_t after the estimate (last line)
+    S_{t} = H_{t}*P_{t}*H_{t}^\top + R_{t} \\
+    K_{t} = P_{t}*H_{t}^\top * S_{t}^{-1} \\
+    \hat{x}_{t} = \hat{x}_{t} + K_{t} * e_{t} \\
+    P_{t} = (I - K_{t}*H_{t}) * P_{t}
     \end{array}
 \end{equation}
-where $H=I$, and $x_t^{\text{obs}}$ is the position measured empirically at time $t$. Let us further define $R_t:=\sigma^{2}_{\text{obs}}I$ where $\sigma^{2}_{\text{obs}}\in\mathbb{R}$ is the variance of the velocities measured empirically. 
 
-The values of the estimated state $\hat{x}_{t}^f$, and error covariance matrix $P_{t}^f$, are used as input to the next iteration of the prediction step $\hat{x}_{t+1},P_{t+1}$.
+% [Ad2]: P_{t} = ... P_{t} {last line should be P_{t} before and after estimation. Use P_{t}^- (what textbook? I can check the notation; Hector? Then P_{t}^f = ... P_(t}))}
+
+% [Georgios2:] That is true. We can use the symbols for "before" and "after" the correction step considering not only the convariance matrix P but also the x_hat ... fell free to change them accordingly
+
+where:
+\begin{equation*}
+    \begin{array}{l}
+    z_{t} = \begin{bmatrix} 
+                x_{obs} + dx_{obs} \\ 
+                y_{obs} + dy_{obs}
+                \end{bmatrix}, \quad 
+
+
+    
+    H_{t}= \begin{bmatrix} 
+                1 & 0 \\ 
+                0 & 1
+                \end{bmatrix}, \quad
+    R_{t} = \begin{bmatrix} 
+                1 & 0 \\ 
+                0 & 1
+                \end{bmatrix}*\sigma^{2}_{obs}  \\ \\
+                
+dx_{obs} = vx_{mean_{obs}} * dt_{obs} \quad , \quad
+    dy_{obs} = vy_{mean_{obs}} * dt_{obs} \quad \\
+          
+    \end{array}
+\end{equation*}
 
 A velocity estimator is also constructed to determine the magnitude
 and direction of the moving platform's velocity vector. The magnitude
@@ -1046,8 +1120,6 @@ magnitude by filtering out high frequency noise. High frequency noise
 can be caused by oscillations of the UAV along with a fast update rate
 in the landing marker detection algorithm.  %\hemi{Please explain why
 %  the signal is the \emph{smoothest}.}
-
-% [Ad2:] big issue here! One reads that we differentiate to estimate the velocity (dx/dt if x is the position). Then one reads that we use low pass filter to estimate the velocity. So which one? Confusing... Maybe omitting and just saying we also you low pass filter due to possible oscillations of the UAV?
 
 In the agricultural use-case the moving platform is likely to change
 its direction up to 180 degrees. Furthermore, it is assumed that the
@@ -1073,18 +1145,21 @@ on that area. The wind forces are considered to be applied on the
 center of gravity of the UAV with direction parallel to the ground.
 
 The magnitude of the applied force, corresponding to a certain wind
-speed is calculated~\cite{anderson2010fundamentals}
-%\cite{Dynamic_pressure_NASA,anderson2010fundamentals}: <- let's use the textbook only (why the website). We have too many references anyways...
-\begin{equation}
-F_t = \frac{\varrho  v_t^2}{2}   A,
-\end{equation}
-where $F_t\in\mathbb{R}$ is the force keeping the altitude constant, 
-%\(p_{d}\) is the dynamic pressure, 
-\(A\in\mathbb{R}_{\geq 0}\) is the area of the applied pressure, \(\varrho\in\mathbb{R}_{\geq 0}\) is the density of the
-air %(around \SI{1.2}{\kg \per \m^3}) <- I hope the reader knows/[can google] this :)
-, and \(v_t\in\mathbb{R}\) is the wind velocity in its two components at time $t$. %\SI{}{\m \per \s}. why; it would work also with other measures...
+speed is calculated by the following equations
+\cite{Dynamic_pressure_NASA,anderson2010fundamentals}:
 
-By solving the above equation the applied force on the UAV is found
+\begin{equation}
+    \begin{array}{l}
+         F = p_{d}  * A  \\
+         p_{d} = \frac{\varrho * v^2}{2} 
+    \end{array}
+\end{equation}
+
+\noindent where $F$ is the force, \(p_{d}\) is the dynamic pressure, \(A\) is
+the area of the applied pressure, \(\varrho\) is the density of the
+air (around \SI{1.2}{\kg \per \m^3}), \(v\) is the wind velocity in \SI{}{\m \per \s}.
+
+By solving the above equations the applied force on the UAV is found
 to be \SI{3.45}{\newton} for an \SI{8}{\m \per \s} wind speed, and \SI{7.76}{\newton} for a \SI{12}{\m \per \s}
 wind speed. The wind forces will be applied on the UAV in Gazebo
 simulation, to test the performance of the whole system. This will be
@@ -1094,34 +1169,31 @@ virtual UAV.
 To simulate a wind pattern the wind direction and magnitude must be
 defined. The wind direction is assumed to remain the same for the
 whole duration of the experiments. That direction vector is defined as
-$w=\begin{bmatrix}4/5 & 1/5\end{bmatrix}$ according to Gazebo's \emph{(x,y)} axes.
+\emph{[0.8, 0.2]} according to Gazebo's \emph{(x,y)} axes.
 %
 The magnitude of the wind is calculated as follows: %according to the following pattern:
 
 \begin{itemize}
-    \item An initial wind force $F_0$ of either \SI{3.45}{\newton} or \SI{7.76}{\newton} is chosen.
+    \item An initial wind power of either \SI{3.45}{\newton} or \SI{7.76}{\newton} is chosen.
     
     \item An update cycle of \SI{5.5}{\sec} is chosen between two different applied forces.
     
-%    \item A random float number between 0.9 and 1.2 is chosen at every update cycle. This number is defined as \emph{Random\_noise}.%<-then we define it later. Redundant
+    \item A random float number between 0.9 and 1.2 is chosen at every update cycle. This number is defined as \emph{Random\_noise}.
     
-    \item The applied wind force is calculated $F_{t+1}=\|w\cdot x\|F_t*r$ 
-%<- so complex for such an easy equation... 
-%<- If you apply norm on just one component it's absolute value?
-%    \\
-%    
-%  
-%    
-%        \(\mbox{\em force}_{x} = -x_{norm} * \mbox{\em power}_{init} * \mbox{\em Random\_noise} \\
-%         \mbox{\em force}_{y} = -y_{norm} * \mbox{\em power}_{init} * \mbox{\em Random\_noise}\)\\
-where $r\in\mathbb{R}_{\geq 0}$ is a random noise generated for simulation purposes (between 0.9 and 1.2). 
-%\(x_{norm } = 0.8\), \(y_{norm}  = 0.2\) , \(\mbox{\em power}_{init} = 7.0 N\) <- wait if this is constant then you get always the same value plus some random stuff; let's write it so it doesn't look constant :)
+    \item The applied wind force is calculated as:\\
     
-    \item If the altitude $h$ is $h\leq 6$, the force from previous step is re-calculated as $F^h_{t+1}=F_{t+1}h/6$ for simulation purposes.
-%   \( \mbox{\em power} = \mbox{\em power}_{init}* (\mbox{\em altitude}/ 6.0)  \), where \(\mbox{\em power}_{init}\) is either \SI{3.45}{\newton} or \SI{7.76}{\newton}
-% [Ad2:] I am confused. Seems power and force are the same and if it's not the case then I don't understand what is going on (why would you calculate the force if you don't use it and then you use power instead). Correct me if I didn't understand
+  
+    
+        \(\mbox{\em force}_{x} = -x_{norm} * \mbox{\em power}_{init} * \mbox{\em Random\_noise} \\
+         \mbox{\em force}_{y} = -y_{norm} * \mbox{\em power}_{init} * \mbox{\em Random\_noise}\)\\
+        
+
+    where \(x_{norm } = 0.8\), \(y_{norm}  = 0.2\) , \(\mbox{\em power}_{init} = 7.0 N\)
+    
+    \item For a UAV altitude of \SI{6.0}{\meter} and below the power decreases as:
+   \( \mbox{\em power} = \mbox{\em power}_{init}* (\mbox{\em altitude}/ 6.0)  \), where \(\mbox{\em power}_{init}\) is either \SI{3.45}{\newton} or \SI{7.76}{\newton}
    
-   \item If instead the altitude $h$ is $h\leq 3$, the force is constant $F^h_{t+1}=1/2$ N.%For a UAV altitude of \SI{3}{\meter} and below, \(\mbox{\em power} = 0.5\). 
+   \item For a UAV altitude of \SI{3}{\meter} and below, \(\mbox{\em power} = 0.5\). 
 
     
 \end{itemize}
@@ -1252,7 +1324,25 @@ correctly detected.
 %than the fps update rates since for higher wind speed, less objects are correctly detected.
 
 
+\begin{figure}[t]
+\centering
+\includegraphics{data_visualization/PowerDetection.pdf}
+\caption{Power consumption during tracking mode. YOLOv3 Tiny fps:
+  0=0.1fps, 1=0.5fps, 2=1fps, 3=4fps.}
+\label{fig:PowerDuringTracking}
+\end{figure}
 
+\begin{figure}[t]
+\centering
+\includegraphics{data_visualization/QoSDetection.pdf}
+\caption{Number of correctly detected objects
+under different conditions. 
+Grey color denotes a 0.1fps and black color denotes a 4fps 
+update rate in \emph{YOLOv3-tiny} ROS node. 
+Circles denote a 0.5fps and triangles denote a 10fps update 
+rate in the \emph{landing marker} detection ROS node.}
+\label{fig:NCorrectObjectDetections}
+\end{figure}
 
 
 The second group of experiments was conducted to test the \emph{landing} mode
@@ -1281,26 +1371,6 @@ disturbances. The QoS is determined as the  mean squared error (MSE)
 between the predicted position of the moving platform, 
 from the navigation block, and the moving platform's actual position. 
 Four different altitude bins were used as seen in Figure~\ref{fig:PositionErrorDuringLanding}. A large MSE of around \SI{3}{\square\meter} is observed for an altitude greater than \SI{20}{\meter} for a 0.5fps rate, while an MSE close to zero is observed for an altitude of less than \SI{5}{\meter} for an update rate of 10fps. Furthermore, wind disturbances do not seem to have an influence on the MSE. We believe the larger MSE for the \emph{y} coordinates compared to the \emph{x} coordinates is caused by a sudden change of the moving platform's direction on the \emph{y} axis.
-
-\begin{figure}[t]
-  \centering
-  \includegraphics{data_visualization/PowerDetection.pdf}
-  \caption{Power consumption during tracking mode. YOLOv3 Tiny fps:
-    0=0.1fps, 1=0.5fps, 2=1fps, 3=4fps.}
-  \label{fig:PowerDuringTracking}
-\end{figure}
-  
-\begin{figure}[t]
-  \centering
-  \includegraphics{data_visualization/QoSDetection.pdf}
-  \caption{Number of correctly detected objects
-  under different conditions. 
-  Grey color denotes a 0.1fps and black color denotes a 4fps 
-  update rate in \emph{YOLOv3-tiny} ROS node. 
-  Circles denote a 0.5fps and triangles denote a 10fps update 
-  rate in the \emph{landing marker} detection ROS node.}
-  \label{fig:NCorrectObjectDetections}
-\end{figure}
 
 \begin{figure}[t]
 \centering
