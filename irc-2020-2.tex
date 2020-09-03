@@ -527,6 +527,9 @@ function of QoS.
 
 % [Ad2:] Saripalli demonstrated sounds almost like he did some formal demonstration of math-like kind of the Kalman filter variation he used. What about just used?
 % [Ad2:] I don't like that the paragraph is not self contained; it adds some information to Saripalli but goes directly to Lee. What about moving Saripalli...offline to the above paragraph?
+
+% [Georgios2:]Saripalli and Lee both performed offline/offboard computations and that is the purpose of this paragraph. To show the importance of performing the computations onboard.
+
 % [Ad2:] Typo: if you don't stick with the above suggestion, there is a comma after However missing
 % [Ad2:] Typo: onboard
 
@@ -542,11 +545,8 @@ performing color segmentation on the incoming image frame. By fusing
 the height measurement from the LiDAR into the vision measurement, a
 relative pose of the UAV from the moving platform was obtained. A
 color segmentation approach was also implemented by Lee
-et~al.~\cite{lee2016vision}. A red rectangle was used as a landing
-marker and a vertically facing camera with a fish-eye lens was used to
-detect it, and a successful landing from an altitude of \SI{70}{\m} was
-demonstrated. Both teams have used an on-board companion computer to
-perform all the computation on the UAV. However we in this work do not consider a color segmentation
+et~al.~\cite{lee2016vision}. A red rectangle was used as a landing marker while the detection was done by a vertically facing camera with a fish-eye lens. The setup accounted for a successful landing from an altitude of \SI{70}{\m}.. Both researchers have used an on-board companion computer to
+perform all the computations on the UAV. However we in this work do not consider a color segmentation
 approach as a safe option, since for a realistic (outdoor)
 case it would be difficult, if not impossible, to ensure that the
 landing marker will be the only object of a specific color in the
@@ -555,10 +555,18 @@ scene.
 % [Ad2:] Typo onboard
 % [Ad2:] it sounds little disconnected. I would do this: The design...utilized -> The design of the marker and choice of sensors can potentially facilitate the onboard computations, as investigated by Chen et~al.~\cite{chen2016system}. The approach utilized
 % [Ad2:] Sounds like the sentence "By fusing the height measurement from the LiDAR into the vision measurement, a relative pose of the UAV from the moving platform was obtained." sounds unnecessarily complicated {in fact I don't understand} -> "The relative pose of the UAV with respect to the moving platform was obtained fusing the height taken visually and using a LiDAR." {although again not sure how the height is obtained visually; seems I am missing some points so in case ignore}
+% [Georgios2:] The height is not ontained visually but only from the LiDAR sensor. The vision measurement is in pixels. By combining the pixel measurement and the distance from the LiDAR we are able to find the 3d position of the target. If we do not have the distance measurement (from the LiDAR) we can only have the homogeneous coordinates of the target, not the 3d world coordinates. I would leave this sentence as it is.
+
 % [Ad2:] Too many times 'was used' and a little intricated; perhaps "A red rectangle was used as a landing marker and a vertically facing camera with a fish-eye lens was used to detect it, and a successful landing from an altitude of \SI{70}{\m} was demonstrated." -> "A red rectangle was used as a landing marker while the detection was done by a vertically facing camera with a fish-eye lens. The setup accounted for a successful landing from an altitude of \SI{70}{\m}."
+% [Georgios2:] I like that better too. Will change it accordingly.
+
 % [Ad2:] teams -> approaches {teams sounds like they participated in these competitions...}
+% [Georgios2:] Will add "researchers" instead of "teams"
+
 % [Ad2:] Typo: computations
 % [Ad2:] the last sentence, However...scene., is unclear. Perhaps: We do not consider a color segmentation approach due to the high variability of the outdoor environment. {actually this doesn't seem entirely correct; maybe we could omit. I mean, if they landed from 70 meters they probably weren't in a lab with a white background and a colored marker in the middle...}
+
+%[Georgios2:] We do not know the environment that they performed the landing. Although outside, a red car present in the scene might cause their algorithm to fail. I would suggest keeping that as it is.
 
 The use of a hybrid camera system consisting of a fish-eye IR camera
 and a stereo camera was demonstrated by Yang
@@ -570,9 +578,8 @@ Nguyen et~al.~\cite{nguyen2018lightdenseyolo}. Here a specific landing
 marker was used and a specific CNN was used to detect it: successful
 detection of a \SI{1}{\m}$\times$\SI{1}{\m} marker size was demonstrated from a
 distance of \SI{50}{\m}. An AprilTag marker was used as a landing marker by
-Kyritsis et~al.~\cite{kyristsis2016towards} for the purpose of ``2016
-DJI Developer Challenge''. The identification of the AprilTag marker
-was performed through Graphics Processing Unit (GPU). The three teams
+Kyritsis et~al.~\cite{kyristsis2016towards}. The identification of the AprilTag marker
+was performed through Graphics Processing Unit (GPU). In the above three cases, the researchers
 have utilized the companion's computer GPU to detect the landing
 marker. In the agricultural use case addressed in this paper, the GPU
 is however needed for a CNN to detect ground hazards, and since the
@@ -586,7 +593,11 @@ a different QoS can be chosen for each algorithm.
 % [Ad2:] reader learns about markers being of different shapes and colors, so s/he might ask how specific. I think we could just omit the sentence "Here a specific landing marker was used and a specific CNN was used to detect it".
 % [Ad2:] as a landing marker -> for landing
 % [Ad2:] I would omit this information, it doesn't add much about the approach "for the purpose of ``2016 DJI Developer Challenge''".
+% [Georgios2:] Agree on that. Removed the information.
+
 % [Ad2:] teams -> approaches {here is really unclear if it refers to the participants of the challenge or the approaches}
+% Agree on that. Changed it from "teams" to "In the above three cases, the researchers..."
+
 
 % [Ad: energy-sensitive part {begin}]
 %
@@ -820,9 +831,11 @@ n-fold marker along with its orientation/phase.
 
 % [Ad2:] the sentence "For every pixel in the image, a convolution is performed with this kernel and the magnitude of the convolution is stored." is confusing {maybe me not knowing what a convolution is...}; perhaps "Such kernel is used per each convolution of each pixel in the image while the magnitude of the convolution is being stored." {I actually don't understand at all. 13x13 pixels consist of real and imaginary parts (so I guess is 26x26) which is then iterated; the magnitude is being stored - so 676 per each iteration which is on each pixels but you process 676 pixels at once?}
 
-Since a convolution is a computational expensive process, an increase
+% [Georgios2:] I think the way I wrote it in the paper is the simplest way to explain it without consuming a lot of space. Otherwise I would have to add equations, figures and then we would need an extra two pages. In computer vision, a convolution is a pixel-wise opearation. For each pixel, a weighted sum of the nearby pixel values is calculated ,according to a kernel size and kernel weights. In our case the kernel size is of 13x13 pixels and the weights are not real numbers but complex numbers (having a real and imaginary part). 
+
+Since a convolution is a computationally expensive process, an increase
 in the kernel size would also increase the computation time and
-therefore the energy consumption. However a higher computation time and energy consumption
+therefore the energy consumption. However, a higher computation time and energy consumption
 is preferred over a non-detection of the n-fold marker. To balance
 between energy consumption and effective marker detection, an adaptive
 kernel selection function is created to ensure the selection of a
@@ -831,11 +844,16 @@ proper kernel size based on a threshold quality score value. In figure
 to capture the image and measure also the distance \emph{d} from the n-fold
 marker. Based on a desired quality \emph{q}, the proper kernel size \emph{k} is
 selected. It is seen that an occlusion on the tip of the n-fold marker
-results in a significant increase on the selected kernel size.
+results in a significant increase in the selected kernel size.
 
 % [Ad2:] Typo: computationally
+% [Georgios2:] Changed "computational" to "computationally".
+
 % [Ad2:] Typo {the comma typo}: However,
+%[Georgios2:] Added the ",".
+
 % [Ad2:] on the selected -> in the selected
+% Georgios2:] Changes that from "on the selected" to "in the selected".
 
 %\hemi{To me this looks like a significant \emph{decrease} in kernel
 %  size \ldots}
@@ -865,9 +883,8 @@ East, Down (\emph{NED}) frame.
 %UPS: @Georgios I'm not sure I understand what the NED frame is, can you rephrase or elaborate?
 %
 The available sensor measurements and sensor fusion algorithms from
-the flight controller will be used in this process. The PX4 flight
-controller outputs through mavlink messages the altitude of the UAV
-and the attitude of the UAV (roll,pitch,yaw). For the \emph{Z} component,
+the flight controller are used in this process. The PX4 flight
+controller outputs through mavlink messages the altitude and the attitude of the UAV (roll,pitch,yaw). For the \emph{Z} component,
 the altitude of the UAV from the flight controller's EKF is used. To
 obtain the \emph{X,Y} components, an algorithm is constructed to convert
 pixel coordinates into real world \emph{X,Y} coordinates, in meters:
@@ -876,8 +893,14 @@ pixel coordinates into real world \emph{X,Y} coordinates, in meters:
 %
 
 % [Ad2:] it should be NED coordinates? Frame is a navigation frame where we'd have a world one that defines the origin and the body one that define the position of the UAV?
+%[Georgios2:] I would stick to NED frame although we could say NED system. For consistency reasons, since we use NED frame everywhere lets stick to it. Concerning world frame and body frame: Both frames are in the 3d world. The body frame has its origin (0,0,0) on the UAV and is aligned to the front side of the UAV. The world frame, in our case the landing site's local coordinate frame has its origin (0,0,0) on the tip of the nfold marker and is aligned to NED frame, meaning it always faces towards the magnetic North.
+
+
 % [Ad2:] will be used sounds like future work. Perhaps is being used?
+%[Georgios2:] Agree on that. Changed from "will be used" to "are used"
+
 % [Ad2:] the altitude of the UAV and the attitude of the UAV (roll,pitch,yaw) -> the altitude and the attitude (roll, pitch, and yaw angles) of the UAV
+%[Georgios2:] Agree on that. Changed it accordingly
 
 \begin{enumerate}
 
@@ -885,26 +908,32 @@ pixel coordinates into real world \emph{X,Y} coordinates, in meters:
 
 % [Ad2:] a suggestion for next one. Not now as probably we'd have to change a lot: \mathcal{O}_B for body frame, \mathcal{O}_something for some navigation frame; cooler and simpler
 
-\item The normalized coordinates of the four image corners, according to the camera's horizontal, vertical field of view and the camera's \emph{BODY} pose from step 1, are calculated.
+\item The normalized coordinates of the four image corners, according to the camera's horizontal, vertical field of view and the camera's pose from step 1, are calculated.
 
 % [Ad2:] BODY frame {unless there is a valid reason for BODY pose}
+% [Georgios2:] I would stick with pose since the roll and pitch angles of the camera are of interest and therefore included in the pose. Changed from "the camera's BODY pose" to "the camera's pose".
 
-\item The world coordinates of the four image corners are determined by using the normalised coordinates from step 2 along with the UAV's altitude. The result is a projection plane of the image corners on the ground.
+\item The coordinates of the four image corners (in meters), with respect to the UAV's BODY frame, are determined by using the normalised coordinates from step 2 along with the UAV's altitude. The result is a projection plane of the image corners on the ground.
 
 % [Ad2:] The world coordinates -> the coordinates {coordinates in respect of the world reference frame and not world's coordinates}
+% [Georgios2:] Rephrased the above paragraph. Hope it makes more sense?
 
 \item The perspective homography matrix is calculated between the 2 planes, the image plane and the world plane from step 3.
 
-\item The pixel coordinates are converted into world coordinates by using the homography matrix from step 4.
+\item The homography matrix from step 4 is used to convert the pixel coordinates of the tip of the nfold marker from the image plane, into  coordinates (in meters) in the UAV's \emph{BODY} frame.
 
 % [Ad2:] The pixel coordinates are converted into world coordinates -> Pixels are converted into meters {not sure what pixel coordinates are as this is the first time we mention them}
+% [Georgios2:] Agree on that. Rephrased it.
 
-\item The world coordinates from step 5, are converted from the camera's \emph{BODY} frame into the camera's \emph{NED} frame by using the yaw IMU data from the flight controller.
+\item The coordinates from step 5 are in respect to the UAV's \emph{BODY} frame. To convert them into the UAV's \emph{NED} frame, the yaw IMU data from the flight controller is used. 
+
+%are converted from the camera's \emph{BODY} frame into the camera's \emph{NED} frame by using the yaw IMU data from the flight controller.
 
 % [Ad2:] The world coordinates -> the coordinates {coordinates in respect of the world reference frame and not world's coordinates}
 % [Ad2:] are converted from the camera's \emph{BODY} frame into the camera's \emph{NED} frame -> are converted to the \emph{NED} coordinates {NED is not a frame, NED are coordinates or I am totally missing something here}
+% {Georgios2:] I rephrased it. Let me know what you think.
 
-\item The world coordinates from step 6, are converted from camera's \emph{NED} frame into the landing site's local coordinate frame.
+\item The coordinates from step 6, are converted from UAV's \emph{NED} frame into the landing site's local coordinate frame.
 
 % [Ad2:] The world coordinates -> the coordinates {coordinates in respect of the world reference frame and not world's coordinates}
 % [Ad2:] are converted from camera's \emph{NED} frame -> are converted from \emph{NED} coordinates {NED is not a frame, NED are coordinates or I am totally missing something here}
@@ -944,11 +973,14 @@ The variables of interest that describe the state of the UAV are:
 \item the velocity of the UAV \emph{[vx,vy,vz]} in \emph{NED} frame, obtained from the flight controller's EKF.
 
 % [Ad2:] NED coordinates
+% [Georgios2:]I would stick to NED frame for consistency.
 
 \item the acceleration of the UAV \emph{[ax,ay,az]} in \emph{NED} frame, obtained either from the flight controller's EKF or by differentiating the velocities.
 
 % [Ad2:] NED coordinates
 % [Ad2:] or ... velocities ->   {How to differentiate velocities? If the velocity is from the flight controller, it's just a value. So we calculate the tangent? I would omit this. Later we don't mention any differentiation but just say they are 'obtained from the flight controller's onboard sensors'}
+
+%[Georgios2:] Considering the calculation of acceleration: Yes we calculate the tangent. We can omit this is you want.
 
 \end{itemize}
 %
@@ -956,12 +988,13 @@ The altitude, attitude, velocity and acceleration variables of the
 UAV's state are obtained from the flight controller's onboard sensors
 and already implemented sensor fusion algorithm (EKF). To fuse those
 state variables with the obtained position measurements from
-Section~\ref{sec:Detection}, a Kalman Filter will be used. The
-measurements from the flight controller will be used in the prediction
+Section~\ref{sec:Detection}, a Kalman Filter is implemented. The
+measurements from the flight controller are used in the prediction
 step.
 
 % [Ad2:] it's confusing when we use EKF ourselves *since we have a discrete KF...* and when the EKF from PX4 [I am confused so I can immagine the reader...]
 % [Ad2:] will be used -> was used {not sure I'd go with future, as normally we use past}
+%[Georgios2:] Changed "will be used" into "is implemented"
 
 Prediction step of the Kalman Filter is
 \begin{equation} 
@@ -1001,7 +1034,38 @@ where $\bar{\dot{x}}_t\in\mathbb{R}$ is the mean velocity measured empirically. 
 \end{equation}
 where $H=I$, and $x_t^{\text{obs}}$ is the position measured empirically at time $t$. Let us further define $R_t:=\sigma^{2}_{\text{obs}}I$ where $\sigma^{2}_{\text{obs}}\in\mathbb{R}$ is the variance of the velocities measured empirically. 
 
+<<<<<<< HEAD
 The values of the estimated state $\hat{x}_{t}^f$, and error covariance matrix $P_{t}^f$, are used as input to the next iteration of the prediction step $\hat{x}_{t+1},P_{t+1}$.
+=======
+% [Ad2]: P_{t} = ... P_{t} {last line should be P_{t} before and after estimation. Use P_{t}^- (what textbook? I can check the notation; Hector? Then P_{t}^f = ... P_(t}))}
+
+% [Georgios2:] That is true. We can use the symbols for "before" and "after" the correction step considering not only the convariance matrix P but also the x_hat ... fell free to change them accordingly
+
+where:
+\begin{equation*}
+    \begin{array}{l}
+    z_{t} = \begin{bmatrix} 
+                x_{obs} + dx_{obs} \\ 
+                y_{obs} + dy_{obs}
+                \end{bmatrix}, \quad 
+
+
+    
+    H_{t}= \begin{bmatrix} 
+                1 & 0 \\ 
+                0 & 1
+                \end{bmatrix}, \quad
+    R_{t} = \begin{bmatrix} 
+                1 & 0 \\ 
+                0 & 1
+                \end{bmatrix}*\sigma^{2}_{obs}  \\ \\
+                
+dx_{obs} = vx_{mean_{obs}} * dt_{obs} \quad , \quad
+    dy_{obs} = vy_{mean_{obs}} * dt_{obs} \quad \\
+          
+    \end{array}
+\end{equation*}
+>>>>>>> 94dee7f3b1b4db6e79b34a069dd98074d5c7c5fd
 
 A velocity estimator is also constructed to determine the magnitude
 and direction of the moving platform's velocity vector. The magnitude
