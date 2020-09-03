@@ -1034,38 +1034,7 @@ where $\bar{\dot{x}}_t\in\mathbb{R}$ is the mean velocity measured empirically. 
 \end{equation}
 where $H=I$, and $x_t^{\text{obs}}$ is the position measured empirically at time $t$. Let us further define $R_t:=\sigma^{2}_{\text{obs}}I$ where $\sigma^{2}_{\text{obs}}\in\mathbb{R}$ is the variance of the velocities measured empirically. 
 
-<<<<<<< HEAD
 The values of the estimated state $\hat{x}_{t}^f$, and error covariance matrix $P_{t}^f$, are used as input to the next iteration of the prediction step $\hat{x}_{t+1},P_{t+1}$.
-=======
-% [Ad2]: P_{t} = ... P_{t} {last line should be P_{t} before and after estimation. Use P_{t}^- (what textbook? I can check the notation; Hector? Then P_{t}^f = ... P_(t}))}
-
-% [Georgios2:] That is true. We can use the symbols for "before" and "after" the correction step considering not only the convariance matrix P but also the x_hat ... fell free to change them accordingly
-
-where:
-\begin{equation*}
-    \begin{array}{l}
-    z_{t} = \begin{bmatrix} 
-                x_{obs} + dx_{obs} \\ 
-                y_{obs} + dy_{obs}
-                \end{bmatrix}, \quad 
-
-
-    
-    H_{t}= \begin{bmatrix} 
-                1 & 0 \\ 
-                0 & 1
-                \end{bmatrix}, \quad
-    R_{t} = \begin{bmatrix} 
-                1 & 0 \\ 
-                0 & 1
-                \end{bmatrix}*\sigma^{2}_{obs}  \\ \\
-                
-dx_{obs} = vx_{mean_{obs}} * dt_{obs} \quad , \quad
-    dy_{obs} = vy_{mean_{obs}} * dt_{obs} \quad \\
-          
-    \end{array}
-\end{equation*}
->>>>>>> 94dee7f3b1b4db6e79b34a069dd98074d5c7c5fd
 
 A velocity estimator is also constructed to determine the magnitude
 and direction of the moving platform's velocity vector. The magnitude
