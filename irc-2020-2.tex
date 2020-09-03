@@ -831,9 +831,11 @@ n-fold marker along with its orientation/phase.
 
 % [Ad2:] the sentence "For every pixel in the image, a convolution is performed with this kernel and the magnitude of the convolution is stored." is confusing {maybe me not knowing what a convolution is...}; perhaps "Such kernel is used per each convolution of each pixel in the image while the magnitude of the convolution is being stored." {I actually don't understand at all. 13x13 pixels consist of real and imaginary parts (so I guess is 26x26) which is then iterated; the magnitude is being stored - so 676 per each iteration which is on each pixels but you process 676 pixels at once?}
 
-Since a convolution is a computational expensive process, an increase
+% [Georgios2:] I think the way I wrote it in the paper is the simplest way to explain it without consuming a lot of space. Otherwise I would have to add equations, figures and then we would need an extra two pages. In computer vision, a convolution is a pixel-wise opearation. For each pixel, a weighted sum of the nearby pixel values is calculated ,according to a kernel size and kernel weights. In our case the kernel size is of 13x13 pixels and the weights are not real numbers but complex numbers (having a real and imaginary part). 
+
+Since a convolution is a computationally expensive process, an increase
 in the kernel size would also increase the computation time and
-therefore the energy consumption. However a higher computation time and energy consumption
+therefore the energy consumption. However, a higher computation time and energy consumption
 is preferred over a non-detection of the n-fold marker. To balance
 between energy consumption and effective marker detection, an adaptive
 kernel selection function is created to ensure the selection of a
@@ -842,11 +844,16 @@ proper kernel size based on a threshold quality score value. In figure
 to capture the image and measure also the distance \emph{d} from the n-fold
 marker. Based on a desired quality \emph{q}, the proper kernel size \emph{k} is
 selected. It is seen that an occlusion on the tip of the n-fold marker
-results in a significant increase on the selected kernel size.
+results in a significant increase in the selected kernel size.
 
 % [Ad2:] Typo: computationally
+% [Georgios2:] Changed "computational" to "computationally".
+
 % [Ad2:] Typo {the comma typo}: However,
+%[Georgios2:] Added the ",".
+
 % [Ad2:] on the selected -> in the selected
+% Georgios2:] Changes that from "on the selected" to "in the selected".
 
 %\hemi{To me this looks like a significant \emph{decrease} in kernel
 %  size \ldots}
@@ -876,9 +883,8 @@ East, Down (\emph{NED}) frame.
 %UPS: @Georgios I'm not sure I understand what the NED frame is, can you rephrase or elaborate?
 %
 The available sensor measurements and sensor fusion algorithms from
-the flight controller will be used in this process. The PX4 flight
-controller outputs through mavlink messages the altitude of the UAV
-and the attitude of the UAV (roll,pitch,yaw). For the \emph{Z} component,
+the flight controller are used in this process. The PX4 flight
+controller outputs through mavlink messages the altitude and the attitude of the UAV (roll,pitch,yaw). For the \emph{Z} component,
 the altitude of the UAV from the flight controller's EKF is used. To
 obtain the \emph{X,Y} components, an algorithm is constructed to convert
 pixel coordinates into real world \emph{X,Y} coordinates, in meters:
@@ -887,8 +893,14 @@ pixel coordinates into real world \emph{X,Y} coordinates, in meters:
 %
 
 % [Ad2:] it should be NED coordinates? Frame is a navigation frame where we'd have a world one that defines the origin and the body one that define the position of the UAV?
+%[Georgios2:] I would stick to NED frame although we could say NED system. For consistency reasons, since we use NED frame everywhere lets stick to it. Concerning world frame and body frame: Both frames are in the 3d world. The body frame has its origin (0,0,0) on the UAV and is aligned to the front side of the UAV. The world frame, in our case the landing site's local coordinate frame has its origin (0,0,0) on the tip of the nfold marker and is aligned to NED frame, meaning it always faces towards the magnetic North.
+
+
 % [Ad2:] will be used sounds like future work. Perhaps is being used?
+%[Georgios2:] Agree on that. Changed from "will be used" to "are used"
+
 % [Ad2:] the altitude of the UAV and the attitude of the UAV (roll,pitch,yaw) -> the altitude and the attitude (roll, pitch, and yaw angles) of the UAV
+%[Georgios2:] Agree on that. Changed it accordingly
 
 \begin{enumerate}
 
@@ -896,26 +908,32 @@ pixel coordinates into real world \emph{X,Y} coordinates, in meters:
 
 % [Ad2:] a suggestion for next one. Not now as probably we'd have to change a lot: \mathcal{O}_B for body frame, \mathcal{O}_something for some navigation frame; cooler and simpler
 
-\item The normalized coordinates of the four image corners, according to the camera's horizontal, vertical field of view and the camera's \emph{BODY} pose from step 1, are calculated.
+\item The normalized coordinates of the four image corners, according to the camera's horizontal, vertical field of view and the camera's pose from step 1, are calculated.
 
 % [Ad2:] BODY frame {unless there is a valid reason for BODY pose}
+% [Georgios2:] I would stick with pose since the roll and pitch angles of the camera are of interest and therefore included in the pose. Changed from "the camera's BODY pose" to "the camera's pose".
 
-\item The world coordinates of the four image corners are determined by using the normalised coordinates from step 2 along with the UAV's altitude. The result is a projection plane of the image corners on the ground.
+\item The coordinates of the four image corners (in meters), with respect to the UAV's BODY frame, are determined by using the normalised coordinates from step 2 along with the UAV's altitude. The result is a projection plane of the image corners on the ground.
 
 % [Ad2:] The world coordinates -> the coordinates {coordinates in respect of the world reference frame and not world's coordinates}
+% [Georgios2:] Rephrased the above paragraph. Hope it makes more sense?
 
 \item The perspective homography matrix is calculated between the 2 planes, the image plane and the world plane from step 3.
 
-\item The pixel coordinates are converted into world coordinates by using the homography matrix from step 4.
+\item The homography matrix from step 4 is used to convert the pixel coordinates of the tip of the nfold marker from the image plane, into  coordinates (in meters) in the UAV's \emph{BODY} frame.
 
 % [Ad2:] The pixel coordinates are converted into world coordinates -> Pixels are converted into meters {not sure what pixel coordinates are as this is the first time we mention them}
+% [Georgios2:] Agree on that. Rephrased it.
 
-\item The world coordinates from step 5, are converted from the camera's \emph{BODY} frame into the camera's \emph{NED} frame by using the yaw IMU data from the flight controller.
+\item The coordinates from step 5 are in respect to the UAV's \emph{BODY} frame. To convert them into the UAV's \emph{NED} frame, the yaw IMU data from the flight controller is used. 
+
+%are converted from the camera's \emph{BODY} frame into the camera's \emph{NED} frame by using the yaw IMU data from the flight controller.
 
 % [Ad2:] The world coordinates -> the coordinates {coordinates in respect of the world reference frame and not world's coordinates}
 % [Ad2:] are converted from the camera's \emph{BODY} frame into the camera's \emph{NED} frame -> are converted to the \emph{NED} coordinates {NED is not a frame, NED are coordinates or I am totally missing something here}
+% {Georgios2:] I rephrased it. Let me know what you think.
 
-\item The world coordinates from step 6, are converted from camera's \emph{NED} frame into the landing site's local coordinate frame.
+\item The coordinates from step 6, are converted from UAV's \emph{NED} frame into the landing site's local coordinate frame.
 
 % [Ad2:] The world coordinates -> the coordinates {coordinates in respect of the world reference frame and not world's coordinates}
 % [Ad2:] are converted from camera's \emph{NED} frame -> are converted from \emph{NED} coordinates {NED is not a frame, NED are coordinates or I am totally missing something here}
@@ -953,11 +971,14 @@ The variables of interest that describe the state of the UAV for this project ar
 \item the velocity of the UAV \emph{[vx,vy,vz]} in \emph{NED} frame, obtained from the flight controller's EKF.
 
 % [Ad2:] NED coordinates
+% [Georgios2:]I would stick to NED frame for consistency.
 
 \item the acceleration of the UAV \emph{[ax,ay,az]} in \emph{NED} frame, obtained either from the flight controller's EKF or by differentiating the velocities.
 
 % [Ad2:] NED coordinates
 % [Ad2:] or ... velocities ->   {How to differentiate velocities? If the velocity is from the flight controller, it's just a value. So we calculate the tangent? I would omit this. Later we don't mention any differentiation but just say they are 'obtained from the flight controller's onboard sensors'}
+
+%[Georgios2:] Considering the calculation of acceleration: Yes we calculate the tangent. We can omit this is you want.
 
 \end{itemize}
 %
@@ -965,11 +986,12 @@ The altitude, attitude, velocity and acceleration variables of the
 UAV's state are obtained from the flight controller's onboard sensors
 and already implemented sensor fusion algorithms (EKF). To fuse those
 state variables with the obtained position measurements from
-Section~\ref{sec:Detection}, a Kalman Filter will be used. The
-measurements from the flight controller will be used in the prediction
+Section~\ref{sec:Detection}, a Kalman Filter is implemented. The
+measurements from the flight controller are used in the prediction
 step.
 
 % [Ad2:] will be used -> was used {not sure I'd go with future, as normally we use past}
+%[Georgios2:] Changed "will be used" into "is implemented"
 
 Prediction Step:
 \begin{equation} 
@@ -1060,6 +1082,8 @@ Correction step:
 \end{equation}
 
 % [Ad2]: P_{t} = ... P_{t} {last line should be P_{t} before and after estimation. Use P_{t}^- (what textbook? I can check the notation; Hector? Then P_{t}^f = ... P_(t}))}
+
+% [Georgios2:] That is true. We can use the symbols for "before" and "after" the correction step considering not only the convariance matrix P but also the x_hat ... fell free to change them accordingly
 
 where:
 \begin{equation*}
