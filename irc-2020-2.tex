@@ -876,8 +876,8 @@ any ArUco markers are detected, their central pixel coordinates and
 pose are stored.
 
 The next step is to convert these pixel coordinates into a real-world
-relative position \emph{[X,Y,Z]} according to a local coordinate frame. The
-origin of the local coordinate frame \emph{[0,0,0]} is defined as the
+relative position \emph{[X, Y, Z]} according to a local coordinate frame. The
+origin of the local coordinate frame \emph{[0, 0, 0]} is defined as the
 center of the landing marker and alignment according to the North,
 East, Down (\emph{NED}) frame.
 %
@@ -885,10 +885,10 @@ East, Down (\emph{NED}) frame.
 %
 The available sensor measurements and sensor fusion algorithms from
 the flight controller are used in this process. The PX4 flight
-controller outputs through mavlink messages the altitude and the attitude of the UAV (roll,pitch,yaw). For the \emph{Z} component,
+controller outputs through mavlink messages the altitude and the attitude of the UAV (roll, pitch, yaw). For the \emph{Z} component,
 the altitude of the UAV from the flight controller's EKF is used. To
-obtain the \emph{X,Y} components, an algorithm is constructed to convert
-pixel coordinates into real world \emph{X,Y} coordinates in meters:
+obtain the \emph{X, Y} components, an algorithm is constructed to convert
+pixel coordinates into real world \emph{X, Y} coordinates in meters:
 %
 %. This algorithm is described below:
 %
@@ -939,13 +939,13 @@ pixel coordinates into real world \emph{X,Y} coordinates in meters:
 % [Ad2:] The world coordinates -> the coordinates {coordinates in respect of the world reference frame and not world's coordinates}
 % [Ad2:] are converted from camera's \emph{NED} frame -> are converted from \emph{NED} coordinates {NED is not a frame, NED are coordinates or I am totally missing something here}
 
-\item For ArUco markers only, an offset vector in the x,y axis is added depending on the distance of each ArUco marker from the tip of the n-fold marker. It is assumed that this vector is prior known.
+\item For ArUco markers only, an offset vector in the x, y axis is added depending on the distance of each ArUco marker from the tip of the n-fold marker. It is assumed that this vector is prior known.
 
 \end{enumerate}
 %
 The mean measurements from the detected n-fold and/or ArUco markers
 are used to determine the position and orientation of the landing
-marker. The result is an \emph{[X,Y,Z]} relative position of the UAV from
+marker. The result is an \emph{[X, Y, Z]} relative position of the UAV from
 the moving platform along with the yaw orientation of the landing
 marker.
 
@@ -965,16 +965,16 @@ The variables of interest that describe the state of the UAV for this project ar
 %
 \begin{itemize}
 
-\item The relative position of the UAV from the moving platform \emph{[X,Y,Z]} calculated as described in Section~\ref{sec:Detection}.
+\item The relative position of the UAV from the moving platform \emph{[X, Y, Z]} calculated as described in Section~\ref{sec:Detection}.
 
 \item The attitude of the UAV [roll, pitch, yaw], obtained from the flight controller's IMUs.
 
-\item the velocity of the UAV \emph{[vx,vy,vz]} in \emph{NED} frame, obtained from the flight controller's EKF.
+\item the velocity of the UAV \emph{[vx, vy, vz]} in \emph{NED} frame, obtained from the flight controller's EKF.
 
 % [Ad2:] NED coordinates
 % [Georgios2:]I would stick to NED frame for consistency.
 
-\item the acceleration of the UAV \emph{[ax,ay,az]} in \emph{NED} frame, obtained either from the flight controller's EKF or by differentiating the velocities.
+\item the acceleration of the UAV \emph{[ax, ay, az]} in \emph{NED} frame, obtained either from the flight controller's EKF or by differentiating the velocities.
 
 % [Ad2:] NED coordinates
 % [Ad2:] or ... velocities ->   {How to differentiate velocities? If the velocity is from the flight controller, it's just a value. So we calculate the tangent? I would omit this. Later we don't mention any differentiation but just say they are 'obtained from the flight controller's onboard sensors'}
@@ -997,8 +997,8 @@ step.
 Prediction Step:
 \begin{equation} 
  \begin{array}{l}
-    \hat{x}_{t} = F_{t} * \hat{x}_{t-1} + G_{t} *u_{t} \\ 
-    P_{t} = F_{t}* P_{t-1} * F_{t}^\top + Q_{t}
+    \hat{x}_{t} = F_{t} \cdot \hat{x}_{t-1} + G_{t} \cdot u_{t} \\ 
+    P_{t} = F_{t} \cdot P_{t-1} \cdot F_{t}^\top + Q_{t}
   \end{array}
 \end{equation}
 
@@ -1029,16 +1029,17 @@ u_{t} = \begin{bmatrix}
                 vy_{m_{NED}}
                 \end{bmatrix}  \\ \\
                 
-P_{t} =  \begin{bmatrix} 
+P_{0} =  \begin{bmatrix} 
                 1 & 0 \\ 
                 0 & 1
                 \end{bmatrix}   , \quad 
 Q_{t}  =\begin{bmatrix} 
                 dt & 0 \\ 
                 0 & dt
-                \end{bmatrix} *\sigma^{2}_{IMU} 
+                \end{bmatrix} \cdot \sigma^{2}_{IMU} 
 \end{array} \\
 \end{equation*}
+\todo{Georgios: What are the value of the initial covariance matrix?}
 
 %where:
 \begin{itemize}
@@ -1073,12 +1074,12 @@ Correction step:
 \begin{equation}
     \begin{array}{l}
     
-    e_{t} = z_{t} - H_{t}*\hat{x}_{t} \\
+    e_{t} = z_{t} - H_{t} \cdot \hat{x}_{t} \\
     % [Ad: eq] I am not entirely familiar with this notation for EKF but I guess it should be P_t prior to the estimate so I would conveniently call it P_t^- so it does not confuse with P_t after the estimate (last line)
-    S_{t} = H_{t}*P_{t}*H_{t}^\top + R_{t} \\
-    K_{t} = P_{t}*H_{t}^\top * S_{t}^{-1} \\
-    \hat{x}_{t} = \hat{x}_{t} + K_{t} * e_{t} \\
-    P_{t} = (I - K_{t}*H_{t}) * P_{t}
+    S_{t} = H_{t} \cdot P_{t} \cdot H_{t}^\top + R_{t} \\
+    K_{t} = P_{t} \cdot H_{t}^\top \cdot S_{t}^{-1} \\
+    \hat{x}_{t} = \hat{x}_{t} + K_{t} \cdot e_{t} \\
+    P_{t} = (I - K_{t} \cdot H_{t}) \cdot P_{t}
     \end{array}
 \end{equation}
 
@@ -1105,15 +1106,15 @@ where:
                 0 & 1
                 \end{bmatrix}*\sigma^{2}_{obs}  \\ \\
                 
-dx_{obs} = vx_{mean_{obs}} * dt_{obs} \quad , \quad
-    dy_{obs} = vy_{mean_{obs}} * dt_{obs} \quad \\
+dx_{obs} = vx_{mean_{obs}} \cdot dt_{obs} \quad , \quad
+    dy_{obs} = vy_{mean_{obs}} \cdot dt_{obs} \quad \\
           
     \end{array}
 \end{equation*}
 
 A velocity estimator is also constructed to determine the magnitude
 and direction of the moving platform's velocity vector. The magnitude
-is calculated by differentiating two sequential \emph{X,Y} position
+is calculated by differentiating two sequential \emph{X, Y} position \todo[noinline]{Where do these position measurements come from? the tractor gps?}
 measurements of the moving platform and taking into consideration the
 UAV's \emph{NED} velocities according to the PX4's EKF. A low-pass
 filter is used to provide a smooth estimation of the velocity's
@@ -1127,7 +1128,7 @@ its direction up to 180 degrees. Furthermore, it is assumed that the
 moving platform is a nonholonomic system, like a tractor. To
 compensate for sudden turns, the moving platform's yaw orientation
 will be taken into account and based on the velocity's magnitude, the
-moving platform's velocity in \emph{X,Y} \emph{NED} frame can be obtained.
+moving platform's velocity in \emph{X, Y} \emph{NED} frame can be obtained.
 
 
 
@@ -1151,8 +1152,8 @@ speed is calculated by the following equations
 
 \begin{equation}
     \begin{array}{l}
-         F = p_{d}  * A  \\
-         p_{d} = \frac{\varrho * v^2}{2} 
+         F = p_{d} \cdot A  \\
+         p_{d} = \frac{\varrho \cdot v^2}{2} 
     \end{array}
 \end{equation}
 
@@ -1170,14 +1171,14 @@ virtual UAV.
 To simulate a wind pattern the wind direction and magnitude must be
 defined. The wind direction is assumed to remain the same for the
 whole duration of the experiments. That direction vector is defined as
-\emph{[0.8, 0.2]} according to Gazebo's \emph{(x,y)} axes.
+\emph{[0.8, 0.2]} according to Gazebo's \emph{(x, y)} axes.
 %
 The magnitude of the wind is calculated as follows: %according to the following pattern:
 
 \begin{itemize}
     \item An initial wind power of either \SI{3.45}{\newton} or \SI{7.76}{\newton} is chosen.
     
-    \item An update cycle of \SI{5.5}{\sec} is chosen between two different applied forces.
+    \item An update cycle of \SI{5.5}{\second} is chosen between two different applied forces.
     
     \item A random float number between 0.9 and 1.2 is chosen at every update cycle. This number is defined as \emph{Random\_noise}.
     
