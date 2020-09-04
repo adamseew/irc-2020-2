@@ -1021,21 +1021,23 @@ The variables of interest that describe the state of the UAV for this project ar
 %
 \begin{itemize}
 
-\item The relative position of the UAV from the moving platform \emph{[X, Y, Z]} 
+\item The relative position of the UAV from the moving platform, 
+$x_k$, \todo[noinline]{I think we might have used a bad name for this value. It currently overlaps with the estimated position of the UAV
+relative to the landing target.}
 calculated as described in Section~\ref{sec:Detection}.
 
 % [Ad3:] confusing; we calculate the position here of the UAV but they are calculated as described in another section. Would erase calculated on, or describe that one is the visual measurement and is used for the purpose of estimation in our EKF.
 
 \item The attitude of the UAV \emph{[roll, pitch, yaw]}, obtained from the flight controller's IMUs.
 
-\item the velocity of the UAV \emph{[vx, vy, vz]} in \emph{NED} frame, obtained from 
+\item the velocity of the UAV, $\dot{x}_k$, in \emph{NED} frame, obtained from 
 the flight controller's EKF.
 
 % [Ad2:] NED coordinates
 % [Georgios2:]I would stick to NED frame for consistency.
 
-\item the acceleration of the UAV \emph{[ax, ay, az]} in \emph{NED} frame, obtained 
-either from the flight controller's EKF or by differentiating the velocities.
+\item the acceleration of the UAV, $\ddot{x}_k$, in \emph{NED} frame, obtained 
+either from the flight controller's EKF or by differentiating the velocities.\todo[noinline]{These values are also described on the next page.}
 
 % [Ad2:] NED coordinates
 % [Ad2:] or ... velocities ->   {How to differentiate velocities? If the velocity is from the flight controller, it's just a value. So we calculate the tangent? I would omit this. Later we don't mention any differentiation but just say they are 'obtained from the flight controller's onboard sensors'}
@@ -1058,12 +1060,10 @@ step.
 %[Georgios2:] Changed "will be used" into "is implemented"
 
 Prediction Step:
-\begin{equation} 
- \begin{array}{l}
-    \hat{x}_{k} = F \cdot \hat{x}_{k-1} + G_{k} \cdot u_{k} \\ 
-    P_{k} = F \cdot P_{k-1} \cdot F^\top + Q_{k}
-  \end{array}
-\end{equation}
+\begin{align} 
+\hat{x}_{k} & = F \cdot \hat{x}_{k-1} + G_{k} \cdot u_{k} \\ 
+P_{k} & = F \cdot P_{k-1} \cdot F^\top + Q_{k}
+\end{align}
 
 \todo[disable]{Not comments but todos here (for Henrik) %¯\\_(ツ)_/¯
 
@@ -1082,7 +1082,7 @@ I can help to simplify. Just tell me!}
 
 where $\hat{x}_k \in \mathbb{R}^2$ is the position of the UAV, 
 and $F$ is a 2 by 2 identity matrix.
-The input matrix and associated control input is given by:
+The input matrix and the associated control input is given by:
 \begin{align*}
 G_{k} & = \begin{bmatrix}
     \Delta t_k & 0 & \frac{\Delta t_k^{2}}{2} & 0 & -\Delta t_k & 0\\ 
@@ -1091,36 +1091,30 @@ u_{k} & = \begin{bmatrix}
                 \dot{x}_k &
                 \ddot{x}_k &
                 \dot{x}_{k}^l
-                \end{bmatrix}^\top \\               
-P_{0} & =  \begin{bmatrix} 
-                1 & 0 \\ 
-                0 & 1
-                \end{bmatrix}, \\
-Q_{k} & = \begin{bmatrix} 
-                \Delta t_k & 0 \\ 
-                0 & \Delta t_k
-                \end{bmatrix} \cdot \sigma^{2}_{\textrm{IMU}}
+                \end{bmatrix}^\top
 \end{align*}
-
-\todo{Georgios: What are the value of the initial covariance matrix?}
+The initial covariance matrix $P_0$ is a 2 by 2 unit matrix
+and the process noise $Q_k$ \todo[noinline]{Is this the right word?} 
+is a 2 by 2 unit matrix multiplied with 
+$\Delta t_k \cdot \sigma^{2}_{\textrm{IMU}}$.
 
 %where:
 \begin{itemize}
-\item  \(x, y \) is the position of the UAV in the landing site's local 
+\item  \(x_k \) is the position of the UAV in the landing site's local 
 coordinate system (aligned with NED frame), 
 \item \(\Delta t_k\) is the time interval the PX4's EKF outputs the \(v_x, v_y\) data, 
 usually around 33ms, 
-\item \(v_x, v_y\) is the linear velocity of the UAV in NED frame, 
+\item \(\dot{x}_k\) is the linear velocity of the UAV in NED frame, 
 estimated from the PX4's EKF,
 
 % [Ad2:] NED frame -> NED coordinates
 
-\item \(a_x, a_y\) is the linear acceleration of the UAV in NED frame, 
+\item \(\ddot{x}_k\) is the linear acceleration of the UAV in NED frame, 
 estimated on the companion computer from differentiating the velocities.
 
 % [Ad2:] NED frame -> NED coordinates
 
-\item \(v_{x,\textrm{landing}}, v_{y,\textrm{landing}}\) is the linear 
+\item \(\dot{x}_k^l\) is the linear 
 velocity of the moving platform in NED frame, estimated from the velocity 
 estimator for the moving platform,
 
@@ -1141,17 +1135,14 @@ compensate that extra displacement, the interval
 measurements.
 
 Correction step:
-\begin{equation}
-    \begin{array}{l}
-    
-    e_{k} = z_{k} - H_{k} \cdot \hat{x}_{k} \\
+\begin{align}    
+    e_{k} & = z_{k} - H_{k} \cdot \hat{x}_{k} \\
     % [Ad: eq] I am not entirely familiar with this notation for EKF but I guess it should be P_t prior to the estimate so I would conveniently call it P_t^- so it does not confuse with P_t after the estimate (last line)
-    S_{k} = H_{k} \cdot P_{k} \cdot H_{k}^\top + R_{k} \\
-    K_{k} = P_{k} \cdot H_{k}^\top \cdot S_{k}^{-1} \\
-    \hat{x}_{k} = \hat{x}_{k} + K_{k} \cdot e_{k} \\
-    P_{k} = (I - K_{k} \cdot H_{k}) \cdot P_{k}
-    \end{array}
-\end{equation}
+    S_{k} & = H_{k} \cdot P_{k} \cdot H_{k}^\top + R_{k} \\
+    K_{k} & = P_{k} \cdot H_{k}^\top \cdot S_{k}^{-1} \\
+    \hat{x}_{k} & = \hat{x}_{k} + K_{k} \cdot e_{k} \\
+    P_{k} & = (I - K_{k} \cdot H_{k}) \cdot P_{k}
+\end{align}
 
 % [Ad2]: P_{t} = ... P_{t} {last line should be P_{t} before and after estimation. Use P_{t}^- (what textbook? I can check the notation; Hector? Then P_{t}^f = ... P_(t}))}
 
@@ -1170,18 +1161,17 @@ where:
   R_{k} = \begin{bmatrix} 
             1 & 0 \\ 
             0 & 1
-            \end{bmatrix}*\sigma^{2}_{obs}  \\ 
+            \end{bmatrix} \cdot \sigma^{2}_{obs}  \\ 
   dx_{obs} & = vx_{mean_{obs}} \cdot dt_{obs}, \qquad
   dy_{obs} = vy_{mean_{obs}} \cdot dt_{obs} 
 \end{align*}
 
 A velocity estimator is also constructed to determine the magnitude
-and direction of the moving platform's velocity vector. The magnitude
+and direction of the moving platform's velocity vector. 
+The magnitude
 is calculated by differentiating two sequential \emph{X, Y} positions 
 of the tractor, obtained by detecting the n-fold marker from the 
 vertically facing camera as explained in section \ref{sec:Detection}  
-\todo[noinline]{Where do these position measurements come from? the tractor gps?}
-\todo[noinline]{Fix loose sentence here.}
 and taking into consideration the
 UAV's \emph{NED} velocities according to the PX4's EKF. A low-pass
 filter is used to provide a smooth estimation of the velocity's
@@ -1195,7 +1185,7 @@ its direction up to 180 degrees. Furthermore, it is assumed that the
 moving platform is a nonholonomic system, like a tractor. To
 compensate for sudden turns, the moving platform's yaw orientation
 will be taken into account. Based on the velocity's magnitude and moving platform's yaw orientation, the
-moving platform's velocity (\(v_{x,\textrm{landing}}, v_{y,\textrm{landing}}\)) in \emph{NED} frame can be obtained.
+moving platform's velocity (\(\dot{x}_k^l\)) in \emph{NED} frame can be obtained.
 
 
 
