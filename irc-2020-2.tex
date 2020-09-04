@@ -1059,13 +1059,13 @@ step.
 % X [Ad2:] will be used -> was used {not sure I'd go with future, as normally we use past}
 %[Georgios2:] Changed "will be used" into "is implemented"
 
-Prediction Step:
+Prediction Step:\begin{subequations}
 \begin{align} 
-\hat{x}_{k} & = F \cdot \hat{x}_{k-1} + G_{k} \cdot u_{k} \\ 
-P_{k} & = F \cdot P_{k-1} \cdot F^\top + Q_{k}
-\end{align}
+\hat{x}_{k} & = F \cdot \hat{x}_{k-1} + G_{k} \cdot u_{k}, \\ 
+P_{k} & = F \cdot P_{k-1} \cdot F^\top + Q_{k},
+\end{align}\end{subequations}
 
-\todo[disable]{Not comments but todos here (for Henrik) %¯\\_(ツ)_/¯
+\todo[disable]{Not comments but todos here (for Henrik) %¯\_(ツ)_/¯
 
 [Ad3:] the math here is really unecessarily complicated >:P . 
 I can change it the robo-gang way. Your formatting of where up is 
@@ -1080,25 +1080,23 @@ Also; you have a time dependent timestep dt. Please, don't use dt.
 What is that? It seems differentiation. Is soooo confusing. 
 I can help to simplify. Just tell me!}
 
-where $\hat{x}_k \in \mathbb{R}^2$ is the position of the UAV, 
-and $F$ is a 2 by 2 identity matrix.
-The input matrix and the associated control input is given by:
+where $x_k \in \mathbb{R}^2$ is the position of the UAV, $u_{k} = \begin{bmatrix}\dot{x}_k & \ddot{x}_k & \dot{x}_{k}^l\end{bmatrix}^\top$ is its control with $x_k,x_k^l$ being the positions of the UAV and the moving paltform respectively.
+Given $I:=I_2$, a \SI{2}{}$\times$\SI{2}{} identity matrix, the matrix $F=I$, the noise covariance matrix $Q_k=\Delta t_k\cdot\sigma^2_{\textrm{IMU}}\cdot I$, and $\sigma^2_{\textrm{IMU}}\in\mathbb{R}$ is the variance of the velocities retrieved from the flight controller's data.\todo[noinline]{Is this the right word? [Ad3:] actually no/yes--diatrabes between controls people stating that the model of the system is perfect since is a model [cite Hector]} Further, \(\Delta t_k\) is the time interval the flight controller output the data (usually around \SI{33}{\ms}). 
+The input matrix is given by:
+\todo{Henrik, little lengthy with implicitly saying "is a 2 by 2 identity matrix"; what about this one?}
 \begin{align*}
 G_{k} & = \begin{bmatrix}
     \Delta t_k & 0 & \frac{\Delta t_k^{2}}{2} & 0 & -\Delta t_k & 0\\ 
     0 & \Delta t_k & 0 & \frac{\Delta t_k^{2}}{2} &0 & -\Delta t_k\end{bmatrix}, \\
-u_{k} & = \begin{bmatrix} 
-                \dot{x}_k &
-                \ddot{x}_k &
-                \dot{x}_{k}^l
-                \end{bmatrix}^\top
 \end{align*}
-The initial covariance matrix $P_0$ is a 2 by 2 unit matrix
-and the process noise $Q_k$ \todo[noinline]{Is this the right word?} 
-is a 2 by 2 unit matrix multiplied with 
-$\Delta t_k \cdot \sigma^{2}_{\textrm{IMU}}$.
+\todo{
+  [Ad3:] Actually $G_k$ might still go easily inline. Something like $G_k=\Delta t_k\begin{bmatrix}I & \Delta t_kI/2 & -I\end{bmatrix}$. Up to you}
+The system is initialized with $P_0=I$ and $\hat{x}_0$ coming from the initial measurement.
 
 %where:
+\todo{
+  [Ad3:] the itemize doesn't really add any information the reader doesn't know so far (takes space also)... Makes sense in a thesis, report, not in a paper.
+}
 \begin{itemize}
 \item  \(x_k \) is the position of the UAV in the landing site's local 
 coordinate system (aligned with NED frame), 
@@ -1106,7 +1104,6 @@ coordinate system (aligned with NED frame),
 usually around 33ms, 
 \item \(\dot{x}_k\) is the linear velocity of the UAV in NED frame, 
 estimated from the PX4's EKF,
-
 % [Ad2:] NED frame -> NED coordinates
 
 \item \(\ddot{x}_k\) is the linear acceleration of the UAV in NED frame, 
@@ -1124,47 +1121,31 @@ estimator for the moving platform,
 estimated by the PX4's EKF.
 \end{itemize}
 
-In the correction step the observed measurements from the downward
-looking camera will be used to correct and update the predicted
-\emph{X,Y} position of the UAV. However due to the computation time
-needed to detect the landing marker, that incoming measurement will be
-delayed by some time \(dt_{obs}\). During that time \(dt_{obs}\) the
-UAV will be relocated by an interval (\(dx_{obs}, dy_{obs}\)). To
-compensate that extra displacement, the interval
-(\(dx_{obs}, dy_{obs}\)) is calculated and added to the observed
-measurements.
+\todo{
+  [Ad3:] from here to windspeed, I just apply my earlier math suggestion. Henrik, Georgios please check/change/revise.
+}
 
-Correction step:
-\begin{align}    
-    e_{k} & = z_{k} - H_{k} \cdot \hat{x}_{k} \\
-    % [Ad: eq] I am not entirely familiar with this notation for EKF but I guess it should be P_t prior to the estimate so I would conveniently call it P_t^- so it does not confuse with P_t after the estimate (last line)
-    S_{k} & = H_{k} \cdot P_{k} \cdot H_{k}^\top + R_{k} \\
-    K_{k} & = P_{k} \cdot H_{k}^\top \cdot S_{k}^{-1} \\
-    \hat{x}_{k} & = \hat{x}_{k} + K_{k} \cdot e_{k} \\
-    P_{k} & = (I - K_{k} \cdot H_{k}) \cdot P_{k}
-\end{align}
+In the correction step, the observed measurements from the downward
+looking camera are used to correct and update the estimated
+position of the UAV $\hat{x}_k$. However due to the computation time
+needed to detect the landing marker, the incoming measurement is
+delayed by a time \(\Delta t_k^{\text{obs}}\in\mathbb{R}_{\geq 0}\). Physically, let us define the displacement $\tilde{x}_k^{\text{obs}}\in\mathbb{R}$ as
+\begin{equation}
+  \tilde{x}_k^{\text{obs}}:=\bar{\dot{x}}_k\,\Delta t_k^{\text{obs}}, %lol why not->|{\hat{x}_t-\hat{x}_v}|\text{ with }v:=t-d_t^{\text{obs}}, seems you loose the amplitude of the velocity???
+\end{equation}
+where $\bar{\dot{x}}_t\in\mathbb{R}$ is the mean velocity measured empirically. Such displacement is later employed in the observed measurements. The correction step of the Kalman Filter is
+\begin{subequations}
+  \begin{align}
+    %e_{t} = x^{\text{obs}}_t+\tilde{x}_t - H\cdot\hat{x}_{t} \\<-not necessary
+    %S_{t} = H\cdot P_{t}\cdot H^T + R_{t} \\<-easier...
+    K_{k} &= P_{k}\cdot H^T(H\cdot P_{k}\cdot H^T + R_{k})^{-1}, \\
+    \hat{x}_{k}^f &= \hat{x}_{k} + K_{k}(x^{\text{obs}}_k+\tilde{x}^{\text{obs}}_k - \hat{x}_{k}), \\ %<- TBH not entirely sure why there as there is no system but directly estimate (you would compare the system with the measurement at this step) but ok; if it works then I am fine with it :) [just confirm it does]
+    P_{k}^f &= (I - K_{k}\cdot H) P_{k},
+  \end{align}
+\end{subequations}
+where $H=I$, and $x_t^{\text{obs}}$ is the position measured empirically at time $t$. Let us further define $R_t:=\sigma^{2}_{\text{obs}}I$ where $\sigma^{2}_{\text{obs}}\in\mathbb{R}$ is the variance of the velocities measured empirically. 
 
-% [Ad2]: P_{t} = ... P_{t} {last line should be P_{t} before and after estimation. Use P_{t}^- (what textbook? I can check the notation; Hector? Then P_{t}^f = ... P_(t}))}
-
-% [Georgios2:] That is true. We can use the symbols for "before" and "after" the correction step considering not only the convariance matrix P but also the x_hat ... fell free to change them accordingly
-
-where:
-\begin{align*}
-  z_{k} & = \begin{bmatrix} 
-      x_{obs} + dx_{obs} \\ 
-      y_{obs} + dy_{obs}
-  \end{bmatrix}, \qquad 
-  H_{k} = \begin{bmatrix} 
-            1 & 0 \\ 
-            0 & 1
-  \end{bmatrix}, \qquad
-  R_{k} = \begin{bmatrix} 
-            1 & 0 \\ 
-            0 & 1
-            \end{bmatrix} \cdot \sigma^{2}_{obs}  \\ 
-  dx_{obs} & = vx_{mean_{obs}} \cdot dt_{obs}, \qquad
-  dy_{obs} = vy_{mean_{obs}} \cdot dt_{obs} 
-\end{align*}
+The values of the estimated state $\hat{x}_{t}^f$, and error covariance matrix $P_{t}^f$, are used as input to the next iteration of the prediction step $\hat{x}_{t+1},P_{t+1}$.
 
 A velocity estimator is also constructed to determine the magnitude
 and direction of the moving platform's velocity vector. 
@@ -1180,6 +1161,10 @@ can be caused by oscillations of the UAV along with a fast update rate
 in the landing marker detection algorithm.  %\hemi{Please explain why
 %  the signal is the \emph{smoothest}.}
 
+\todo{
+  [Ad3:] confusing a bit; if we differentiate to estimate the velocity (dx/dt if x is the position) how we use low pass filter to estimate the same velocity we differentiated?
+}
+
 In the agricultural use-case the moving platform is likely to change
 its direction up to 180 degrees. Furthermore, it is assumed that the
 moving platform is a nonholonomic system, like a tractor. To
@@ -1194,6 +1179,10 @@ moving platform's velocity (\(\dot{x}_k^l\)) in \emph{NED} frame can be obtained
 \subsection{Wind Disturbances}
 \label{sec:WindDisturbances}
 
+\todo{
+  [Ad3:] the force is $F$. Why are we then calling it $force$ later on?
+}
+
 The exact and accurate estimation of the applied wind forces on a body
 is a complex matter studied by the field of fluid dynamics. We use a
 simplified approach, as follows. We assume that the wind will be
@@ -1206,13 +1195,18 @@ center of gravity of the UAV with direction parallel to the ground.
 The magnitude of the applied force, corresponding to a certain wind
 speed is calculated by the following equations
 \cite{Dynamic_pressure_NASA,anderson2010fundamentals}:
+\todo{
+  [Ad3:] the force is $F$. Why are we then calling it $force$?
+}
 
 \begin{equation}
     \begin{array}{l}
          F = p_{d} \cdot A  \\
          p_{d} = \frac{\varrho \cdot v^2}{2} 
     \end{array}
-\end{equation}
+\end{equation}\todo{
+  [Ad3:] can be one line, and actually, I would trust the reader to search for this one. Is really basic physics.
+}
 
 \noindent where $F$ is the force, \(p_{d}\) is the dynamic pressure, \(A\) is
 the area of the applied pressure, \(\varrho\) is the density of the
@@ -1244,10 +1238,12 @@ The magnitude of the wind is calculated as follows: %according to the following 
     \item The applied wind force is calculated as:\\
     
   
-    
+    \todo{
+          [Ad3:] this is just $F_k=w\cdot F\cdot r$? where $w,r$ is the direction vector you defined earlier \emph{[0.8, 0.2]} and $r$ a random number.
+        } 
         \(\mbox{\em force}_{x} = -x_{norm} * \mbox{\em force} * \mbox{\em Random\_noise} \\
          \mbox{\em force}_{y} = -y_{norm} * \mbox{\em force} * \mbox{\em Random\_noise}\)\\
-        
+         
 
     where \(x_{norm } = 0.8\), \(y_{norm}  = 0.2\) 
     
