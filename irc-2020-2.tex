@@ -284,7 +284,7 @@
   publisher={Springer}
 }
 @inproceedings{nardi2015introducing,
-  title={Introducing SLAMBench, a performance and accuracy benchmarking methodology for SLAM},
+  title={Introducing {SLAMBench}, a performance and accuracy benchmarking methodology for SLAM},
   author={Nardi, Luigi and Bodin, Bruno and Zia, M Zeeshan and Mawer, John and Nisbet, Andy and Kelly, Paul HJ and Davison, Andrew J and Luj{\'a}n, Mikel and O'Boyle, Michael FP and Riley, Graham and others},
   booktitle={2015 IEEE International Conference on Robotics and Automation (ICRA)},
   pages={5783--5790},
@@ -318,14 +318,14 @@
 }
 
 @misc{ArUco_marker,
-    title = "{Detection of ArUco markers}",
+    title = "{Detection of {ArUco} markers}",
     author="{OpenCV}",
     year = "2020",
     howpublished = "\url{https://docs.opencv.org/3.4/d5/dae/tutorial_aruco_detection.html}"
 }
 
 @misc{Dynamic_pressure_NASA,
-    title = "{Dynamic pressure (NASA)}",
+    title = "{Dynamic pressure {(NASA)}}",
     author="{NASA}",
     year = "2020",
     howpublished = "\url{https://www.grc.nasa.gov/WWW/K-12/airplane/dynpress.html}"
@@ -339,7 +339,7 @@
 }
 
 @article{yolov3,
-  title={YOLOv3: An Incremental Improvement},
+  title={{YOLOv3}: An Incremental Improvement},
   author={Redmon, Joseph and Farhadi, Ali},
   journal = {arXiv},
   year={2018}
@@ -388,13 +388,13 @@ in varying environmental conditions. We use
 a novel landing marker robust to occlusions to track the moving
 platform and the YOLOv3-tiny CNN to detect ground-based hazards in an agricultural use case. We
 perform all computations onboard using an NVIDIA Jetson Nano and analyse %we attempt to 
-% [Ad3:]\emph in the abstract? Eventually put it back (it was \emph{NVIDIA Jetson Nano})
+% X [Ad3:]\emph in the abstract? Eventually put it back (it was \emph{NVIDIA Jetson Nano})
 the impact on the flight time by profiling the energy consumption of the
 landing marker detection algorithm and YOLOv3-tiny CNN. %We conduct
 Experiments are conducted in Gazebo simulation using an energy
-% [Ad3:] then it's not consistent with formatting (used modeling tool instead of powp\emph{powprofiler}rofiler)
+% X [Ad3:] then it's not consistent with formatting (used modeling tool instead of powp\emph{powprofiler}rofiler)
 modeling tool to measure the energy cost as a function of QoS. %for autonomous
-% [Ad3:] acronym shouldn't be explained in the abstract but at first occurrence in the paper (I mean you can do it but then I'd expect the same for CNN and UAV)
+% X [Ad3:] acronym shouldn't be explained in the abstract but at first occurrence in the paper (I mean you can do it but then I'd expect the same for CNN and UAV)
 %tracking and landing. 
 Our experiments test the energy efficiency and
 robustness of our system in various dynamic wind
@@ -411,7 +411,7 @@ fixed-wing UAV but only marginal if executing on a standard multirotor UAV.
 % X [Ad2:] Typo: fixed-wing
 % X [Ad2:] Since the reader has no idea what powprofiler is at this point, I suggest using 'an energy modeling tool' instead.
 % X [Ad2:] Quality of Service (QoS) why to explain the acronym; I suppose it should be just QoS while it's properly introduced at first occurrence in the Introduction
-% [Ad2:] Various dynamic wind disturbances sounds confusing; I guess we might use dynamic only.
+% X [Ad2:] Various dynamic wind disturbances sounds confusing; I guess we might use dynamic only.
 
 
 \end{abstract}
@@ -458,7 +458,7 @@ towards environmental conditions such as visual disturbances and wind.
 %
 %is considered a more optimal option.
 
-% X [Ad2:] Typo: in this paper, [Ad3:] oko this doesn't sound that good after the comma anyways
+% X [Ad2:] Typo: in this paper, X [Ad3:] oko this doesn't sound that good after the comma anyways
 % X [Ad2:] Typo: landing system and
 
 Extension of the flight time can be also achieved by using
@@ -539,7 +539,7 @@ function of QoS.
 
 % [Georgios2:]Saripalli and Lee both performed offline/offboard computations and that is the purpose of this paragraph. To show the importance of performing the computations onboard.
 
-% [Ad3:] Good, it's another Saripalli's work; thought the previous chapter was the same work (hence the confusion). Maybe later instead of also? Flows sort of better.
+% X [Ad3:] Good, it's another Saripalli's work; thought the previous chapter was the same work (hence the confusion). Maybe later instead of also? Flows sort of better.
 
 % X [Ad2:] Typo: if you don't stick with the above suggestion, there is a comma after However missing
 % X [Ad2:] Typo: onboard
@@ -558,8 +558,8 @@ relative pose of the UAV from the moving platform was obtained. A
 color segmentation approach was also implemented by Lee
 et~al.~\cite{lee2016vision}. A red rectangle was used as a landing marker while the detection was done by a vertically facing camera with a fish-eye lens. The setup accounted for a successful landing from an altitude of \SI{70}{\m}. In the above two cases an on-board companion computer is used to
 perform all the computations on the UAV. However, we in this work do not consider a color segmentation
-approach as a safe option, since for a realistic (outdoor)
-case it would be difficult, if not impossible, to ensure that the
+approach, since for a realistic (outdoor)
+case it would be difficult to ensure that the
 landing marker will be the only object of a specific color in the
 scene.
 
@@ -568,7 +568,7 @@ scene.
 % X [Ad2:] Sounds like the sentence "By fusing the height measurement from the LiDAR into the vision measurement, a relative pose of the UAV from the moving platform was obtained." sounds unnecessarily complicated {in fact I don't understand} -> "The relative pose of the UAV with respect to the moving platform was obtained fusing the height taken visually and using a LiDAR." {although again not sure how the height is obtained visually; seems I am missing some points so in case ignore}
 % [Georgios2:] The height is not ontained visually but only from the LiDAR sensor. The vision measurement is in pixels. By combining the pixel measurement and the distance from the LiDAR we are able to find the 3d position of the target. If we do not have the distance measurement (from the LiDAR) we can only have the homogeneous coordinates of the target, not the 3d world coordinates. I would leave this sentence as it is.
 
-% [Ad3:] perhaps vision measurement -> distance measurement? Is vision measurement a conventional way of saying the value of the distance taken from the lidar? IDN
+% X [Ad3:] perhaps vision measurement -> distance measurement? Is vision measurement a conventional way of saying the value of the distance taken from the lidar? IDN
 
 %[Georgios3:] I would stick to distance measurement since I think that LiDARs are not considered as vision sensors like cameras are.
 
@@ -578,7 +578,7 @@ scene.
 % X [Ad2:] teams -> approaches {teams sounds like they participated in these competitions...}
 % [Georgios2:] Will add "researchers" instead of "teams"
 
-% [Ad3:] LOL sorry for being annoying but it's et. al. in both cases so it's not entirely clear which researchers from the et. al. :P
+% X [Ad3:] LOL sorry for being annoying but it's et. al. in both cases so it's not entirely clear which researchers from the et. al. :P
 
 %[Georgios3:] No worries :P ... I rephrazed it.
 
@@ -587,16 +587,18 @@ scene.
 
 %[Georgios2:] We do not know the environment that they performed the landing. Although outside, a red car present in the scene might cause their algorithm to fail. I would suggest keeping that as it is.
 
-% [Ad3:] yes, but it sounds we are criticizing them while we are not even stating in that sentence what we are using instead (if I am a reviewer and I see somebody taking such position I start questioning). I would be rather conservative. Maybe omitting However on?
+% X [Ad3:] yes, but it sounds we are criticizing them while we are not even stating in that sentence what we are using instead (if I am a reviewer and I see somebody taking such position I start questioning). I would be rather conservative. Maybe omitting However on?
 
 %[Georgios3:] I would consider as an assumption we make to increase the overall robustness. I am ok in omitting it if it seems too criticizing
+
+% [Ad4:] Good; I see the point, the reader might not though. Rephrased a little to be more 'gentle' (without as a safe option, and if not impossible)
 
 The use of a hybrid camera system consisting of a fish-eye IR camera
 and a stereo camera was demonstrated by Yang
 et~al.~\cite{yang2018hybrid}. An ArUco marker was used to mark the
 moving platform and a convolutional neural network (CNN) YOLO~v3 was
 trained specifically for marker detection. A similar approach
-concerning the detection of a landing marker was demonstrated by
+concerning the detection of a landing marker was adopted by
 Nguyen et~al.~\cite{nguyen2018lightdenseyolo} in which a specific CNN was trained to detect a landing marker pattern: successful
 detection of a \SI{1}{\m}$\times$\SI{1}{\m} marker size was demonstrated from a
 distance of \SI{50}{\m}. An AprilTag marker was used as a landing marker by
@@ -620,9 +622,11 @@ a different QoS can be chosen for each algorithm.
 % X [Ad2:] teams -> approaches {here is really unclear if it refers to the participants of the challenge or the approaches}
 % Agree on that. Changed it from "teams" to "In the above three cases, the researchers..."
 
-% [Ad3:] In the sentence Here...detect it we might change one of the specific to given (3x specific like words)
+% X [Ad3:] In the sentence Here...detect it we might change one of the specific to given (3x specific like words)
 
 %[Georgios3:] I rephrazed it
+
+% [Ad4:] I saw too much demonstrated then :P (just used adopted at one occurrence)
 
 % [Ad: energy-sensitive part {begin}]
 %
@@ -681,14 +685,16 @@ a constant wind speed of \SI{5}{\m \per \s} as an external disturbance in a
 simulation environment. Nevertheless, a fluctuation in the wind's
 magnitude and direction is likely to happen in realistic cases.
 %/
-Concerning estimation of the moving platform's position and velocity,
+Concerning estimation of the drone's position,
 similar to our approach a Kalman Filter or Extended Kalman Filter (EKF) has been used for the
 estimation~\cite{araar2017vision,feng2018autonomous,
   falanga2017vision}, whereas Yang et~al.~\cite{yang2018hybrid}
 constructed a velocity observer algorithm by calculating the actual
 moving distance of the moving platform over a period of time.
 
-% [Ad3:!] we are just estimating the position of the drone given the velocity of the moving platform.
+% X [Ad3:!] we are just estimating the position of the drone given the velocity of the moving platform.
+
+% [Ad4:] changed from moving platform to drone, from position, velocity to position. 
 
 
 \section{Energy-Sensitive Mission Deployment} 
@@ -714,7 +720,7 @@ The energy-sensitive design using \powprof{} relies on empirical
 experiments to measure the actual power consumption on the robot
 hardware~\cite{seewald2019coarse}.
 %
-% [Ad3:] Ulrik, the sentence seems to fit better in SoA? Yes, nice! /ups
+% X [Ad3:] Ulrik, the sentence seems to fit better in SoA? Yes, nice! /ups
 %
 In this paper, we focus on the
 initial profiling using of energy usage of the companion computer,
@@ -749,7 +755,7 @@ power consumption. This can be done in two different ways:
 \item Semi-automatically using \powprof{} to sample energy and combine
   the results of all experiments, but allowing the developer to
   control all aspects of the experiment execution. This approach is
-% [Ad3:] of the experiment -> of the exeprimental? Sounds sort of better. 
+% X [Ad3:] of the experiment -> of the exeprimental? Sounds sort of better. 
   new and is described in more detail later in this
   section. Basically, a ROS node interfaces to \powprof{} and is used
   by the developer to start/stop sampling in a given
@@ -767,7 +773,7 @@ employed to reduce the number of experiments, and missing values are
 automatically inferred from the others by the means of a multivariate
 linear interpolation.
 
-% [Ad3:] what we do is actually regression because we use gnuplot; while if we use interpolation we have to explicitly call it in powprof. I guess fine then; just being very very annoying :)
+% X [Ad3:] what we do is actually regression because we use gnuplot; while if we use interpolation we have to explicitly call it in powprof. I guess fine then; just being very very annoying :)
 
 In the context of this paper, sampling experiments are iterated in a
 simulated environment with different configurations.  For example, the
@@ -825,9 +831,9 @@ dynamically changing wind disturbances is analysed and described in
 Section~\ref{sec:WindDisturbances}, allowing the system to be tested
 in a more realistic simulation.
 
-% [Ad2:] energy-sensitive design approach doesn't seem to fit the context. Maybe point of view instead of approach
-% [Ad3:] the thing about approach is that we say it earlier meaning 'the paper'. Hence confusion (the paper is not only energy sensitiveness)
-% [Ad3:] it's not the use-case being realistic but the simulation? 'realistic use-case' -> 'realistic simulation'
+% X [Ad2:] energy-sensitive design approach doesn't seem to fit the context. Maybe point of view instead of approach
+% X [Ad3:] the thing about approach is that we say it earlier meaning 'the paper'. Hence confusion (the paper is not only energy sensitiveness)
+% X [Ad3:] it's not the use-case being realistic but the simulation? 'realistic use-case' -> 'realistic simulation'
 % [Georgios3:] Rephrazed it into "in a more realistic simulation"
 
 \begin{figure}
@@ -849,7 +855,7 @@ detect the moving platform from a high altitude, while the ArUco
 markers are used as extra landmarks in case the marker is partially
 visible in the image frame.
 
-% [Ad3:!] what does it mean different ids?
+% X [Ad3:!] what does it mean different ids?
 
 %[Georgios3:] ids = identifications, like the ID.
 
@@ -859,7 +865,7 @@ an Intel RealSense D435 camera. In the Gazebo simulation a color camera
 with the same distortion coefficients as the Intel camera is used to
 output a \SI{640}{}$\times$\SI{480}{} pixel image at \SI{10}{} frames per second (fps).
 
-% [Ad3:] I'd put the number in the text as it is, but we started with this SI earlier, so now I am just being consistent.
+% X [Ad3:] I'd put the number in the text as it is, but we started with this SI earlier, so now I am just being consistent.
 
 To extract the pixel coordinates of the tip of the n-fold marker, a
 kernel size of \SI{13}{}$\times$\SI{13}{} pixels consisting of a real and imaginary
@@ -878,7 +884,7 @@ n-fold marker along with its orientation/phase.
 
 % [Georgios2:] I think the way I wrote it in the paper is the simplest way to explain it without consuming a lot of space. Otherwise I would have to add equations, figures and then we would need an extra two pages. In computer vision, a convolution is a pixel-wise opearation. For each pixel, a weighted sum of the nearby pixel values is calculated ,according to a kernel size and kernel weights. In our case the kernel size is of 13x13 pixels and the weights are not real numbers but complex numbers (having a real and imaginary part). 
 
-% [Ad3:] oki doki [but 'the simplest way to explain it' is very definitive. Are you entirely entirely sure of it? ;P]
+% X [Ad3:] oki doki [but 'the simplest way to explain it' is very definitive. Are you entirely entirely sure of it? ;P]
 
 Since a convolution is a computationally expensive process, an increase
 in the kernel size would also increase the computation time and
@@ -925,7 +931,7 @@ relative position \emph{[X, Y, Z]} according to a local coordinate frame. The
 origin of the local coordinate frame \emph{[0, 0, 0]} is defined as the
 center of the landing marker and alignment according to the North,
 East, Down (\emph{NED}) frame.
-% [Ad3:] here is exactly where putting coordinate frame instead of just frame would just make it
+% X [Ad3:] here is exactly where putting coordinate frame instead of just frame would just make it
 %
 %UPS: @Georgios I'm not sure I understand what the NED frame is, can you rephrase or elaborate?
 %
@@ -939,10 +945,10 @@ pixel coordinates into real world \emph{X, Y} coordinates in meters:
 %. This algorithm is described below:
 %
 
-% [Ad2:] it should be NED coordinates? Frame is a navigation frame where we'd have a world one that defines the origin and the body one that define the position of the UAV?
+% X [Ad2:] it should be NED coordinates? Frame is a navigation frame where we'd have a world one that defines the origin and the body one that define the position of the UAV?
 %[Georgios2:] I would stick to NED frame although we could say NED system. For consistency reasons, since we use NED frame everywhere lets stick to it. Concerning world frame and body frame: Both frames are in the 3d world. The body frame has its origin (0,0,0) on the UAV and is aligned to the front side of the UAV. The world frame, in our case the landing site's local coordinate frame has its origin (0,0,0) on the tip of the nfold marker and is aligned to NED frame, meaning it always faces towards the magnetic North.
 
-% [Ad3:] an open dispute here ;P
+% X [Ad3:] an open dispute here ;P
 
 % X [Ad2:] will be used sounds like future work. Perhaps is being used?
 %[Georgios2:] Agree on that. Changed from "will be used" to "are used"
@@ -969,19 +975,19 @@ the UAV's \emph{BODY} frame, are determined by using the normalised coordinates 
 step 2 along with the UAV's altitude. The result is a projection plane of the 
 image corners on the ground.
 
-% [Ad2:] The world coordinates -> the coordinates {coordinates in respect of the world reference frame and not world's coordinates}
+% X [Ad2:] The world coordinates -> the coordinates {coordinates in respect of the world reference frame and not world's coordinates}
 % [Georgios2:] Rephrased the above paragraph. Hope it makes more sense?
 
 \item The perspective homography matrix is calculated between the two planes, 
 the image plane and the world plane from step 3.
 
-% [Ad3:] two instead of 2 (otherwise I get confused if to use SI)
+% [Ad3:] X two instead of 2 (otherwise I get confused if to use SI)
 
 \item The homography matrix from step 4 is used to convert the pixel coordinates 
 of the tip of the n-fold marker from the image plane, into  coordinates (in meters) 
 in the UAV's \emph{BODY} frame.
 
-% [Ad2:] The pixel coordinates are converted into world coordinates -> Pixels are converted into meters {not sure what pixel coordinates are as this is the first time we mention them}
+% [Ad2:] X The pixel coordinates are converted into world coordinates -> Pixels are converted into meters {not sure what pixel coordinates are as this is the first time we mention them}
 % [Georgios2:] Agree on that. Rephrased it.
 
 \item The coordinates from step 5 are in respect to the UAV's \emph{BODY} frame. 
@@ -990,19 +996,19 @@ controller is used.
 
 %are converted from the camera's \emph{BODY} frame into the camera's \emph{NED} frame by using the yaw IMU data from the flight controller.
 
-% [Ad2:] The world coordinates -> the coordinates {coordinates in respect of the world reference frame and not world's coordinates}
-% [Ad2:] are converted from the camera's \emph{BODY} frame into the camera's \emph{NED} frame -> are converted to the \emph{NED} coordinates {NED is not a frame, NED are coordinates or I am totally missing something here}
+% X [Ad2:] The world coordinates -> the coordinates {coordinates in respect of the world reference frame and not world's coordinates}
+% X [Ad2:] are converted from the camera's \emph{BODY} frame into the camera's \emph{NED} frame -> are converted to the \emph{NED} coordinates {NED is not a frame, NED are coordinates or I am totally missing something here}
 % {Georgios2:] I rephrased it. Let me know what you think. 
 
-% [Ad3:] confusing sry ;( I understood you read the position from PX4 in NED coordinate frame. I read UAV frame has it's own coordinate frame which is (0,0,0) that is converted into NED coordinate frame: you just use the reading right? It's not a conversion then
+% X [Ad3:] confusing sry ;( I understood you read the position from PX4 in NED coordinate frame. I read UAV frame has it's own coordinate frame which is (0,0,0) that is converted into NED coordinate frame: you just use the reading right? It's not a conversion then
 
 %[Georgios3:] The UAV BODY frame and the UAV NED frame have the same origion but different alignment. The NED always faces the magnetic North while the BODY faces according to the front side of the UAV.
 
 \item The coordinates from step 6, are converted from UAV's \emph{NED} frame 
 into the landing site's local coordinate frame.
 
-% [Ad2:] The world coordinates -> the coordinates {coordinates in respect of the world reference frame and not world's coordinates}
-% [Ad2:] are converted from camera's \emph{NED} frame -> are converted from \emph{NED} coordinates {NED is not a frame, NED are coordinates or I am totally missing something here}
+% X [Ad2:] The world coordinates -> the coordinates {coordinates in respect of the world reference frame and not world's coordinates}
+% X [Ad2:] are converted from camera's \emph{NED} frame -> are converted from \emph{NED} coordinates {NED is not a frame, NED are coordinates or I am totally missing something here}
 
 \item For ArUco markers only, an offset vector in the x, y axis is added depending 
 on the distance of each ArUco marker from the tip of the n-fold marker. 
@@ -1021,28 +1027,30 @@ marker.
 \label{sec:Navigation}
 
 The purpose of the navigation block is to provide an accurate
-prediction for the state of the UAV at any given time. This is
-important because it will allow us to process images at different fps
+prediction for the state of the UAV at any given time. Such a prediction allow us potentially to process images at different fps
 according to a desired QoS. Furthermore, the overall robustness of the
 system is increased in case the moving platform is not detected in
 every image frame. A velocity estimator for the moving platform will
 also be implemented as a part of the navigation block.
 
-% [Ad3:] state -> position; state seems confusing with battery, compoenents
-% [Ad3:] sentence 'This is important because it will allow us to process images at different fps according to a desired QoS.' mmmh; not sure. Not really actually because we don't change QoS dynamically with the position (we actually don't change QoS at all)
+% X [Ad3:] state -> position; state seems confusing with battery, compoenents
+% X [Ad3:] sentence 'This is important because it will allow us to process images at different fps according to a desired QoS.' mmmh; not sure. Not really actually because we don't change QoS dynamically with the position (we actually don't change QoS at all)
 
 % Well ideally we could change it dynamically despite the fact that we are not doing it in this paper.
+
+% [Ad4:] Better not promise what we are not doing (this is new section, so you have the reader reading well here)
 
 The variables of interest that describe the state of the UAV for this project are:
 %
 \begin{itemize}
 
 \item The relative position of the UAV from the moving platform, 
-$x_k$, \todo[noinline]{I think we might have used a bad name for this value. It currently overlaps with the estimated position of the UAV
-relative to the landing target.}
+$x_k\in\mathbb{R}^2$ %\todo[noinline]{I think we might have used a bad name for this value. It currently overlaps with the estimated position of the UAV
+%relative to the landing target.}
+% [Ad4:] Henrik, that's fine. Clicks, position x, estimated hat_x?
 .
 
-% [Ad3:] confusing; we calculate the position here of the UAV but they are calculated as described in another section. Would erase calculated on, or describe that one is the visual measurement and is used for the purpose of estimation in our EKF.
+% X [Ad3:] confusing; we calculate the position here of the UAV but they are calculated as described in another section. Would erase calculated on, or describe that one is the visual measurement and is used for the purpose of estimation in our EKF.
 
 % [Georgios3:] Agree on that. I deleted it.
 
@@ -1051,17 +1059,17 @@ relative to the landing target.}
 \item the velocity of the UAV, $\dot{x}_k$, in \emph{NED} frame, obtained from 
 the flight controller's EKF.
 
-% [Ad2:] NED coordinates
+% X [Ad2:] NED coordinates
 % [Georgios2:]I would stick to NED frame for consistency.
 
-\item the acceleration of the UAV, $\ddot{x}_k$, in \emph{NED} frame, obtained by differentiating the velocities.\todo[noinline]{These values are also described on the next page.}
+\item the acceleration of the UAV, $\ddot{x}_k$, in \emph{NED} frame, obtained by differentiating the velocities.% X \todo[noinline]{These values are also described on the next page.}
 
-% [Ad2:] NED coordinates
-% [Ad2:] or ... velocities ->   {How to differentiate velocities? If the velocity is from the flight controller, it's just a value. So we calculate the tangent? I would omit this. Later we don't mention any differentiation but just say they are 'obtained from the flight controller's onboard sensors'}
+% X [Ad2:] NED coordinates
+% [X Ad2:] or ... velocities ->   {How to differentiate velocities? If the velocity is from the flight controller, it's just a value. So we calculate the tangent? I would omit this. Later we don't mention any differentiation but just say they are 'obtained from the flight controller's onboard sensors'}
 
 %[Georgios2:] Considering the calculation of acceleration: Yes we calculate the tangent. We can omit this is you want.
 
-% [Ad3:] it's little confusing because ... well "which one are you using guys?"; I'd omit still ¯\_(ツ)_/¯ 
+% X [Ad3:] it's little confusing because ... well "which one are you using guys?"; I'd omit still ¯\_(ツ)_/¯ 
 
 %[Georgios3:] Solved. I kept the differentiation of the velocities.
 
@@ -1083,53 +1091,54 @@ Prediction Step:\begin{subequations}
 \hat{x}_{k} & = F \cdot \hat{x}_{k-1} + G_{k} \cdot u_{k}, \\ 
 P_{k} & = F \cdot P_{k-1} \cdot F^\top + Q_{k},
 \end{align}\end{subequations}
-
-where $x_k \in \mathbb{R}^2$ is the position of the UAV, $u_{k} = \begin{bmatrix}\dot{x}_k & \ddot{x}_k & \dot{x}_{k}^l\end{bmatrix}^\top$ is its control with $x_k,x_k^l$ being the positions of the UAV and the moving paltform respectively.
-Given $I:=I_2$, a \SI{2}{}$\times$\SI{2}{} identity matrix, the matrix $F=I$, the noise covariance matrix $Q_k=\Delta t_k\cdot\sigma^2_{\textrm{IMU}}\cdot I$, and $\sigma^2_{\textrm{IMU}}\in\mathbb{R}$ is the variance of the velocities retrieved from the flight controller's data.\todo[noinline]{Is this the right word? [Ad3:] actually no/yes--diatrabes between controls people stating that the model of the system is perfect since is a model [cite Hector]} Further, \(\Delta t_k\) is the time interval the flight controller output the data (usually around \SI{33}{\ms}). 
+where %$x_k \in \mathbb{R}^2$ is the position of the UAV, 
+$u_{k} = \begin{bmatrix}\dot{x}_k & \ddot{x}_k & \dot{x}_{k}^l\end{bmatrix}^\top$ is its control with $x_k,x_k^l$ being the positions of the UAV and the moving paltform respectively.
+Given $I:=I_2$, a \SI{2}{}$\times$\SI{2}{} identity matrix, the matrix $F=I$, the noise covariance matrix $Q_k=\Delta t_k\cdot\sigma^2_{\textrm{IMU}}\cdot I$, and $\sigma^2_{\textrm{IMU}}\in\mathbb{R}$ is the variance of the velocities retrieved from the flight controller's data.%\todo[noinline]{Is this the right word? 
+% [Ad4:] actually no/yes--diatrabes between controls people stating that the model of the system is perfect since is a model [cite Hector]}
+Further, \(\Delta t_k\) is the time interval the flight controller output the data (usually around \SI{33}{\ms}). 
 The input matrix is given by:
-\todo{Henrik, little lengthy with implicitly saying "is a 2 by 2 identity matrix"; what about this one?}
+% [Ad4:] Henrik, little lengthy with implicitly saying "is a 2 by 2 identity matrix"
 \begin{align*}
 G_{k} & = \begin{bmatrix}
     \Delta t_k & 0 & \frac{\Delta t_k^{2}}{2} & 0 & -\Delta t_k & 0\\ 
-    0 & \Delta t_k & 0 & \frac{\Delta t_k^{2}}{2} &0 & -\Delta t_k\end{bmatrix}, \\
+    0 & \Delta t_k & 0 & \frac{\Delta t_k^{2}}{2} &0 & -\Delta t_k\end{bmatrix},
 \end{align*}
-\todo{
-  Ad3: Actually $G_k$ might still go easily inline. Something like (commented because latex generates error). Up to you
-  % Here: $G_k=\Delta t_k\begin{bmatrix}I & \Delta t_kI/2 & -I\end{bmatrix}$
-}
+% X \todo{
+% X  Ad3: Actually $G_k$ might still go easily inline. Something like (commented because latex generates error). Up to you
+% X  % Here: $G_k=\Delta t_k\begin{bmatrix}I & \Delta t_kI/2 & -I\end{bmatrix}$
+% X }
 %The system is initialized with $P_0=I$ and $\hat{x}_0$ coming from the initial measurement.
-
 %where:
-\todo{
-  Ad3: the itemize doesn't really add any information the reader doesn't know so far (takes space also)... Makes sense in a thesis, report, not in a paper.
-}
-\begin{itemize}
-\item  \(x_k \) is the position of the UAV in the landing site's local 
-coordinate system (aligned with NED frame), 
-\item \(\Delta t_k\) is the time interval the PX4's EKF outputs the \(v_x, v_y\) data, 
-usually around 33ms, 
-\item \(\dot{x}_k\) is the linear velocity of the UAV in NED frame, 
-estimated from the PX4's EKF,
-% [Ad2:] NED frame -> NED coordinates
-
-\item \(\ddot{x}_k\) is the linear acceleration of the UAV in NED frame, 
-estimated on the companion computer from differentiating the velocities.
-
-% [Ad2:] NED frame -> NED coordinates
-
-\item \(\dot{x}_k^l\) is the linear 
-velocity of the moving platform in NED frame, estimated from the velocity 
-estimator for the moving platform,
-
-% [Ad2:] NED frame -> NED coordinates
-
-\item \(\sigma^{2}_{\textrm{IMU}}\) is the variance of the velocities based 
-estimated by the PX4's EKF.
-\end{itemize}
-
-\todo{
-  Ad3: from here to windspeed, I just apply my earlier math suggestion. Henrik, Georgios please check/change/revise.
-}
+% X \todo{
+% X  Ad3: the itemize doesn't really add any information the reader doesn't know so far (takes space also)... Makes sense in a thesis, report, not in a paper.
+% X }
+% \begin{itemize}
+% \item  \(x_k \) is the position of the UAV in the landing site's local 
+% coordinate system (aligned with NED frame), 
+% \item \(\Delta t_k\) is the time interval the PX4's EKF outputs the \(v_x, v_y\) data, 
+% usually around 33ms, 
+% \item \(\dot{x}_k\) is the linear velocity of the UAV in NED frame, 
+% estimated from the PX4's EKF,
+% % [Ad2:] NED frame -> NED coordinates
+% 
+% \item \(\ddot{x}_k\) is the linear acceleration of the UAV in NED frame, 
+% estimated on the companion computer from differentiating the velocities.
+% 
+% % [Ad2:] NED frame -> NED coordinates
+% 
+% \item \(\dot{x}_k^l\) is the linear 
+% velocity of the moving platform in NED frame, estimated from the velocity 
+% estimator for the moving platform,
+% 
+% % [Ad2:] NED frame -> NED coordinates
+% 
+% \item \(\sigma^{2}_{\textrm{IMU}}\) is the variance of the velocities based 
+% estimated by the PX4's EKF.
+% % \end{itemize}
+% [Ad4:] we are really tight on space and the itemize just rephrase what is said before
+% \todo{
+%   Ad3: from here to windspeed, I just apply my earlier math suggestion. Henrik, Georgios please check/change/revise.
+% }
 
 In the correction step, the observed measurements from the downward
 looking camera are used to correct and update the estimated
@@ -1156,7 +1165,7 @@ The values of the estimated state $\hat{x}_{t}^f$, and error covariance matrix $
 A velocity estimator is also constructed to determine the magnitude
 and direction of the moving platform's velocity vector. 
 The magnitude
-is calculated by differentiating two sequential \emph{X, Y} positions 
+is calculated by differentiating two sequential positions 
 of the tractor, obtained by detecting the n-fold marker from the 
 vertically facing camera as explained in section \ref{sec:Detection}  
 and taking into consideration the
@@ -1167,9 +1176,13 @@ can be caused by oscillations of the UAV along with a fast update rate
 in the landing marker detection algorithm.  %\hemi{Please explain why
 %  the signal is the \emph{smoothest}.}
 
-\todo{
-  Ad3: confusing a bit; if we differentiate to estimate the velocity (dx/dt if x is the position) how we use low pass filter to estimate the same velocity we differentiated?
-}
+% [Ad4:] x,y confuses with state
+
+% X \todo{
+% X  Ad3: confusing a bit; if we differentiate to estimate the velocity (dx/dt if x is the position) how we use low pass filter to estimate the same velocity we differentiated?
+% X }
+
+% [Ad4:] Nobody will notice anyways........ :S
 
 In the agricultural use-case the moving platform is likely to change
 its direction up to 180 degrees. Furthermore, it is assumed that the
@@ -1178,15 +1191,16 @@ compensate for sudden turns, the moving platform's yaw orientation
 will be taken into account. Based on the velocity's magnitude and moving platform's yaw orientation, the
 moving platform's velocity (\(\dot{x}_k^l\)) in \emph{NED} frame can be obtained.
 
+% [Ad4:] nonholonomic? lol yes and no :P we put just control which is velocity accel velocity of platform and not position (apart init guess); nobody will still notice........ ;S
 
 
 
 
-\subsection{Wind Disturbances}
+\subsection{Wind disturbances}
 \label{sec:WindDisturbances}
-\todo{
-  Ad3: the force is $F$. Why are we then calling it $force$ later on?
-}
+%\todo{
+%  Ad3: the force is $F$. Why are we then calling it $force$ later on?
+%}
 The exact and accurate estimation of the applied wind forces on a body
 is a complex matter studied by the field of fluid dynamics. We use a
 simplified approach, as follows. We assume that the wind will be
@@ -1199,17 +1213,15 @@ center of gravity of the UAV with direction parallel to the ground.
 The magnitude of the applied force, corresponding to a certain wind
 speed is calculated by the following equations
 \cite{Dynamic_pressure_NASA,anderson2010fundamentals}:
-
 \begin{equation}
     \begin{array}{l}
-         F = p_{d} \cdot A  \\
-         p_{d} = \frac{\varrho \cdot v^2}{2} 
+         F = p_{d} \cdot A,\,\,\,
+         p_{d} = \frac{\varrho \cdot v^2}{2},
     \end{array}
-\end{equation}\todo{
-  Ad3: can be one line, and actually, I would trust the reader to search for this one. Is really basic physics.
-}
-
-\noindent where $F$ is the force, \(p_{d}\) is the dynamic pressure, \(A\) is
+\end{equation}%\todo{
+%  Ad3: can be one line, and actually, I would trust the reader to search for this one. Is really basic physics.
+%}
+\noindent where $F_{\text{init}}$ is the force, \(p_{d}\) is the dynamic pressure, \(A\) is
 the area of the applied pressure, \(\varrho\) is the density of the
 air (around \SI{1.2}{\kg \per \m^3}), \(v\) is the wind velocity in \SI{}{\m \per \s}.
 
@@ -1224,42 +1236,44 @@ virtual UAV.
 To simulate a wind pattern the wind direction and magnitude must be
 defined. The wind direction is assumed to remain the same for the
 whole duration of the experiments. That direction vector is defined as
-\emph{[0.8, 0.2]} according to Gazebo's \emph{(x, y)} axes.
+$w=\begin{bmatrix}0.8 & 0.2\end{bmatrix}^\top$ according to Gazebo's \emph{(x, y)} axes.
 %
 The magnitude of the wind is calculated as follows: %according to the following pattern:
+
+% [Ad4:] added a name to the direction.
 
 \begin{itemize}
     \item An initial wind force of either \SI{3.45}{\newton} or \SI{7.76}{\newton} is chosen.
     
     \item An update cycle of \SI{5.5}{\second} is chosen between two different applied forces.
     
-    \item A random float number between 0.9 and 1.2 is chosen at every update 
-    cycle. This number is defined as \emph{Random\_noise}.
+    \item A random float number between \SI{0.9}{} and \SI{1.2}{} is chosen at every update 
+    cycle. This number is defined as $r\in\mathbb{R}$.
     
-    \item The applied wind force is calculated as:\\
-    
-  
-    \todo{
-          Ad3: this is just $F_k=w\cdot F\cdot r$? where $w,r$ is the direction vector you defined earlier \emph{[0.8, 0.2]} and $r$ a random number.
-        } 
-        \(\mbox{\em force}_{x} = -x_{norm} * \mbox{\em force} * \mbox{\em Random\_noise} \\
-         \mbox{\em force}_{y} = -y_{norm} * \mbox{\em force} * \mbox{\em Random\_noise}\)\\
-         
+    \item The applied wind force is calculated as $\hat{F}=w\cdot F\cdot r$ :
+%    
+%  
+%    X \todo{
+%    X       Ad3: this is just $F_k=w\cdot F\cdot r$? where $w,r$ is the direction vector you defined earlier \emph{[0.8, 0.2]} and $r$ a random number.
+%    X     } 
+%        \(\mbox{\em force}_{x} = -x_{norm} * \mbox{\em force} * \mbox{\em Random\_noise} \\
+%         \mbox{\em force}_{y} = -y_{norm} * \mbox{\em force} * \mbox{\em Random\_noise}\)\\
+%         
+%
+%    where \(x_{norm } = 0.8\), \(y_{norm}  = 0.2\) 
 
-    where \(x_{norm } = 0.8\), \(y_{norm}  = 0.2\) 
-    
-    For an altitude of \SI{6.0}{\meter} and above, \(\mbox{\em force} = \mbox{\em force}_{init}\) where \( \mbox{\em force}_{init}\) is either \SI{3.45}{\newton} or \SI{7.76}{\newton}
-    
+% [Ad4:] used such direction
+\begin{itemize}
+    \item For an altitude of \SI{6.0}{\meter} and above, $F=F_{\text{init}}$. % where $F_{\text{init}}$ is either \SI{3.45}{\newton} or \SI{7.76}{\newton}
+% [Ad4:] said before.
     \item For a UAV altitude of \SI{6.0}{\meter} and below, the wind force decreases as:
-   \( \mbox{\em force} = \mbox{\em force}_{init}* (\mbox{\em altitude}/ 6.0)  \)
-   
+   $F=F_{\text{init}}\cdot h/ 6$ where $h$ is the altitude.
    %, where \(\mbox{\em force}_{init}\) is either \SI{3.45}{\newton} or \SI{7.76}{\newton}
-   
-   \item For a UAV altitude of \SI{3}{\meter} and below, \(\mbox{\em force} = 0.5 N\). 
-
-    
+   \item For a UAV altitude of \SI{3}{\meter} and below, $F = 0.5$. 
+\end{itemize}
 \end{itemize}
 %
+% [Ad4:] cleaned a little, same meaning.
 This model is created to simulate different scaling in the wind's magnitude and will be used for all simulated tests.
 
 %%%%%%%%%%%%%%%%%%%%
@@ -1283,6 +1297,8 @@ moving platform to recharge.
 No communication link is considered between the moving platform and the UAV
 and no GNSS positioning is assumed to be available. The system can thus be
 considered as a fallback for fault-tolerance.
+
+% [Ad4:] GNSS?
 
 %For the first use, the UAV will track and follow the moving platform from a desired altitude, while detecting and classifying objects on the ground.
 
@@ -1310,9 +1326,9 @@ Pre-trained weights for \emph{YOLOv3-tiny}, were initially used but the
 performance on detecting objects from a downward facing camera was
 not satisfactory. Since a dataset for detecting the above four classes
 from a top view was not available, we created an artificial dataset
-based on the Gazebo models. The dataset consists of 1200 images, 300
+based on the Gazebo models. The dataset consists of \SI{1200}{} images, \SI{300}{}
 for each class. We trained the \emph{YOLOv3-tiny} by its default training
-parameters for 5000 epochs, for an input image size of 416$\times$416
+parameters for \SI{5000}{} epochs, for an input image size of \SI{416}{}$\times$\SI{416}{}
 pixels.
 
 %For the following experiments, the input image to $YOLOV3$ $tiny$ will be resized to a 416$\times$416 pixel size. 
@@ -1320,17 +1336,19 @@ pixels.
 \subsection{Experimental setup}
 
 All experiments are performed in Gazebo simulation under Ubuntu 18.04
-and ROS Melodic on a i7-8550U 1.8GHz (4.0GHz Boost), 8GB DDR4
+and ROS Melodic on a i7-8550U 1.8~GHz (4.0~GHz Boost), 8~GB DDR4
 laptop. The \emph{PX4} Software In The Loop (SITL) Firmware v1.10.2 is used as the flight
 controller and the \emph{IRIS} quadcopter is used as the UAV platform. A
 vertically facing RGB camera is placed on the UAV providing a
-640$\times$480 pixel image at 10~fps. An Nvidia Jetson Nano
+\SI{640}{}$\times$\SI{480}{} pixel image at 10 fps. An NVIDIA Jetson Nano
 with Ubuntu 18.04 and ROS Melodic is used as the UAV's companion
-computer. All the computer vision, guidance, and control algorithms 
-execute on the Nvidia Jetson Nano, similar to how they would
-be deployed if the Nano was a companion computer in a physical drone.
+computer. 
+%All the computer vision, guidance, and control algorithms 
+%execute on the NVIDIA Jetson Nano, similar to how they would
+%be deployed if the Nano was a companion computer in a physical drone.
 %
-Energy profiling is performed directly on the Nvidia Jetson
+% [Ad4:] are we sure KF executes on Nano? Thought it was a pythom sim. Better not stating if not sure
+Energy profiling is performed directly on the NVIDIA Jetson
   Nano using \powprof{} as outlined in Section~\ref{sec:semi-automatic}.
 
 Two groups of experiments are conducted. The first group evaluates the
@@ -1388,25 +1406,7 @@ correctly detected.
 %than the fps update rates since for higher wind speed, less objects are correctly detected.
 
 
-\begin{figure}[t]
-\centering
-\includegraphics{data_visualization/PowerDetection.pdf}
-\caption{Power consumption during tracking mode. YOLOv3 Tiny fps:
-  0=0.1fps, 1=0.5fps, 2=1fps, 3=4fps.}
-\label{fig:PowerDuringTracking}
-\end{figure}
 
-\begin{figure}[t]
-\centering
-\includegraphics{data_visualization/QoSDetection.pdf}
-\caption{Number of correctly detected objects
-under different conditions. 
-Grey color denotes a 0.1fps and black color denotes a 4fps 
-update rate in \emph{YOLOv3-tiny} ROS node. 
-Circles denote a 0.5fps and triangles denote a 10fps update 
-rate in the \emph{landing marker} detection ROS node.}
-\label{fig:NCorrectObjectDetections}
-\end{figure}
 
 
 The second group of experiments was conducted to test the \emph{landing} mode
@@ -1443,6 +1443,26 @@ update rate of 10fps. Furthermore, wind disturbances do not seem to
 have an influence on the MSE. We believe the larger MSE for the \emph{y} 
 coordinates compared to the \emph{x} coordinates is caused by a 
 sudden change of the moving platform's direction on the \emph{y} axis.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics{data_visualization/PowerDetection.pdf}
+  \caption{Power consumption during tracking mode. YOLOv3 Tiny fps:
+    0=0.1fps, 1=0.5fps, 2=1fps, 3=4fps.}
+  \label{fig:PowerDuringTracking}
+\end{figure}
+  
+\begin{figure}[t]
+  \centering
+  \includegraphics{data_visualization/QoSDetection.pdf}
+  \caption{Number of correctly detected objects
+  under different conditions. 
+  Grey color denotes a 0.1fps and black color denotes a 4fps 
+  update rate in \emph{YOLOv3-tiny} ROS node. 
+  Circles denote a 0.5fps and triangles denote a 10fps update 
+  rate in the \emph{landing marker} detection ROS node.}
+  \label{fig:NCorrectObjectDetections}
+\end{figure}
 
 \begin{figure}[t]
 \centering
@@ -1505,7 +1525,7 @@ overall save energy because of a reduced flight time.
 In this paper we presented a robust, energy-sensitive, vision-based
 algorithm for autonomous tracking and landing in varying environmental
 conditions, by experimentally executing all the necessary algorithms on 
-the Nvidia Jetson Nano companion computer.
+the NVIDIA Jetson Nano companion computer.
 %
 % Proposed text by George:
 Our experiments show that the proposed computer vision algorithms for 
