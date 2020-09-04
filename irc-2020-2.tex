@@ -625,7 +625,9 @@ framework that investigates Simultaneous Localisation and Mapping (SLAM) algorit
 for energy efficiency. In our work, we use \powprof{}, a generic energy
 modeling tool~\cite{seewald2019coarse}. This tool enables measuring
 the energy impact of different configurations of the ROS-based system
-implementing the agricultural use-case. In this paper, we present
+implementing the agricultural use-case.
+The \powprof{} tool is part of the TeamPlay toolchain, which aims to make tradeoffs between energy and other non-functional properties accessible to the developer. 
+In this paper, we present
 extensions to \powprof{} that facilitates the initial exploration of
 the energy usage of complex ROS-based systems.
 
@@ -704,14 +706,14 @@ The energy-sensitive design using \powprof{} relies on empirical
 experiments to measure the actual power consumption on the robot
 hardware~\cite{seewald2019coarse}.
 %
-(The \powprof{} tool is part of the TeamPlay toolchain, which aims to make tradeoffs between energy and other non-functional properties accessible to the developer.)
+% [Ad3:] Ulrik, the sentence seems to fit better in SoA?
 %
-In this paper we focus on the
+In this paper, we focus on the
 initial profiling using of energy usage of the companion computer,
 which from the point of view of energy consumption
 can be studied independently from the specific drone it is mounted in.
 
-% [Ad2:] Typo: In this paper, 
+% X [Ad2:] Typo: In this paper, 
 
 First, the developer specifies the maximum and minimum QoS level for
 each algorithm running on the system.  During mission execution the
@@ -722,9 +724,9 @@ considered future work.
 Then, the developer executes the system to empirically determine the
 power consumption. This can be done in two different ways:
 %
-% [Ad: enumerate?] for some reason I don't think the enumerate env actually ads anything in readability, while I would use it to describe steps of the algorithm, I would just put the following two enumerate as new paragraph with the mode in italic (maybe just me; if others like the enumerate env I am totally fine with it)
+% X [Ad: enumerate?] for some reason I don't think the enumerate env actually ads anything in readability, while I would use it to describe steps of the algorithm, I would just put the following two enumerate as new paragraph with the mode in italic (maybe just me; if others like the enumerate env I am totally fine with it)
 \begin{enumerate}
-% [Ad: no citation to IRC-2020] we didn't include ROS there, we did for IROS-2020; however the IJPP could work well.
+% X [Ad: no citation to IRC-2020] we didn't include ROS there, we did for IROS-2020; however the IJPP could work well.
 \item Automatically using \powprof{} to control the experiment
   execution~\cite{seewald2019coarse}. For a ROS-based system, we assume that the algorithms
   are wrapped as ROS nodes, and we require the developer to specify
@@ -738,14 +740,15 @@ power consumption. This can be done in two different ways:
 \item Semi-automatically using \powprof{} to sample energy and combine
   the results of all experiments, but allowing the developer to
   control all aspects of the experiment execution. This approach is
+% [Ad3:] of the experiment -> of the exeprimental? Sounds sort of better. 
   new and is described in more detail later in this
   section. Basically, a ROS node interfaces to \powprof{} and is used
   by the developer to start/stop sampling in a given
-  configuration. Once all experiments have completed, \powprof{} is
+  configuration. Once all experiments have been completed, \powprof{} is
   invoked by the developer to combine the energy consumption data into
   a complete model.
 
-% [Ad2:] have completed -> have been completed
+% X [Ad2:] have completed -> have been completed [otherwise are completed right?]
 
 \end{enumerate}
 %
@@ -754,6 +757,8 @@ QoS to total system energy consumption. Coarse-grained sampling is
 employed to reduce the number of experiments, and missing values are
 automatically inferred from the others by the means of a multivariate
 linear interpolation.
+
+% [Ad3:] what we do is actually regression because we use gnuplot; while if we use interpolation we have to explicitly call it in powprof. I guess fine then; just being very very annoying :)
 
 In the context of this paper, sampling experiments are iterated in a
 simulated environment with different configurations.  For example, the
@@ -773,7 +778,7 @@ hazard detection QoS in terms of frequency.
 % [Ad: added description of the semi-automatic mode {begin}]
 %
 A ROS node has been developed for the purposes of the semi-automatic %energy-sensitive
-approach described in this paper. This node allows automatic
+approach used in this paper. This node allows automatic
 generation of the basic energy models that map time to the
 instantaneous power consumption. To activate this functionality, the developer simply publishes on a ROS
 topic to start the model generation, with \powprof{} accounting for
@@ -782,7 +787,7 @@ energy sensors. Similarly, the developer publishes on another ROS topic to
 stop the model generation, while \powprof{} finalizes collecting data from
 sensors, builds the basic energy model, and stores it for later processing.
 
-% [Ad2:] described -> used {It's described in this paper exactly here; so I would avoid; seems like an infinite loop}
+% X [Ad2:] described -> used {It's described in this paper exactly here; so I would avoid; seems like an infinite loop}
 
 Once all the basic energy models for the desired QoS ranges have been
 collected, QoS ranges %that define the QoS range %maps the energy consumption to QoS
