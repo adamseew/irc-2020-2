@@ -555,7 +555,7 @@ performing color segmentation on the incoming image frame. By fusing
 the height measurement from the LiDAR into the vision measurement, a
 relative pose of the UAV from the moving platform was obtained. A
 color segmentation approach was also implemented by Lee
-et~al.~\cite{lee2016vision}. A red rectangle was used as a landing marker while the detection was done by a vertically facing camera with a fish-eye lens. The setup accounted for a successful landing from an altitude of \SI{70}{\m}. Both researchers have used an on-board companion computer to
+et~al.~\cite{lee2016vision}. A red rectangle was used as a landing marker while the detection was done by a vertically facing camera with a fish-eye lens. The setup accounted for a successful landing from an altitude of \SI{70}{\m}. In the above two cases an on-board companion computer is used to
 perform all the computations on the UAV. However, we in this work do not consider a color segmentation
 approach as a safe option, since for a realistic (outdoor)
 case it would be difficult, if not impossible, to ensure that the
@@ -569,6 +569,8 @@ scene.
 
 % [Ad3:] perhaps vision measurement -> distance measurement? Is vision measurement a conventional way of saying the value of the distance taken from the lidar? IDN
 
+%[Georgios3:] I would stick to distance measurement since I think that LiDARs are not considered as vision sensors like cameras are.
+
 % X [Ad2:] Too many times 'was used' and a little intricated; perhaps "A red rectangle was used as a landing marker and a vertically facing camera with a fish-eye lens was used to detect it, and a successful landing from an altitude of \SI{70}{\m} was demonstrated." -> "A red rectangle was used as a landing marker while the detection was done by a vertically facing camera with a fish-eye lens. The setup accounted for a successful landing from an altitude of \SI{70}{\m}."
 % [Georgios2:] I like that better too. Will change it accordingly.
 
@@ -576,6 +578,8 @@ scene.
 % [Georgios2:] Will add "researchers" instead of "teams"
 
 % [Ad3:] LOL sorry for being annoying but it's et. al. in both cases so it's not entirely clear which researchers from the et. al. :P
+
+%[Georgios3:] No worries :P ... I rephrazed it.
 
 % X [Ad2:] Typo: computations
 % X [Ad2:] the last sentence, However...scene., is unclear. Perhaps: We do not consider a color segmentation approach due to the high variability of the outdoor environment. {actually this doesn't seem entirely correct; maybe we could omit. I mean, if they landed from 70 meters they probably weren't in a lab with a white background and a colored marker in the middle...}
