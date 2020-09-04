@@ -1148,10 +1148,10 @@ A velocity estimator is also constructed to determine the magnitude
 and direction of the moving platform's velocity vector. The magnitude
 is calculated by differentiating two sequential \emph{X, Y} positions 
 of the tractor, obtained by detecting the n-fold marker from the 
-vertically facing camera as explained in section \ref{sec:Detection}.  
+vertically facing camera as explained in section \ref{sec:Detection}  
 \todo[noinline]{Where do these position measurements come from? the tractor gps?}
 \todo[noinline]{Fix loose sentence here.}
-measurements of the moving platform and taking into consideration the
+and taking into consideration the
 UAV's \emph{NED} velocities according to the PX4's EKF. A low-pass
 filter is used to provide a smooth estimation of the velocity's
 magnitude by filtering out high frequency noise. High frequency noise
@@ -1163,8 +1163,8 @@ In the agricultural use-case the moving platform is likely to change
 its direction up to 180 degrees. Furthermore, it is assumed that the
 moving platform is a nonholonomic system, like a tractor. To
 compensate for sudden turns, the moving platform's yaw orientation
-will be taken into account and based on the velocity's magnitude, the
-moving platform's velocity in \emph{X, Y} \emph{NED} frame can be obtained.
+will be taken into account. Based on the velocity's magnitude and moving platform's yaw orientation, the
+moving platform's velocity (\(v_{x,\textrm{landing}}, v_{y,\textrm{landing}}\)) in \emph{NED} frame can be obtained.
 
 
 
