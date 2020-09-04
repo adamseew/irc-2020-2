@@ -1114,7 +1114,7 @@ dx_{obs} = vx_{mean_{obs}} \cdot dt_{obs} \quad , \quad
 
 A velocity estimator is also constructed to determine the magnitude
 and direction of the moving platform's velocity vector. The magnitude
-is calculated by differentiating two sequential \emph{X, Y} position \todo[noinline]{Where do these position measurements come from? the tractor gps?}
+is calculated by differentiating two sequential \emph{X, Y} positions of the tractor, obtained by detecting the n-fold marker from the vertically facing camera as explained in section \ref{sec:Detection}.  \todo[noinline]{Where do these position measurements come from? the tractor gps?}
 measurements of the moving platform and taking into consideration the
 UAV's \emph{NED} velocities according to the PX4's EKF. A low-pass
 filter is used to provide a smooth estimation of the velocity's
