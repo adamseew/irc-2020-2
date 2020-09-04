@@ -511,15 +511,16 @@ et~al.~\cite{saripalli2002vision}. Here, a helicopter with a color
 camera facing vertically towards the ground would land on an ”H”-shape
 pattern (similar to ones found on a helipad) using a hierarchical
 behavior-based control architecture. In physical tests a marker of
-\SI{122}{\cm}$\times$\SI{122}{\cm} size was detected for a maximum altitude of \SI{10}{\m}. A
+\SI{122}$\times$\SI{122}{\cm} size was detected for a maximum altitude of \SI{10}{\m}. A
+% [Ad3:] why cms twice?
 landing marker inspired by a QR code but consisting of three
 artificial markers is demonstrated by Yuan
-et~al.~\cite{yuan2018hierarchical}, and was shown to provide a 6-Degree Of Freedom (DOF)
-pose over an altitude range of 0-\SI{20}{\m}. Our work is however focused on
+et~al.~\cite{yuan2018hierarchical}, and was shown to provide a \SI{6}-Degree Of Freedom (DOF)
+pose over an altitude range of \SI{0}-\SI{20}{\m}. Our work is however focused on
 the ability to land on moving platforms.
 
 Saripalli et~al.~\cite{saripalli2003landing} also demonstrated the use
-of a Kalman Filter to track a moving platform. However all the
+of a Kalman Filter to track a moving platform. However, all the
 computations were performed offline. Similarly, an ArUco marker was
 used as a landing marker by Lee et~al.~\cite{lee2012autonomous} to
 detect a moving platform. The control of the UAV is performed based on
@@ -532,18 +533,20 @@ aspect of our application is to perform all the computations on-board,
 and to evaluate them according to their energy efficiency as a
 function of QoS.
 
-% [Ad2:] Saripalli demonstrated sounds almost like he did some formal demonstration of math-like kind of the Kalman filter variation he used. What about just used?
-% [Ad2:] I don't like that the paragraph is not self contained; it adds some information to Saripalli but goes directly to Lee. What about moving Saripalli...offline to the above paragraph?
+% X [Ad2:] Saripalli demonstrated sounds almost like he did some formal demonstration of math-like kind of the Kalman filter variation he used. What about just used?
+% X [Ad2:] I don't like that the paragraph is not self contained; it adds some information to Saripalli but goes directly to Lee. What about moving Saripalli...offline to the above paragraph?
 
 % [Georgios2:]Saripalli and Lee both performed offline/offboard computations and that is the purpose of this paragraph. To show the importance of performing the computations onboard.
 
-% [Ad2:] Typo: if you don't stick with the above suggestion, there is a comma after However missing
-% [Ad2:] Typo: onboard
+% [Ad3:] Good, it's another Saripalli's work; thought the previous chapter was the same work (hence the confusion). Maybe later instead of also? Flows sort of better.
+
+% X [Ad2:] Typo: if you don't stick with the above suggestion, there is a comma after However missing
+% X [Ad2:] Typo: onboard
 
 %\hemi{I think the last sentence mixes what others
 %  have done and what we want to do in the paper.}
 
-The design of the marker and choice of sensors can facilitate doing the computations on-board. %Is this the point of this paragraph?
+The design of the marker and choice of sensors can facilitate doing the computations onboard. %Is this the point of this paragraph?
 %
 Chen et~al.~\cite{chen2016system} utilized a marker consisting of a
 circle and rectangles of different colors along with a LiDAR scanning
@@ -552,28 +555,34 @@ performing color segmentation on the incoming image frame. By fusing
 the height measurement from the LiDAR into the vision measurement, a
 relative pose of the UAV from the moving platform was obtained. A
 color segmentation approach was also implemented by Lee
-et~al.~\cite{lee2016vision}. A red rectangle was used as a landing marker while the detection was done by a vertically facing camera with a fish-eye lens. The setup accounted for a successful landing from an altitude of \SI{70}{\m}.. Both researchers have used an on-board companion computer to
-perform all the computations on the UAV. However we in this work do not consider a color segmentation
+et~al.~\cite{lee2016vision}. A red rectangle was used as a landing marker while the detection was done by a vertically facing camera with a fish-eye lens. The setup accounted for a successful landing from an altitude of \SI{70}{\m}. Both researchers have used an on-board companion computer to
+perform all the computations on the UAV. However, we in this work do not consider a color segmentation
 approach as a safe option, since for a realistic (outdoor)
 case it would be difficult, if not impossible, to ensure that the
 landing marker will be the only object of a specific color in the
 scene.
 
-% [Ad2:] Typo onboard
-% [Ad2:] it sounds little disconnected. I would do this: The design...utilized -> The design of the marker and choice of sensors can potentially facilitate the onboard computations, as investigated by Chen et~al.~\cite{chen2016system}. The approach utilized
-% [Ad2:] Sounds like the sentence "By fusing the height measurement from the LiDAR into the vision measurement, a relative pose of the UAV from the moving platform was obtained." sounds unnecessarily complicated {in fact I don't understand} -> "The relative pose of the UAV with respect to the moving platform was obtained fusing the height taken visually and using a LiDAR." {although again not sure how the height is obtained visually; seems I am missing some points so in case ignore}
+% X [Ad2:] Typo onboard
+% X [Ad2:] it sounds little disconnected. I would do this: The design...utilized -> The design of the marker and choice of sensors can potentially facilitate the onboard computations, as investigated by Chen et~al.~\cite{chen2016system}. The approach utilized
+% X [Ad2:] Sounds like the sentence "By fusing the height measurement from the LiDAR into the vision measurement, a relative pose of the UAV from the moving platform was obtained." sounds unnecessarily complicated {in fact I don't understand} -> "The relative pose of the UAV with respect to the moving platform was obtained fusing the height taken visually and using a LiDAR." {although again not sure how the height is obtained visually; seems I am missing some points so in case ignore}
 % [Georgios2:] The height is not ontained visually but only from the LiDAR sensor. The vision measurement is in pixels. By combining the pixel measurement and the distance from the LiDAR we are able to find the 3d position of the target. If we do not have the distance measurement (from the LiDAR) we can only have the homogeneous coordinates of the target, not the 3d world coordinates. I would leave this sentence as it is.
 
-% [Ad2:] Too many times 'was used' and a little intricated; perhaps "A red rectangle was used as a landing marker and a vertically facing camera with a fish-eye lens was used to detect it, and a successful landing from an altitude of \SI{70}{\m} was demonstrated." -> "A red rectangle was used as a landing marker while the detection was done by a vertically facing camera with a fish-eye lens. The setup accounted for a successful landing from an altitude of \SI{70}{\m}."
+% [Ad3:] perhaps vision measurement -> distance measurement? Is vision measurement a conventional way of saying the value of the distance taken from the lidar? IDN
+
+% X [Ad2:] Too many times 'was used' and a little intricated; perhaps "A red rectangle was used as a landing marker and a vertically facing camera with a fish-eye lens was used to detect it, and a successful landing from an altitude of \SI{70}{\m} was demonstrated." -> "A red rectangle was used as a landing marker while the detection was done by a vertically facing camera with a fish-eye lens. The setup accounted for a successful landing from an altitude of \SI{70}{\m}."
 % [Georgios2:] I like that better too. Will change it accordingly.
 
-% [Ad2:] teams -> approaches {teams sounds like they participated in these competitions...}
+% X [Ad2:] teams -> approaches {teams sounds like they participated in these competitions...}
 % [Georgios2:] Will add "researchers" instead of "teams"
 
-% [Ad2:] Typo: computations
-% [Ad2:] the last sentence, However...scene., is unclear. Perhaps: We do not consider a color segmentation approach due to the high variability of the outdoor environment. {actually this doesn't seem entirely correct; maybe we could omit. I mean, if they landed from 70 meters they probably weren't in a lab with a white background and a colored marker in the middle...}
+% [Ad3:] LOL sorry for being annoying but it's et. al. in both cases so it's not entirely clear which researchers from the et. al. :P
+
+% X [Ad2:] Typo: computations
+% X [Ad2:] the last sentence, However...scene., is unclear. Perhaps: We do not consider a color segmentation approach due to the high variability of the outdoor environment. {actually this doesn't seem entirely correct; maybe we could omit. I mean, if they landed from 70 meters they probably weren't in a lab with a white background and a colored marker in the middle...}
 
 %[Georgios2:] We do not know the environment that they performed the landing. Although outside, a red car present in the scene might cause their algorithm to fail. I would suggest keeping that as it is.
+
+% [Ad3:] yes, but it sounds we are criticizing them while we are not even stating in that sentence what we are using instead (if I am a reviewer and I see somebody taking such position I start questioning). I would be rather conservative. Maybe omitting However on?
 
 The use of a hybrid camera system consisting of a fish-eye IR camera
 and a stereo camera was demonstrated by Yang
@@ -597,14 +606,15 @@ GPU cannot normally run different algorithms simultaneously,
 the CPU should be used for detecting the landing marker. By doing so,
 a different QoS can be chosen for each algorithm.  
 
-% [Ad2:] reader learns about markers being of different shapes and colors, so s/he might ask how specific. I think we could just omit the sentence "Here a specific landing marker was used and a specific CNN was used to detect it".
-% [Ad2:] as a landing marker -> for landing
-% [Ad2:] I would omit this information, it doesn't add much about the approach "for the purpose of ``2016 DJI Developer Challenge''".
+% X [Ad2:] reader learns about markers being of different shapes and colors, so s/he might ask how specific. I think we could just omit the sentence "Here a specific landing marker was used and a specific CNN was used to detect it".
+% X [Ad2:] as a landing marker -> for landing
+% X [Ad2:] I would omit this information, it doesn't add much about the approach "for the purpose of ``2016 DJI Developer Challenge''".
 % [Georgios2:] Agree on that. Removed the information.
 
-% [Ad2:] teams -> approaches {here is really unclear if it refers to the participants of the challenge or the approaches}
+% X [Ad2:] teams -> approaches {here is really unclear if it refers to the participants of the challenge or the approaches}
 % Agree on that. Changed it from "teams" to "In the above three cases, the researchers..."
 
+% [Ad3:] In the sentence Here...detect it we might change one of the specific to given (3x specific like words)
 
 % [Ad: energy-sensitive part {begin}]
 %
@@ -612,10 +622,10 @@ To account for the energy modeling of computer vision algorithms, we
 considered the work previously carried by Nardi
 et~al.~\cite{nardi2015introducing}. The authors present SLAMBench, a
 framework that investigates Simultaneous Localisation and Mapping (SLAM) algorithms configuration alternatives
-for energy efficiency. In our work we use \powprof{}, a generic energy
+for energy efficiency. In our work, we use \powprof{}, a generic energy
 modeling tool~\cite{seewald2019coarse}. This tool enables measuring
 the energy impact of different configurations of the ROS-based system
-implementing the agricultural use-case. In this paper we present
+implementing the agricultural use-case. In this paper, we present
 extensions to \powprof{} that facilitates the initial exploration of
 the energy usage of complex ROS-based systems.
 
@@ -626,7 +636,7 @@ models studied by Sadrpour et~al.~\cite{sadrpour2013experimental,
   sadrpour2013mission}, focus mostly on ground-based autonomous
 vehicles instead of the UAVs. Morales et al.~\cite{morales2009power}
 extensively investigated the relation between motion and energy in a
-robot, but do not account for on the energy required for computation.
+robot, but do not account for the energy required for computation.
 %
 Energy modeling of mobile robots as carried by Mei et
 al.~\cite{mei2006deployment, mei2005case, mei2004energy} has provided
@@ -637,7 +647,7 @@ in~\cite{mei2004energy}, a design strategy that allows accounting for
 motion and computations separately in~\cite{mei2005case}, to an
 energy-efficient deployment algorithm in~\cite{mei2006deployment}.
 
-% [Ad2:] for on -> for
+% X [Ad2:] for on -> for
 
 The battery in our system is considered in the context of a drone
 being able to perform its mission while accounting for the eventuality
@@ -668,6 +678,7 @@ estimation~\cite{araar2017vision,feng2018autonomous,
 constructed a velocity observer algorithm by calculating the actual
 moving distance of the moving platform over a period of time.
 
+% [Ad3:!] we are just estimating the position of the drone given the velocity of the moving platform.
 
 
 \section{Energy-Sensitive Mission Deployment} 
