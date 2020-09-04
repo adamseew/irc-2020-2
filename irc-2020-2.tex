@@ -1158,29 +1158,22 @@ Correction step:
 % [Georgios2:] That is true. We can use the symbols for "before" and "after" the correction step considering not only the convariance matrix P but also the x_hat ... fell free to change them accordingly
 
 where:
-\begin{equation*}
-    \begin{array}{l}
-    z_{k} = \begin{bmatrix} 
-                x_{obs} + dx_{obs} \\ 
-                y_{obs} + dy_{obs}
-                \end{bmatrix}, \quad 
-
-
-    
-    H_{k}= \begin{bmatrix} 
-                1 & 0 \\ 
-                0 & 1
-                \end{bmatrix}, \quad
-    R_{k} = \begin{bmatrix} 
-                1 & 0 \\ 
-                0 & 1
-                \end{bmatrix}*\sigma^{2}_{obs}  \\ \\
-                
-dx_{obs} = vx_{mean_{obs}} \cdot dt_{obs} \quad , \quad
-    dy_{obs} = vy_{mean_{obs}} \cdot dt_{obs} \quad \\
-          
-    \end{array}
-\end{equation*}
+\begin{align*}
+  z_{k} & = \begin{bmatrix} 
+      x_{obs} + dx_{obs} \\ 
+      y_{obs} + dy_{obs}
+  \end{bmatrix}, \qquad 
+  H_{k} = \begin{bmatrix} 
+            1 & 0 \\ 
+            0 & 1
+  \end{bmatrix}, \qquad
+  R_{k} = \begin{bmatrix} 
+            1 & 0 \\ 
+            0 & 1
+            \end{bmatrix}*\sigma^{2}_{obs}  \\ 
+  dx_{obs} & = vx_{mean_{obs}} \cdot dt_{obs}, \qquad
+  dy_{obs} = vy_{mean_{obs}} \cdot dt_{obs} 
+\end{align*}
 
 A velocity estimator is also constructed to determine the magnitude
 and direction of the moving platform's velocity vector. The magnitude
