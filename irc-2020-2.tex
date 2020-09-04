@@ -1014,6 +1014,9 @@ system is increased in case the moving platform is not detected in
 every image frame. A velocity estimator for the moving platform will
 also be implemented as a part of the navigation block.
 
+% [Ad3:] state -> position; state seems confusing with battery, compoenents
+% [Ad3:] sentence 'This is important because it will allow us to process images at different fps according to a desired QoS.' mmmh; not sure. Not really actually because we don't change QoS dynamically with the position (we actually don't change QoS at all)
+
 The variables of interest that describe the state of the UAV for this project are:
 %
 \begin{itemize}
@@ -1021,7 +1024,9 @@ The variables of interest that describe the state of the UAV for this project ar
 \item The relative position of the UAV from the moving platform \emph{[X, Y, Z]} 
 calculated as described in Section~\ref{sec:Detection}.
 
-\item The attitude of the UAV [roll, pitch, yaw], obtained from the flight controller's IMUs.
+% [Ad3:] confusing; we calculate the position here of the UAV but they are calculated as described in another section. Would erase calculated on, or describe that one is the visual measurement and is used for the purpose of estimation in our EKF.
+
+\item The attitude of the UAV \emph{[roll, pitch, yaw]}, obtained from the flight controller's IMUs.
 
 \item the velocity of the UAV \emph{[vx, vy, vz]} in \emph{NED} frame, obtained from 
 the flight controller's EKF.
@@ -1037,6 +1042,8 @@ either from the flight controller's EKF or by differentiating the velocities.
 
 %[Georgios2:] Considering the calculation of acceleration: Yes we calculate the tangent. We can omit this is you want.
 
+% [Ad3:] it's little confusing because ... well "which one are you using guys?"; I'd omit still ¯\_(ツ)_/¯ 
+
 \end{itemize}
 %
 The altitude, attitude, velocity and acceleration variables of the
@@ -1047,7 +1054,7 @@ Section~\ref{sec:Detection}, a Kalman Filter is implemented. The
 measurements from the flight controller are used in the prediction
 step.
 
-% [Ad2:] will be used -> was used {not sure I'd go with future, as normally we use past}
+% X [Ad2:] will be used -> was used {not sure I'd go with future, as normally we use past}
 %[Georgios2:] Changed "will be used" into "is implemented"
 
 Prediction Step:
@@ -1060,6 +1067,12 @@ Prediction Step:
 
 where:
 
+\todo{Not comments but todos here (for Henrik) ¯\\_(ツ)_/¯
+
+[Ad3:] the math here is really unecessarily complicated >:P . I can change it the robo-gang way. Your formatting of where up is definitely interesting; when I started writing papers with math I also had this thing of writing my way. Then came Hector one day and told me that only once I am known enough I can change the status quo in the math notation; so now I am little autistic about it all the time :)
+
+[Ad3:] there are fixes with ts here and there. Also; you have a time dependent timestep dt. Please, don't use dt. What is that? It seems differentiation. Is soooo confusing. I can help to simplify. Just tell me!}
+
 \begin{equation*}
 \begin{array}{l}
 
@@ -1071,7 +1084,7 @@ where:
 F_{t} = \begin{bmatrix} 
                 1 & 0 \\ 
                 0 & 1
-                \end{bmatrix}      , \\
+                \end{bmatrix}      , \\     
 G_{t} =   \begin{bmatrix} 
                 dt & 0 & \frac{dt^{2}}{2} & 0 & -dt & 0\\ 
                 0 & dt & 0 & \frac{dt^{2}}{2} &0 & -dt
@@ -1083,8 +1096,7 @@ u_{t} = \begin{bmatrix}
                 a_y \\
                 v_{x,\textrm{landing}}\\
                 v_{y,\textrm{landing}}
-                \end{bmatrix}  \\ \\
-                
+                \end{bmatrix}  \\ \\               
 P_{0} =  \begin{bmatrix} 
                 1 & 0 \\ 
                 0 & 1
