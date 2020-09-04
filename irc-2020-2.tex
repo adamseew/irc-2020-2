@@ -1052,8 +1052,7 @@ the flight controller's EKF.
 % [Ad2:] NED coordinates
 % [Georgios2:]I would stick to NED frame for consistency.
 
-\item the acceleration of the UAV, $\ddot{x}_k$, in \emph{NED} frame, obtained 
-either from the flight controller's EKF or by differentiating the velocities.\todo[noinline]{These values are also described on the next page.}
+\item the acceleration of the UAV, $\ddot{x}_k$, in \emph{NED} frame, obtained by differentiating the velocities.\todo[noinline]{These values are also described on the next page.}
 
 % [Ad2:] NED coordinates
 % [Ad2:] or ... velocities ->   {How to differentiate velocities? If the velocity is from the flight controller, it's just a value. So we calculate the tangent? I would omit this. Later we don't mention any differentiation but just say they are 'obtained from the flight controller's onboard sensors'}
@@ -1061,6 +1060,8 @@ either from the flight controller's EKF or by differentiating the velocities.\to
 %[Georgios2:] Considering the calculation of acceleration: Yes we calculate the tangent. We can omit this is you want.
 
 % [Ad3:] it's little confusing because ... well "which one are you using guys?"; I'd omit still ¯\_(ツ)_/¯ 
+
+%[Georgios3:] Solved. I kept the differentiation of the velocities.
 
 \end{itemize}
 %
