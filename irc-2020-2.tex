@@ -1060,14 +1060,12 @@ step.
 Prediction Step:
 \begin{equation} 
  \begin{array}{l}
-    \hat{x}_{t} = F_{t} \cdot \hat{x}_{t-1} + G_{t} \cdot u_{t} \\ 
-    P_{t} = F_{t} \cdot P_{t-1} \cdot F_{t}^\top + Q_{t}
+    \hat{x}_{k} = F \cdot \hat{x}_{k-1} + G_{k} \cdot u_{k} \\ 
+    P_{k} = F \cdot P_{k-1} \cdot F^\top + Q_{k}
   \end{array}
 \end{equation}
 
-where:
-
-\todo{Not comments but todos here (for Henrik) %¯\\_(ツ)_/¯
+\todo[disable]{Not comments but todos here (for Henrik) %¯\\_(ツ)_/¯
 
 [Ad3:] the math here is really unecessarily complicated >:P . 
 I can change it the robo-gang way. Your formatting of where up is 
@@ -1082,37 +1080,30 @@ Also; you have a time dependent timestep dt. Please, don't use dt.
 What is that? It seems differentiation. Is soooo confusing. 
 I can help to simplify. Just tell me!}
 
+where $\hat{x}_k \in \mathbb{R}^2$ is the position of the UAV, 
+and $F$ is a 2 by 2 identity matrix...
+
 \begin{equation*}
 \begin{array}{l}
-
-
- \hat{x}_{t} = \begin{bmatrix} 
-                x \\ 
-                y
-                \end{bmatrix} ,  \quad
-F_{t} = \begin{bmatrix} 
-                1 & 0 \\ 
-                0 & 1
-                \end{bmatrix}      , \\     
-G_{t} =   \begin{bmatrix} 
-                dt & 0 & \frac{dt^{2}}{2} & 0 & -dt & 0\\ 
-                0 & dt & 0 & \frac{dt^{2}}{2} &0 & -dt
-                \end{bmatrix} , \quad
-u_{t} = \begin{bmatrix} 
-                v_x \\ 
-                v_y \\
-                a_x \\
-                a_y \\
-                v_{x,\textrm{landing}}\\
+G_{k} =   \begin{bmatrix} 
+                \Delta t_k & 0 & \frac{\Delta t_k^{2}}{2} & 0 & -\Delta t_k & 0\\ 
+                0 & \Delta t_k & 0 & \frac{\Delta t_k^{2}}{2} &0 & -\Delta t_k
+                \end{bmatrix}, \\
+u_{k}^\top = \begin{bmatrix} 
+                v_x &
+                v_y &
+                a_x &
+                a_y &
+                v_{x,\textrm{landing}} &
                 v_{y,\textrm{landing}}
                 \end{bmatrix}  \\ \\               
 P_{0} =  \begin{bmatrix} 
                 1 & 0 \\ 
                 0 & 1
                 \end{bmatrix}   , \quad 
-Q_{t}  =\begin{bmatrix} 
-                dt & 0 \\ 
-                0 & dt
+Q_{k}  =\begin{bmatrix} 
+                \Delta t_k & 0 \\ 
+                0 & \Delta t_k
                 \end{bmatrix} \cdot \sigma^{2}_{\textrm{IMU}}
 \end{array} \\
 \end{equation*}
@@ -1122,7 +1113,7 @@ Q_{t}  =\begin{bmatrix}
 \begin{itemize}
 \item  \(x, y \) is the position of the UAV in the landing site's local 
 coordinate system (aligned with NED frame), 
-\item \(dt\) is the time interval the PX4's EKF outputs the \(v_x, v_y\) data, 
+\item \(\Delta t_k\) is the time interval the PX4's EKF outputs the \(v_x, v_y\) data, 
 usually around 33ms, 
 \item \(v_x, v_y\) is the linear velocity of the UAV in NED frame, 
 estimated from the PX4's EKF,
@@ -1158,12 +1149,12 @@ Correction step:
 \begin{equation}
     \begin{array}{l}
     
-    e_{t} = z_{t} - H_{t} \cdot \hat{x}_{t} \\
+    e_{k} = z_{k} - H_{k} \cdot \hat{x}_{k} \\
     % [Ad: eq] I am not entirely familiar with this notation for EKF but I guess it should be P_t prior to the estimate so I would conveniently call it P_t^- so it does not confuse with P_t after the estimate (last line)
-    S_{t} = H_{t} \cdot P_{t} \cdot H_{t}^\top + R_{t} \\
-    K_{t} = P_{t} \cdot H_{t}^\top \cdot S_{t}^{-1} \\
-    \hat{x}_{t} = \hat{x}_{t} + K_{t} \cdot e_{t} \\
-    P_{t} = (I - K_{t} \cdot H_{t}) \cdot P_{t}
+    S_{k} = H_{k} \cdot P_{k} \cdot H_{k}^\top + R_{k} \\
+    K_{k} = P_{k} \cdot H_{k}^\top \cdot S_{k}^{-1} \\
+    \hat{x}_{k} = \hat{x}_{k} + K_{k} \cdot e_{k} \\
+    P_{k} = (I - K_{k} \cdot H_{k}) \cdot P_{k}
     \end{array}
 \end{equation}
 
@@ -1174,18 +1165,18 @@ Correction step:
 where:
 \begin{equation*}
     \begin{array}{l}
-    z_{t} = \begin{bmatrix} 
+    z_{k} = \begin{bmatrix} 
                 x_{obs} + dx_{obs} \\ 
                 y_{obs} + dy_{obs}
                 \end{bmatrix}, \quad 
 
 
     
-    H_{t}= \begin{bmatrix} 
+    H_{k}= \begin{bmatrix} 
                 1 & 0 \\ 
                 0 & 1
                 \end{bmatrix}, \quad
-    R_{t} = \begin{bmatrix} 
+    R_{k} = \begin{bmatrix} 
                 1 & 0 \\ 
                 0 & 1
                 \end{bmatrix}*\sigma^{2}_{obs}  \\ \\
