@@ -909,28 +909,39 @@ pixel coordinates into real world \emph{X, Y} coordinates in meters:
 
 \begin{enumerate}
 
-\item The pose of the camera in UAV's \emph{BODY} frame is calculated by utilizing the roll and pitch IMU data.
+\item The pose of the camera in UAV's \emph{BODY} frame is calculated by 
+utilizing the roll and pitch IMU data.
 
 % [Ad2:] a suggestion for next one. Not now as probably we'd have to change a lot: \mathcal{O}_B for body frame, \mathcal{O}_something for some navigation frame; cooler and simpler
 
-\item The normalized coordinates of the four image corners, according to the camera's horizontal, vertical field of view and the camera's pose from step 1, are calculated.
+\item The normalized coordinates of the four image corners, according to the 
+camera's horizontal, vertical field of view and the camera's pose from step 1, 
+are calculated.
 
 % [Ad2:] BODY frame {unless there is a valid reason for BODY pose}
 % [Georgios2:] I would stick with pose since the roll and pitch angles of the camera are of interest and therefore included in the pose. Changed from "the camera's BODY pose" to "the camera's pose".
 
-\item The coordinates of the four image corners (in meters), with respect to the UAV's BODY frame, are determined by using the normalised coordinates from step 2 along with the UAV's altitude. The result is a projection plane of the image corners on the ground.
+\item The coordinates of the four image corners (in meters), with respect to 
+the UAV's BODY frame, are determined by using the normalised coordinates from 
+step 2 along with the UAV's altitude. The result is a projection plane of the 
+image corners on the ground.
 
 % [Ad2:] The world coordinates -> the coordinates {coordinates in respect of the world reference frame and not world's coordinates}
 % [Georgios2:] Rephrased the above paragraph. Hope it makes more sense?
 
-\item The perspective homography matrix is calculated between the 2 planes, the image plane and the world plane from step 3.
+\item The perspective homography matrix is calculated between the 2 planes, 
+the image plane and the world plane from step 3.
 
-\item The homography matrix from step 4 is used to convert the pixel coordinates of the tip of the nfold marker from the image plane, into  coordinates (in meters) in the UAV's \emph{BODY} frame.
+\item The homography matrix from step 4 is used to convert the pixel coordinates 
+of the tip of the nfold marker from the image plane, into  coordinates (in meters) 
+in the UAV's \emph{BODY} frame.
 
 % [Ad2:] The pixel coordinates are converted into world coordinates -> Pixels are converted into meters {not sure what pixel coordinates are as this is the first time we mention them}
 % [Georgios2:] Agree on that. Rephrased it.
 
-\item The coordinates from step 5 are in respect to the UAV's \emph{BODY} frame. To convert them into the UAV's \emph{NED} frame, the yaw IMU data from the flight controller is used. 
+\item The coordinates from step 5 are in respect to the UAV's \emph{BODY} frame. 
+To convert them into the UAV's \emph{NED} frame, the yaw IMU data from the flight 
+controller is used. 
 
 %are converted from the camera's \emph{BODY} frame into the camera's \emph{NED} frame by using the yaw IMU data from the flight controller.
 
@@ -938,12 +949,15 @@ pixel coordinates into real world \emph{X, Y} coordinates in meters:
 % [Ad2:] are converted from the camera's \emph{BODY} frame into the camera's \emph{NED} frame -> are converted to the \emph{NED} coordinates {NED is not a frame, NED are coordinates or I am totally missing something here}
 % {Georgios2:] I rephrased it. Let me know what you think.
 
-\item The coordinates from step 6, are converted from UAV's \emph{NED} frame into the landing site's local coordinate frame.
+\item The coordinates from step 6, are converted from UAV's \emph{NED} frame 
+into the landing site's local coordinate frame.
 
 % [Ad2:] The world coordinates -> the coordinates {coordinates in respect of the world reference frame and not world's coordinates}
 % [Ad2:] are converted from camera's \emph{NED} frame -> are converted from \emph{NED} coordinates {NED is not a frame, NED are coordinates or I am totally missing something here}
 
-\item For ArUco markers only, an offset vector in the x, y axis is added depending on the distance of each ArUco marker from the tip of the n-fold marker. It is assumed that this vector is prior known.
+\item For ArUco markers only, an offset vector in the x, y axis is added depending 
+on the distance of each ArUco marker from the tip of the n-fold marker. 
+It is assumed that this vector is prior known.
 
 \end{enumerate}
 %
@@ -969,16 +983,19 @@ The variables of interest that describe the state of the UAV for this project ar
 %
 \begin{itemize}
 
-\item The relative position of the UAV from the moving platform \emph{[X, Y, Z]} calculated as described in Section~\ref{sec:Detection}.
+\item The relative position of the UAV from the moving platform \emph{[X, Y, Z]} 
+calculated as described in Section~\ref{sec:Detection}.
 
 \item The attitude of the UAV [roll, pitch, yaw], obtained from the flight controller's IMUs.
 
-\item the velocity of the UAV \emph{[vx, vy, vz]} in \emph{NED} frame, obtained from the flight controller's EKF.
+\item the velocity of the UAV \emph{[vx, vy, vz]} in \emph{NED} frame, obtained from 
+the flight controller's EKF.
 
 % [Ad2:] NED coordinates
 % [Georgios2:]I would stick to NED frame for consistency.
 
-\item the acceleration of the UAV \emph{[ax, ay, az]} in \emph{NED} frame, obtained either from the flight controller's EKF or by differentiating the velocities.
+\item the acceleration of the UAV \emph{[ax, ay, az]} in \emph{NED} frame, obtained 
+either from the flight controller's EKF or by differentiating the velocities.
 
 % [Ad2:] NED coordinates
 % [Ad2:] or ... velocities ->   {How to differentiate velocities? If the velocity is from the flight controller, it's just a value. So we calculate the tangent? I would omit this. Later we don't mention any differentiation but just say they are 'obtained from the flight controller's onboard sensors'}
@@ -1047,21 +1064,28 @@ Q_{t}  =\begin{bmatrix}
 
 %where:
 \begin{itemize}
-\item  \(x, y \) is the position of the UAV in the landing site's local coordinate system (aligned with NED frame), 
-\item \(dt\) is the time interval the PX4's EKF outputs the \(v_x, v_y\) data, usually around 33ms, 
-\item \(v_x, v_y\) is the linear velocity of the UAV in NED frame, estimated from the PX4's EKF,
+\item  \(x, y \) is the position of the UAV in the landing site's local 
+coordinate system (aligned with NED frame), 
+\item \(dt\) is the time interval the PX4's EKF outputs the \(v_x, v_y\) data, 
+usually around 33ms, 
+\item \(v_x, v_y\) is the linear velocity of the UAV in NED frame, 
+estimated from the PX4's EKF,
 
 % [Ad2:] NED frame -> NED coordinates
 
-\item \(a_x, a_y\) is the linear acceleration of the UAV in NED frame, estimated on the companion computer from differentiating the velocities.
+\item \(a_x, a_y\) is the linear acceleration of the UAV in NED frame, 
+estimated on the companion computer from differentiating the velocities.
 
 % [Ad2:] NED frame -> NED coordinates
 
-\item \(v_{x,\textrm{landing}}, v_{y,\textrm{landing}}\) is the linear velocity of the moving platform in NED frame, estimated from the velocity estimator for the moving platform,
+\item \(v_{x,\textrm{landing}}, v_{y,\textrm{landing}}\) is the linear 
+velocity of the moving platform in NED frame, estimated from the velocity 
+estimator for the moving platform,
 
 % [Ad2:] NED frame -> NED coordinates
 
-\item \(\sigma^{2}_{\textrm{IMU}}\) is the variance of the velocities based estimated by the PX4's EKF.
+\item \(\sigma^{2}_{\textrm{IMU}}\) is the variance of the velocities based 
+estimated by the PX4's EKF.
 \end{itemize}
 
 In the correction step the observed measurements from the downward
@@ -1118,7 +1142,11 @@ dx_{obs} = vx_{mean_{obs}} \cdot dt_{obs} \quad , \quad
 
 A velocity estimator is also constructed to determine the magnitude
 and direction of the moving platform's velocity vector. The magnitude
-is calculated by differentiating two sequential \emph{X, Y} positions of the tractor, obtained by detecting the n-fold marker from the vertically facing camera as explained in section \ref{sec:Detection}.  \todo[noinline]{Where do these position measurements come from? the tractor gps?}
+is calculated by differentiating two sequential \emph{X, Y} positions 
+of the tractor, obtained by detecting the n-fold marker from the 
+vertically facing camera as explained in section \ref{sec:Detection}.  
+\todo[noinline]{Where do these position measurements come from? the tractor gps?}
+\todo[noinline]{Fix loose sentence here.}
 measurements of the moving platform and taking into consideration the
 UAV's \emph{NED} velocities according to the PX4's EKF. A low-pass
 filter is used to provide a smooth estimation of the velocity's
@@ -1166,7 +1194,8 @@ the area of the applied pressure, \(\varrho\) is the density of the
 air (around \SI{1.2}{\kg \per \m^3}), \(v\) is the wind velocity in \SI{}{\m \per \s}.
 
 By solving the above equations the applied force on the UAV is found
-to be \SI{3.45}{\newton} for an \SI{8}{\m \per \s} wind speed, and \SI{7.76}{\newton} for a \SI{12}{\m \per \s}
+to be \SI{3.45}{\newton} for an \SI{8}{\m \per \s} wind speed, and 
+\SI{7.76}{\newton} for a \SI{12}{\m \per \s}
 wind speed. The wind forces will be applied on the UAV in Gazebo
 simulation, to test the performance of the whole system. This will be
 done by constructing a program that will apply the wind forces on the
@@ -1184,7 +1213,8 @@ The magnitude of the wind is calculated as follows: %according to the following 
     
     \item An update cycle of \SI{5.5}{\second} is chosen between two different applied forces.
     
-    \item A random float number between 0.9 and 1.2 is chosen at every update cycle. This number is defined as \emph{Random\_noise}.
+    \item A random float number between 0.9 and 1.2 is chosen at every update 
+    cycle. This number is defined as \emph{Random\_noise}.
     
     \item The applied wind force is calculated as:\\
     
@@ -1249,7 +1279,8 @@ positions and orientations as seen in Figure~\ref{fig:Gazebo}.
 \begin{figure}[t]
 \centering
 \includegraphics[scale=0.2]{gazebo_scalled.png}
-\caption{On the left, a top view of the Gazebo scene. On the right, a view of the UAV attempting a landing on the moving platform }
+\caption{On the left, a top view of the Gazebo scene. 
+On the right, a view of the UAV attempting a landing on the moving platform }
 \label{fig:Gazebo}
 \end{figure}
 
@@ -1326,7 +1357,8 @@ object is considered to be correctly detected if it is detected within
 a distance of \SI{2}{\meter} from the its actual position and classified with
 the correct class. The detection results can be seen in
 Figure~\ref{fig:NCorrectObjectDetections}. The best results were
-obtained for a high fps update rate in \emph{YOLOv3-tiny} and \emph{landing marker} detection, under no wind disturbances, since 28 out of the 32
+obtained for a high fps update rate in \emph{YOLOv3-tiny} and \emph{landing marker} 
+detection, under no wind disturbances, since 28 out of the 32
 objects were detected. Nevertheless, for the same high fps values but
 with a wind speed of \SI{12}{\meter \per \second}, only 18 out of 32 objects were
 correctly detected.
@@ -1380,7 +1412,15 @@ fps rates for the \emph{landing marker} detection ROS node
 disturbances. The QoS is determined as the  mean squared error (MSE) 
 between the predicted position of the moving platform, 
 from the navigation block, and the moving platform's actual position. 
-Four different altitude bins were used as seen in Figure~\ref{fig:PositionErrorDuringLanding}. A large MSE of around \SI{3}{\square\meter} is observed for an altitude greater than \SI{20}{\meter} for a 0.5fps rate, while an MSE close to zero is observed for an altitude of less than \SI{5}{\meter} for an update rate of 10fps. Furthermore, wind disturbances do not seem to have an influence on the MSE. We believe the larger MSE for the \emph{y} coordinates compared to the \emph{x} coordinates is caused by a sudden change of the moving platform's direction on the \emph{y} axis.
+Four different altitude bins were used as seen in 
+Figure~\ref{fig:PositionErrorDuringLanding}. 
+A large MSE of around \SI{3}{\square\meter} is observed for an altitude 
+greater than \SI{20}{\meter} for a 0.5fps rate, while an MSE close to 
+zero is observed for an altitude of less than \SI{5}{\meter} for an 
+update rate of 10fps. Furthermore, wind disturbances do not seem to 
+have an influence on the MSE. We believe the larger MSE for the \emph{y} 
+coordinates compared to the \emph{x} coordinates is caused by a 
+sudden change of the moving platform's direction on the \emph{y} axis.
 
 \begin{figure}[t]
 \centering
