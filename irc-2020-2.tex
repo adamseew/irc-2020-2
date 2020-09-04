@@ -1009,8 +1009,8 @@ where:
 
 
  \hat{x}_{t} = \begin{bmatrix} 
-                x_{NED} \\ 
-                y_{NED}
+                x \\ 
+                y
                 \end{bmatrix} ,  \quad
 F_{t} = \begin{bmatrix} 
                 1 & 0 \\ 
@@ -1021,12 +1021,12 @@ G_{t} =   \begin{bmatrix}
                 0 & dt & 0 & \frac{dt^{2}}{2} &0 & -dt
                 \end{bmatrix} , \quad
 u_{t} = \begin{bmatrix} 
-                vx_{NED} \\ 
-                vy_{NED} \\
-                ax_{NED} \\
-                ay_{NED} \\
-                vx_{m_{NED}}\\
-                vy_{m_{NED}}
+                v_x \\ 
+                v_y \\
+                a_x \\
+                a_y \\
+                v_{x,\textrm{landing}}\\
+                v_{y,\textrm{landing}}
                 \end{bmatrix}  \\ \\
                 
 P_{0} =  \begin{bmatrix} 
@@ -1036,28 +1036,28 @@ P_{0} =  \begin{bmatrix}
 Q_{t}  =\begin{bmatrix} 
                 dt & 0 \\ 
                 0 & dt
-                \end{bmatrix} \cdot \sigma^{2}_{IMU} 
+                \end{bmatrix} \cdot \sigma^{2}_{\textrm{IMU}}
 \end{array} \\
 \end{equation*}
 \todo{Georgios: What are the value of the initial covariance matrix?}
 
 %where:
 \begin{itemize}
-\item  \(x_{NED}, y_{NED} \) is the position of the UAV in the landing site's local coordinate system (aligned with NED frame), 
-\item \(dt\) is the time interval the PX4's EKF outputs the \(vx_{NED},vy_{NED}\) data, usually around 33ms, 
-\item \(vx_{NED},vy_{NED}\) is the linear velocity of the UAV in NED frame, estimated from the PX4's EKF,
+\item  \(x, y \) is the position of the UAV in the landing site's local coordinate system (aligned with NED frame), 
+\item \(dt\) is the time interval the PX4's EKF outputs the \(v_x, v_y\) data, usually around 33ms, 
+\item \(v_x, v_y\) is the linear velocity of the UAV in NED frame, estimated from the PX4's EKF,
 
 % [Ad2:] NED frame -> NED coordinates
 
-\item \(ax_{NED}, ay_{NED}\) is the linear acceleration of the UAV in NED frame, estimated on the companion computer from differentiating the velocities.
+\item \(a_x, a_y\) is the linear acceleration of the UAV in NED frame, estimated on the companion computer from differentiating the velocities.
 
 % [Ad2:] NED frame -> NED coordinates
 
-\item \(vx_{m_{NED}},vy_{m_{NED}}\) is the linear velocity of the moving platform in NED frame, estimated from the velocity estimator for the moving platform,
+\item \(v_{x,\textrm{landing}}, v_{y,\textrm{landing}}\) is the linear velocity of the moving platform in NED frame, estimated from the velocity estimator for the moving platform,
 
 % [Ad2:] NED frame -> NED coordinates
 
-\item \(\sigma^{2}_{IMU}\) is the variance of the velocities based estimated by the PX4's EKF.
+\item \(\sigma^{2}_{\textrm{IMU}}\) is the variance of the velocities based estimated by the PX4's EKF.
 \end{itemize}
 
 In the correction step the observed measurements from the downward
@@ -1065,9 +1065,9 @@ looking camera will be used to correct and update the predicted
 \emph{X,Y} position of the UAV. However due to the computation time
 needed to detect the landing marker, that incoming measurement will be
 delayed by some time \(dt_{obs}\). During that time \(dt_{obs}\) the
-UAV will be relocated by an interval (\(dx_{obs},dy_{obs}\)). To
+UAV will be relocated by an interval (\(dx_{obs}, dy_{obs}\)). To
 compensate that extra displacement, the interval
-(\(dx_{obs},dy_{obs}\)) is calculated and added to the observed
+(\(dx_{obs}, dy_{obs}\)) is calculated and added to the observed
 measurements.
 
 Correction step:
