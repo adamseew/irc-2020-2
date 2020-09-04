@@ -1507,7 +1507,8 @@ for comparison). We estimate\footnote{From information on the respective
   product pages regarding battery capacity and maximal flight time.}
 that the Phantom uses roughly \SI{140}{\watt} while cruising whereas the Cumulus
 uses roughly \SI{40}{\watt} while cruising. The maximal saving gained from
-changing the \emph{YOLOv3-tiny} rate is $6.30W-3.9W=2.4W$ whereas the
+changing the \emph{YOLOv3-tiny} rate is 
+$\SI{6.30}{\watt}-\SI{3.9}{\watt}=\SI{2.4}{\watt}$ whereas the
 maximal saving gained from changing the \emph{landing marker} rate is
 \SI{0.2}{\watt}. For the Cumulus, there is thus a 6.5\% potential energy
 saving, whereas the potential energy saving only is 1.9\% for the
@@ -1528,11 +1529,15 @@ overall save energy because of a reduced flight time.
 
 In this paper we presented a robust, energy-sensitive, vision-based
 algorithm for autonomous tracking and landing in varying environmental
-conditions, by experimentally executing all the necessary algorithms on the \emph{Nvidia Jetson Nano} companion computer.
+conditions, by experimentally executing all the necessary algorithms on 
+the \emph{Nvidia Jetson Nano} companion computer.
 %
 % Proposed text by George:
-Our experiments show that the proposed computer vision algorithms for detecting the moving platform can be run at the highest QoS level with only a marginal
-energy overhead, whereas adapting the QoS level of \emph{YOLOv3-tiny} CNN results in a considerable power saving for the system as a whole. This power saving is significant if the system was executing on a fixed-wing UAV, %
+Our experiments show that the proposed computer vision algorithms for 
+detecting the moving platform can be run at the highest QoS level with only a marginal
+energy overhead, whereas adapting the QoS level of \emph{YOLOv3-tiny} 
+CNN results in a considerable power saving for the system as a whole. 
+This power saving is significant if the system was executing on a fixed-wing UAV, %
 but only marginal if executing on a multirotor UAV.
 
 %Original text by Ulrik:
