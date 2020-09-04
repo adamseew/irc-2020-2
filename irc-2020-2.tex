@@ -849,6 +849,8 @@ visible in the image frame.
 
 % [Ad3:!] what does it mean different ids?
 
+%[Georgios3:] ids = identifications, like the ID.
+
 To evaluate the computer vision algorithm for detecting the landing
 marker, real images of \SI{640}{}$\times$\SI{480}{} pixel size were captured with
 an Intel RealSense D435 camera. In the Gazebo simulation a color camera
@@ -992,6 +994,8 @@ controller is used.
 
 % [Ad3:] confusing sry ;( I understood you read the position from PX4 in NED coordinate frame. I read UAV frame has it's own coordinate frame which is (0,0,0) that is converted into NED coordinate frame: you just use the reading right? It's not a conversion then
 
+%[Georgios3:] The UAV BODY frame and the UAV NED frame have the same origion but different alignment. The NED always faces the magnetic North while the BODY faces according to the front side of the UAV.
+
 \item The coordinates from step 6, are converted from UAV's \emph{NED} frame 
 into the landing site's local coordinate frame.
 
@@ -1025,6 +1029,8 @@ also be implemented as a part of the navigation block.
 % [Ad3:] state -> position; state seems confusing with battery, compoenents
 % [Ad3:] sentence 'This is important because it will allow us to process images at different fps according to a desired QoS.' mmmh; not sure. Not really actually because we don't change QoS dynamically with the position (we actually don't change QoS at all)
 
+% Well ideally we could change it dynamically despite the fact that we are not doing it in this paper.
+
 The variables of interest that describe the state of the UAV for this project are:
 %
 \begin{itemize}
@@ -1032,9 +1038,11 @@ The variables of interest that describe the state of the UAV for this project ar
 \item The relative position of the UAV from the moving platform, 
 $x_k$, \todo[noinline]{I think we might have used a bad name for this value. It currently overlaps with the estimated position of the UAV
 relative to the landing target.}
-calculated as described in Section~\ref{sec:Detection}.
+.
 
 % [Ad3:] confusing; we calculate the position here of the UAV but they are calculated as described in another section. Would erase calculated on, or describe that one is the visual measurement and is used for the purpose of estimation in our EKF.
+
+% [Georgios3:] Agree on that. I deleted it.
 
 \item The attitude of the UAV \emph{[roll, pitch, yaw]}, obtained from the flight controller's IMUs.
 
