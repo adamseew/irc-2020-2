@@ -1176,7 +1176,7 @@ whole duration of the experiments. That direction vector is defined as
 The magnitude of the wind is calculated as follows: %according to the following pattern:
 
 \begin{itemize}
-    \item An initial wind power of either \SI{3.45}{\newton} or \SI{7.76}{\newton} is chosen.
+    \item An initial wind force of either \SI{3.45}{\newton} or \SI{7.76}{\newton} is chosen.
     
     \item An update cycle of \SI{5.5}{\second} is chosen between two different applied forces.
     
@@ -1186,16 +1186,20 @@ The magnitude of the wind is calculated as follows: %according to the following 
     
   
     
-        \(\mbox{\em force}_{x} = -x_{norm} * \mbox{\em power}_{init} * \mbox{\em Random\_noise} \\
-         \mbox{\em force}_{y} = -y_{norm} * \mbox{\em power}_{init} * \mbox{\em Random\_noise}\)\\
+        \(\mbox{\em force}_{x} = -x_{norm} * \mbox{\em force} * \mbox{\em Random\_noise} \\
+         \mbox{\em force}_{y} = -y_{norm} * \mbox{\em force} * \mbox{\em Random\_noise}\)\\
         
 
-    where \(x_{norm } = 0.8\), \(y_{norm}  = 0.2\) , \(\mbox{\em power}_{init} = 7.0 N\)
+    where \(x_{norm } = 0.8\), \(y_{norm}  = 0.2\) 
     
-    \item For a UAV altitude of \SI{6.0}{\meter} and below the power decreases as:
-   \( \mbox{\em power} = \mbox{\em power}_{init}* (\mbox{\em altitude}/ 6.0)  \), where \(\mbox{\em power}_{init}\) is either \SI{3.45}{\newton} or \SI{7.76}{\newton}
+    For an altitude of \SI{6.0}{\meter} and above \(\mbox{\em force} = \mbox{\em force}_{init}\) where \( \mbox{\em force}_{init}\) is either \SI{3.45}{\newton} or \SI{7.76}{\newton}
+    
+    \item For a UAV altitude of \SI{6.0}{\meter} and below, the wind force decreases as:
+   \( \mbox{\em force} = \mbox{\em force}_{init}* (\mbox{\em altitude}/ 6.0)  \)
    
-   \item For a UAV altitude of \SI{3}{\meter} and below, \(\mbox{\em power} = 0.5\). 
+   %, where \(\mbox{\em force}_{init}\) is either \SI{3.45}{\newton} or \SI{7.76}{\newton}
+   
+   \item For a UAV altitude of \SI{3}{\meter} and below, \(\mbox{\em force} = 0.5 N\). 
 
     
 \end{itemize}
