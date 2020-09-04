@@ -555,7 +555,7 @@ performing color segmentation on the incoming image frame. By fusing
 the height measurement from the LiDAR into the vision measurement, a
 relative pose of the UAV from the moving platform was obtained. A
 color segmentation approach was also implemented by Lee
-et~al.~\cite{lee2016vision}. A red rectangle was used as a landing marker while the detection was done by a vertically facing camera with a fish-eye lens. The setup accounted for a successful landing from an altitude of \SI{70}{\m}. Both researchers have used an on-board companion computer to
+et~al.~\cite{lee2016vision}. A red rectangle was used as a landing marker while the detection was done by a vertically facing camera with a fish-eye lens. The setup accounted for a successful landing from an altitude of \SI{70}{\m}. In the above two cases an on-board companion computer is used to
 perform all the computations on the UAV. However, we in this work do not consider a color segmentation
 approach as a safe option, since for a realistic (outdoor)
 case it would be difficult, if not impossible, to ensure that the
@@ -569,6 +569,8 @@ scene.
 
 % [Ad3:] perhaps vision measurement -> distance measurement? Is vision measurement a conventional way of saying the value of the distance taken from the lidar? IDN
 
+%[Georgios3:] I would stick to distance measurement since I think that LiDARs are not considered as vision sensors like cameras are.
+
 % X [Ad2:] Too many times 'was used' and a little intricated; perhaps "A red rectangle was used as a landing marker and a vertically facing camera with a fish-eye lens was used to detect it, and a successful landing from an altitude of \SI{70}{\m} was demonstrated." -> "A red rectangle was used as a landing marker while the detection was done by a vertically facing camera with a fish-eye lens. The setup accounted for a successful landing from an altitude of \SI{70}{\m}."
 % [Georgios2:] I like that better too. Will change it accordingly.
 
@@ -577,6 +579,8 @@ scene.
 
 % [Ad3:] LOL sorry for being annoying but it's et. al. in both cases so it's not entirely clear which researchers from the et. al. :P
 
+%[Georgios3:] No worries :P ... I rephrazed it.
+
 % X [Ad2:] Typo: computations
 % X [Ad2:] the last sentence, However...scene., is unclear. Perhaps: We do not consider a color segmentation approach due to the high variability of the outdoor environment. {actually this doesn't seem entirely correct; maybe we could omit. I mean, if they landed from 70 meters they probably weren't in a lab with a white background and a colored marker in the middle...}
 
@@ -584,14 +588,15 @@ scene.
 
 % [Ad3:] yes, but it sounds we are criticizing them while we are not even stating in that sentence what we are using instead (if I am a reviewer and I see somebody taking such position I start questioning). I would be rather conservative. Maybe omitting However on?
 
+%[Georgios3:] I would consider as an assumption we make to increase the overall robustness. I am ok in omitting it if it seems too criticizing
+
 The use of a hybrid camera system consisting of a fish-eye IR camera
 and a stereo camera was demonstrated by Yang
 et~al.~\cite{yang2018hybrid}. An ArUco marker was used to mark the
 moving platform and a convolutional neural network (CNN) YOLO~v3 was
 trained specifically for marker detection. A similar approach
 concerning the detection of a landing marker was demonstrated by
-Nguyen et~al.~\cite{nguyen2018lightdenseyolo}. Here a specific landing
-marker was used and a specific CNN was used to detect it: successful
+Nguyen et~al.~\cite{nguyen2018lightdenseyolo} in which a specific CNN was trained to detect a landing marker pattern: successful
 detection of a \SI{1}{\m}$\times$\SI{1}{\m} marker size was demonstrated from a
 distance of \SI{50}{\m}. An AprilTag marker was used as a landing marker by
 Kyritsis et~al.~\cite{kyristsis2016towards}. The identification of the AprilTag marker
@@ -615,6 +620,8 @@ a different QoS can be chosen for each algorithm.
 % Agree on that. Changed it from "teams" to "In the above three cases, the researchers..."
 
 % [Ad3:] In the sentence Here...detect it we might change one of the specific to given (3x specific like words)
+
+%[Georgios3:] I rephrazed it
 
 % [Ad: energy-sensitive part {begin}]
 %
@@ -814,11 +821,12 @@ designed to increase the robustness and overall performance of the
 system, as described in Section~\ref{sec:Navigation}. Last, a model of
 dynamically changing wind disturbances is analysed and described in
 Section~\ref{sec:WindDisturbances}, allowing the system to be tested
-on a realistic use-case.
+in a more realistic simulation.
 
 % [Ad2:] energy-sensitive design approach doesn't seem to fit the context. Maybe point of view instead of approach
 % [Ad3:] the thing about approach is that we say it earlier meaning 'the paper'. Hence confusion (the paper is not only energy sensitiveness)
 % [Ad3:] it's not the use-case being realistic but the simulation? 'realistic use-case' -> 'realistic simulation'
+% [Georgios3:] Rephrazed it into "in a more realistic simulation"
 
 \begin{figure}
 \centering
@@ -840,6 +848,8 @@ markers are used as extra landmarks in case the marker is partially
 visible in the image frame.
 
 % [Ad3:!] what does it mean different ids?
+
+%[Georgios3:] ids = identifications, like the ID.
 
 To evaluate the computer vision algorithm for detecting the landing
 marker, real images of \SI{640}{}$\times$\SI{480}{} pixel size were captured with
@@ -984,6 +994,8 @@ controller is used.
 
 % [Ad3:] confusing sry ;( I understood you read the position from PX4 in NED coordinate frame. I read UAV frame has it's own coordinate frame which is (0,0,0) that is converted into NED coordinate frame: you just use the reading right? It's not a conversion then
 
+%[Georgios3:] The UAV BODY frame and the UAV NED frame have the same origion but different alignment. The NED always faces the magnetic North while the BODY faces according to the front side of the UAV.
+
 \item The coordinates from step 6, are converted from UAV's \emph{NED} frame 
 into the landing site's local coordinate frame.
 
@@ -1017,6 +1029,8 @@ also be implemented as a part of the navigation block.
 % [Ad3:] state -> position; state seems confusing with battery, compoenents
 % [Ad3:] sentence 'This is important because it will allow us to process images at different fps according to a desired QoS.' mmmh; not sure. Not really actually because we don't change QoS dynamically with the position (we actually don't change QoS at all)
 
+% Well ideally we could change it dynamically despite the fact that we are not doing it in this paper.
+
 The variables of interest that describe the state of the UAV for this project are:
 %
 \begin{itemize}
@@ -1024,9 +1038,11 @@ The variables of interest that describe the state of the UAV for this project ar
 \item The relative position of the UAV from the moving platform, 
 $x_k$, \todo[noinline]{I think we might have used a bad name for this value. It currently overlaps with the estimated position of the UAV
 relative to the landing target.}
-calculated as described in Section~\ref{sec:Detection}.
+.
 
 % [Ad3:] confusing; we calculate the position here of the UAV but they are calculated as described in another section. Would erase calculated on, or describe that one is the visual measurement and is used for the purpose of estimation in our EKF.
+
+% [Georgios3:] Agree on that. I deleted it.
 
 \item The attitude of the UAV \emph{[roll, pitch, yaw]}, obtained from the flight controller's IMUs.
 
@@ -1036,8 +1052,7 @@ the flight controller's EKF.
 % [Ad2:] NED coordinates
 % [Georgios2:]I would stick to NED frame for consistency.
 
-\item the acceleration of the UAV, $\ddot{x}_k$, in \emph{NED} frame, obtained 
-either from the flight controller's EKF or by differentiating the velocities.\todo[noinline]{These values are also described on the next page.}
+\item the acceleration of the UAV, $\ddot{x}_k$, in \emph{NED} frame, obtained by differentiating the velocities.\todo[noinline]{These values are also described on the next page.}
 
 % [Ad2:] NED coordinates
 % [Ad2:] or ... velocities ->   {How to differentiate velocities? If the velocity is from the flight controller, it's just a value. So we calculate the tangent? I would omit this. Later we don't mention any differentiation but just say they are 'obtained from the flight controller's onboard sensors'}
@@ -1045,6 +1060,8 @@ either from the flight controller's EKF or by differentiating the velocities.\to
 %[Georgios2:] Considering the calculation of acceleration: Yes we calculate the tangent. We can omit this is you want.
 
 % [Ad3:] it's little confusing because ... well "which one are you using guys?"; I'd omit still ¯\_(ツ)_/¯ 
+
+%[Georgios3:] Solved. I kept the differentiation of the velocities.
 
 \end{itemize}
 %
