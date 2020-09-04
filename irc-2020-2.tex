@@ -1082,21 +1082,6 @@ Prediction Step:\begin{subequations}
 P_{k} & = F \cdot P_{k-1} \cdot F^\top + Q_{k},
 \end{align}\end{subequations}
 
-\todo[disable]{Not comments but todos here (for Henrik) %¯\_(ツ)_/¯
-
-[Ad3:] the math here is really unecessarily complicated >:P . 
-I can change it the robo-gang way. Your formatting of where up is 
-definitely interesting; when I started writing papers with math 
-I also had this thing of writing my way. 
-Then came Hector one day and told me that only once I am known enough 
-I can change the status quo in the math notation; 
-so now I am little autistic about it all the time :)
-
-[Ad3:] there are fixes with ts here and there. 
-Also; you have a time dependent timestep dt. Please, don't use dt. 
-What is that? It seems differentiation. Is soooo confusing. 
-I can help to simplify. Just tell me!}
-
 where $x_k \in \mathbb{R}^2$ is the position of the UAV, $u_{k} = \begin{bmatrix}\dot{x}_k & \ddot{x}_k & \dot{x}_{k}^l\end{bmatrix}^\top$ is its control with $x_k,x_k^l$ being the positions of the UAV and the moving paltform respectively.
 Given $I:=I_2$, a \SI{2}{}$\times$\SI{2}{} identity matrix, the matrix $F=I$, the noise covariance matrix $Q_k=\Delta t_k\cdot\sigma^2_{\textrm{IMU}}\cdot I$, and $\sigma^2_{\textrm{IMU}}\in\mathbb{R}$ is the variance of the velocities retrieved from the flight controller's data.\todo[noinline]{Is this the right word? [Ad3:] actually no/yes--diatrabes between controls people stating that the model of the system is perfect since is a model [cite Hector]} Further, \(\Delta t_k\) is the time interval the flight controller output the data (usually around \SI{33}{\ms}). 
 The input matrix is given by:
@@ -1107,12 +1092,14 @@ G_{k} & = \begin{bmatrix}
     0 & \Delta t_k & 0 & \frac{\Delta t_k^{2}}{2} &0 & -\Delta t_k\end{bmatrix}, \\
 \end{align*}
 \todo{
-  [Ad3:] Actually $G_k$ might still go easily inline. Something like $G_k=\Delta t_k\begin{bmatrix}I & \Delta t_kI/2 & -I\end{bmatrix}$. Up to you}
-The system is initialized with $P_0=I$ and $\hat{x}_0$ coming from the initial measurement.
+  Ad3: Actually $G_k$ might still go easily inline. Something like (commented because latex generates error). Up to you
+  % Here: $G_k=\Delta t_k\begin{bmatrix}I & \Delta t_kI/2 & -I\end{bmatrix}$
+}
+%The system is initialized with $P_0=I$ and $\hat{x}_0$ coming from the initial measurement.
 
 %where:
 \todo{
-  [Ad3:] the itemize doesn't really add any information the reader doesn't know so far (takes space also)... Makes sense in a thesis, report, not in a paper.
+  Ad3: the itemize doesn't really add any information the reader doesn't know so far (takes space also)... Makes sense in a thesis, report, not in a paper.
 }
 \begin{itemize}
 \item  \(x_k \) is the position of the UAV in the landing site's local 
@@ -1139,7 +1126,7 @@ estimated by the PX4's EKF.
 \end{itemize}
 
 \todo{
-  [Ad3:] from here to windspeed, I just apply my earlier math suggestion. Henrik, Georgios please check/change/revise.
+  Ad3: from here to windspeed, I just apply my earlier math suggestion. Henrik, Georgios please check/change/revise.
 }
 
 In the correction step, the observed measurements from the downward
@@ -1179,7 +1166,7 @@ in the landing marker detection algorithm.  %\hemi{Please explain why
 %  the signal is the \emph{smoothest}.}
 
 \todo{
-  [Ad3:] confusing a bit; if we differentiate to estimate the velocity (dx/dt if x is the position) how we use low pass filter to estimate the same velocity we differentiated?
+  Ad3: confusing a bit; if we differentiate to estimate the velocity (dx/dt if x is the position) how we use low pass filter to estimate the same velocity we differentiated?
 }
 
 In the agricultural use-case the moving platform is likely to change
@@ -1195,11 +1182,9 @@ moving platform's velocity (\(\dot{x}_k^l\)) in \emph{NED} frame can be obtained
 
 \subsection{Wind Disturbances}
 \label{sec:WindDisturbances}
-
 \todo{
-  [Ad3:] the force is $F$. Why are we then calling it $force$ later on?
+  Ad3: the force is $F$. Why are we then calling it $force$ later on?
 }
-
 The exact and accurate estimation of the applied wind forces on a body
 is a complex matter studied by the field of fluid dynamics. We use a
 simplified approach, as follows. We assume that the wind will be
@@ -1212,9 +1197,6 @@ center of gravity of the UAV with direction parallel to the ground.
 The magnitude of the applied force, corresponding to a certain wind
 speed is calculated by the following equations
 \cite{Dynamic_pressure_NASA,anderson2010fundamentals}:
-\todo{
-  [Ad3:] the force is $F$. Why are we then calling it $force$?
-}
 
 \begin{equation}
     \begin{array}{l}
@@ -1222,7 +1204,7 @@ speed is calculated by the following equations
          p_{d} = \frac{\varrho \cdot v^2}{2} 
     \end{array}
 \end{equation}\todo{
-  [Ad3:] can be one line, and actually, I would trust the reader to search for this one. Is really basic physics.
+  Ad3: can be one line, and actually, I would trust the reader to search for this one. Is really basic physics.
 }
 
 \noindent where $F$ is the force, \(p_{d}\) is the dynamic pressure, \(A\) is
@@ -1256,7 +1238,7 @@ The magnitude of the wind is calculated as follows: %according to the following 
     
   
     \todo{
-          [Ad3:] this is just $F_k=w\cdot F\cdot r$? where $w,r$ is the direction vector you defined earlier \emph{[0.8, 0.2]} and $r$ a random number.
+          Ad3: this is just $F_k=w\cdot F\cdot r$? where $w,r$ is the direction vector you defined earlier \emph{[0.8, 0.2]} and $r$ a random number.
         } 
         \(\mbox{\em force}_{x} = -x_{norm} * \mbox{\em force} * \mbox{\em Random\_noise} \\
          \mbox{\em force}_{y} = -y_{norm} * \mbox{\em force} * \mbox{\em Random\_noise}\)\\
