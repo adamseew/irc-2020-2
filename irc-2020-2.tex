@@ -1081,32 +1081,27 @@ What is that? It seems differentiation. Is soooo confusing.
 I can help to simplify. Just tell me!}
 
 where $\hat{x}_k \in \mathbb{R}^2$ is the position of the UAV, 
-and $F$ is a 2 by 2 identity matrix...
-
-\begin{equation*}
-\begin{array}{l}
-G_{k} =   \begin{bmatrix} 
-                \Delta t_k & 0 & \frac{\Delta t_k^{2}}{2} & 0 & -\Delta t_k & 0\\ 
-                0 & \Delta t_k & 0 & \frac{\Delta t_k^{2}}{2} &0 & -\Delta t_k
-                \end{bmatrix}, \\
-u_{k}^\top = \begin{bmatrix} 
-                v_x &
-                v_y &
-                a_x &
-                a_y &
-                v_{x,\textrm{landing}} &
-                v_{y,\textrm{landing}}
-                \end{bmatrix}  \\ \\               
-P_{0} =  \begin{bmatrix} 
+and $F$ is a 2 by 2 identity matrix.
+The input matrix and associated control input is given by:
+\begin{align*}
+G_{k} & = \begin{bmatrix}
+    \Delta t_k & 0 & \frac{\Delta t_k^{2}}{2} & 0 & -\Delta t_k & 0\\ 
+    0 & \Delta t_k & 0 & \frac{\Delta t_k^{2}}{2} &0 & -\Delta t_k\end{bmatrix}, \\
+u_{k} & = \begin{bmatrix} 
+                \dot{x}_k &
+                \ddot{x}_k &
+                \dot{x}_{k}^l
+                \end{bmatrix}^\top \\               
+P_{0} & =  \begin{bmatrix} 
                 1 & 0 \\ 
                 0 & 1
-                \end{bmatrix}   , \quad 
-Q_{k}  =\begin{bmatrix} 
+                \end{bmatrix}, \\
+Q_{k} & = \begin{bmatrix} 
                 \Delta t_k & 0 \\ 
                 0 & \Delta t_k
                 \end{bmatrix} \cdot \sigma^{2}_{\textrm{IMU}}
-\end{array} \\
-\end{equation*}
+\end{align*}
+
 \todo{Georgios: What are the value of the initial covariance matrix?}
 
 %where:
