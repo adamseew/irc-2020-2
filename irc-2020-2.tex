@@ -515,9 +515,9 @@ behavior-based control architecture. In physical tests a marker of
 \SI{122}{}$\times$\SI{122}{\cm} size was detected for a maximum altitude of \SI{10}{\m}. A
 % [Ad3:] why cms twice?
 landing marker inspired by a QR code but consisting of three
-artificial markers is demonstrated by Yuan
+artificial markers is investigated by Yuan
 et~al.~\cite{yuan2018hierarchical}, and was shown to provide a \SI{6}-Degree Of Freedom (DOF)
-pose over an altitude range of \SI{0}{}-\SI{20}{\m}. Our work is however focused on
+pose over an altitude range of \SI{0}{}-\SI{20}{\m}. Our work is in constrast focused on
 the ability to land on moving platforms.
 
 Saripalli et~al.~\cite{saripalli2003landing} also demonstrated the use
@@ -526,7 +526,7 @@ computations were performed offline. Similarly, an ArUco marker was
 used as a landing marker by Lee et~al.~\cite{lee2012autonomous} to
 detect a moving platform. The control of the UAV is performed based on
 the error provided by the vision algorithm but all the computations
-were performed off-board. Arrar, et~al.~\cite{araar2017vision} focus
+were performed off-board. Arrar et~al.~\cite{araar2017vision} focus
 on extending the detection range by using an
 AprilTag~\cite{olson2011apriltag} as a landing marker. Again all the
 computer vision algorithms were also executed off-board. Conversely, a crucial
@@ -601,7 +601,7 @@ Nguyen et~al.~\cite{nguyen2018lightdenseyolo} in which a specific CNN was traine
 detection of a \SI{1}{\m}$\times$\SI{1}{\m} marker size was demonstrated from a
 distance of \SI{50}{\m}. An AprilTag marker was used as a landing marker by
 Kyritsis et~al.~\cite{kyristsis2016towards}. The identification of the AprilTag marker
-was performed through Graphics Processing Unit (GPU). In the above three cases, the researchers
+was performed using a Graphics Processing Unit (GPU). In the above three cases, the researchers
 have utilized the companion's computer GPU to detect the landing
 marker. In the agricultural use-case addressed in this paper, the GPU
 is however needed for a CNN to detect ground hazards, and since the
@@ -714,7 +714,7 @@ The energy-sensitive design using \powprof{} relies on empirical
 experiments to measure the actual power consumption on the robot
 hardware~\cite{seewald2019coarse}.
 %
-% [Ad3:] Ulrik, the sentence seems to fit better in SoA?
+% [Ad3:] Ulrik, the sentence seems to fit better in SoA? Yes, nice! /ups
 %
 In this paper, we focus on the
 initial profiling using of energy usage of the companion computer,
@@ -723,13 +723,14 @@ can be studied independently from the specific drone it is mounted in.
 
 % X [Ad2:] Typo: In this paper, 
 
-First, the developer specifies the maximum and minimum QoS level for
+%First, 
+The developer must specify the maximum and minimum QoS level for
 each algorithm running on the system.  During mission execution the
 levels are statically defined: automatic adaptation during different
 phases of the mission is currently being investigated and is
 considered future work.
 %
-Then, the developer executes the system to empirically determine the
+The developer executes the system to empirically determine the
 power consumption. This can be done in two different ways:
 %
 % X [Ad: enumerate?] for some reason I don't think the enumerate env actually ads anything in readability, while I would use it to describe steps of the algorithm, I would just put the following two enumerate as new paragraph with the mode in italic (maybe just me; if others like the enumerate env I am totally fine with it)
@@ -1323,14 +1324,14 @@ and ROS Melodic on a i7-8550U 1.8GHz (4.0GHz Boost), 8GB DDR4
 laptop. The \emph{PX4} Software In The Loop (SITL) Firmware v1.10.2 is used as the flight
 controller and the \emph{IRIS} quadcopter is used as the UAV platform. A
 vertically facing RGB camera is placed on the UAV providing a
-640$\times$480 pixel image at 10~fps. An \emph{Nvidia Jetson Nano}
+640$\times$480 pixel image at 10~fps. An Nvidia Jetson Nano
 with Ubuntu 18.04 and ROS Melodic is used as the UAV's companion
 computer. All the computer vision, guidance, and control algorithms 
-execute on the \emph{Nvidia Jetson Nano}, similar to how they would
+execute on the Nvidia Jetson Nano, similar to how they would
 be deployed if the Nano was a companion computer in a physical drone.
 %
-Energy profiling is performed directly on the \emph{Nvidia Jetson
-  Nano} using \powprof{} as outlined in Section~\ref{sec:semi-automatic}.
+Energy profiling is performed directly on the Nvidia Jetson
+  Nano using \powprof{} as outlined in Section~\ref{sec:semi-automatic}.
 
 Two groups of experiments are conducted. The first group evaluates the
 energy consumption and QoS of the \emph{tracking} mode and the second group
@@ -1504,7 +1505,7 @@ overall save energy because of a reduced flight time.
 In this paper we presented a robust, energy-sensitive, vision-based
 algorithm for autonomous tracking and landing in varying environmental
 conditions, by experimentally executing all the necessary algorithms on 
-the \emph{Nvidia Jetson Nano} companion computer.
+the Nvidia Jetson Nano companion computer.
 %
 % Proposed text by George:
 Our experiments show that the proposed computer vision algorithms for 
