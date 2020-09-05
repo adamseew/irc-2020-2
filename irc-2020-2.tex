@@ -446,7 +446,7 @@ stationary or mobile.
 %
 %Apart from presenting an increased energy efficiency concerning the computations, our approach further elaborates on the landing of the UAV on a moving platform. It can be easily shown that it is not generally energy- or time-efficient for the UAV to fly back to its base, once the battery reaches a critical level. Instead it is proposed that the UAV should land on the moving vehicle that is inherently in the proximity of the UAV during normal operation. 
 %
-Moreover, relying solely on the availability of a Global Positioning System (GPS) signal for
+Moreover, relying solely on the availability of a GPS signal for
 autonomous precision landing is not considered safe, since GPS signals
 can be temporarily lost or even tampered with.
 %
@@ -504,7 +504,7 @@ while tracking and landing on a moving platform.
 Vision-based autonomous landing on a marker has been extensively
 studied by many researchers. Key distinctions include whether the
 marker is on a moving platform, the type of the marker, the algorithms
-used to detect it, as well as the mounted sensors on-board of the UAV.
+used to detect it, as well as the mounted sensors onboard of the UAV.
 
 For stationary platforms, one of the first experiments with
 vision-based autonomous landing was conducted by Saripalli
@@ -530,7 +530,7 @@ were performed off-board. Arrar et~al.~\cite{araar2017vision} focus
 on extending the detection range by using an
 AprilTag~\cite{olson2011apriltag} as a landing marker. Again all the
 computer vision algorithms were also executed off-board. Conversely, a crucial
-aspect of our application is to perform all the computations on-board,
+aspect of our application is to perform all the computations onboard,
 and to evaluate them according to their energy efficiency as a
 function of QoS.
 
@@ -556,7 +556,7 @@ performing color segmentation on the incoming image frame. By fusing
 the height measurement from the LiDAR into the vision measurement, a
 relative pose of the UAV from the moving platform was obtained. A
 color segmentation approach was also implemented by Lee
-et~al.~\cite{lee2016vision}. A red rectangle was used as a landing marker while the detection was done by a vertically facing camera with a fish-eye lens. The setup accounted for a successful landing from an altitude of \SI{70}{\m}. In the above two cases an on-board companion computer is used to
+et~al.~\cite{lee2016vision}. A red rectangle was used as a landing marker while the detection was done by a vertically facing camera with a fish-eye lens. The setup accounted for a successful landing from an altitude of \SI{70}{\m}. In the above two cases an onboard companion computer is used to
 perform all the computations on the UAV. However, we in this work do not consider a color segmentation
 approach, since for a realistic (outdoor)
 case it would be difficult to ensure that the
@@ -600,7 +600,7 @@ moving platform and a convolutional neural network (CNN) YOLO~v3 was
 trained specifically for marker detection. A similar approach
 concerning the detection of a landing marker was adopted by
 Nguyen et~al.~\cite{nguyen2018lightdenseyolo} in which a specific CNN was trained to detect a landing marker pattern: successful
-detection of a \SI{1}{\m}$\times$\SI{1}{\m} marker size was demonstrated from a
+detection of a \SI{1}{}$\times$\SI{1}{\m} marker size was demonstrated from a
 distance of \SI{50}{\m}. An AprilTag marker was used as a landing marker by
 Kyritsis et~al.~\cite{kyristsis2016towards}. The identification of the AprilTag marker
 was performed using a Graphics Processing Unit (GPU). In the above three cases, the researchers
@@ -671,7 +671,7 @@ battery management mission-based dynamic recharge approach is
 presented. A set of recharge stations are used, along with
 self-docking capable robots. Our approach similarly allows landing on
 a moving platform for recharging, which is in the context of this
-paper is considered in the proximity of the drone. The actual landing
+paper considered in the proximity of the drone. The actual landing
 is handled by the proposed algorithm, and we also account for the
 energy required for executing this algorithm during landing.
 %
@@ -863,7 +863,7 @@ To evaluate the computer vision algorithm for detecting the landing
 marker, real images of \SI{640}{}$\times$\SI{480}{} pixel size were captured with
 an Intel RealSense D435 camera. In the Gazebo simulation a color camera
 with the same distortion coefficients as the Intel camera is used to
-output a \SI{640}{}$\times$\SI{480}{} pixel image at \SI{10}{} frames per second (fps).
+output a \SI{640}{}$\times$\SI{480}{} pixel image at 10 frames per second (fps).
 
 % X [Ad3:] I'd put the number in the text as it is, but we started with this SI earlier, so now I am just being consistent.
 
@@ -1030,8 +1030,8 @@ The purpose of the navigation block is to provide an accurate
 prediction for the state of the UAV at any given time. Such a prediction allow us potentially to process images at different fps
 according to a desired QoS. Furthermore, the overall robustness of the
 system is increased in case the moving platform is not detected in
-every image frame. A velocity estimator for the moving platform will
-also be implemented as a part of the navigation block.
+every image frame. A velocity estimator for the moving platform is
+also being implemented as a part of the navigation block.
 
 % X [Ad3:] state -> position; state seems confusing with battery, compoenents
 % X [Ad3:] sentence 'This is important because it will allow us to process images at different fps according to a desired QoS.' mmmh; not sure. Not really actually because we don't change QoS dynamically with the position (we actually don't change QoS at all)
@@ -1040,7 +1040,7 @@ also be implemented as a part of the navigation block.
 
 % [Ad4:] Better not promise what we are not doing (this is new section, so you have the reader reading well here)
 
-The variables of interest that describe the state of the UAV for this project are:
+The variables of interest that describe the state of the UAV are:
 %
 \begin{itemize}
 
@@ -1093,7 +1093,7 @@ P_{k} & = F \cdot P_{k-1} \cdot F^\top + Q_{k},
 \end{align}\end{subequations}
 where %$x_k \in \mathbb{R}^2$ is the position of the UAV, 
 $u_{k} = \begin{bmatrix}\dot{x}_k & \ddot{x}_k & \dot{x}_{k}^l\end{bmatrix}^\top$ is its control with $x_k,x_k^l$ being the positions of the UAV and the moving paltform respectively.
-Given $I:=I_2$, a \SI{2}{}$\times$\SI{2}{} identity matrix, the matrix $F=I$, the noise covariance matrix $Q_k=\Delta t_k\cdot\sigma^2_{\textrm{IMU}}\cdot I$, and $\sigma^2_{\textrm{IMU}}\in\mathbb{R}$ is the variance of the velocities retrieved from the flight controller's data.%\todo[noinline]{Is this the right word? 
+Given $I:=I_2$, a \SI{2}{}$\times$\SI{2}{} identity matrix, the matrix $F=I$, the noise covariance matrix $Q_k=\Delta t_k\cdot\sigma^2_{\textrm{IMU}}\cdot I$, and $\sigma^2_{\textrm{IMU}}\in\mathbb{R}$ is the variance of the velocities retrieved from the flight controller's data. %\todo[noinline]{Is this the right word? 
 % [Ad4:] actually no/yes--diatrabes between controls people stating that the model of the system is perfect since is a model [cite Hector]}
 Further, \(\Delta t_k\) is the time interval the flight controller output the data (usually around \SI{33}{\ms}). 
 The input matrix is given by:
@@ -1148,7 +1148,9 @@ delayed by a time \(\Delta t_k^{\text{obs}}\in\mathbb{R}_{\geq 0}\). Physically,
 \begin{equation}
   \tilde{x}_k^{\text{obs}}:=\bar{\dot{x}}_k\,\Delta t_k^{\text{obs}}, %lol why not->|{\hat{x}_t-\hat{x}_v}|\text{ with }v:=t-d_t^{\text{obs}}, seems you loose the amplitude of the velocity???
 \end{equation}
-where $\bar{\dot{x}}_t\in\mathbb{R}$ is the mean velocity measured empirically. Such displacement is later employed in the observed measurements. The correction step of the Kalman Filter is
+where $\bar{\dot{x}}_k\in\mathbb{R}$ is the mean velocity measured empirically. Such displacement is later employed in the observed measurements. 
+
+Correction Step:
 \begin{subequations}
   \begin{align}
     %e_{t} = x^{\text{obs}}_t+\tilde{x}_t - H\cdot\hat{x}_{t} \\<-not necessary
@@ -1158,9 +1160,9 @@ where $\bar{\dot{x}}_t\in\mathbb{R}$ is the mean velocity measured empirically. 
     P_{k}^f &= (I - K_{k}\cdot H) P_{k},
   \end{align}
 \end{subequations}
-where $H=I$, and $x_t^{\text{obs}}$ is the position measured empirically at time $t$. Let us further define $R_t:=\sigma^{2}_{\text{obs}}I$ where $\sigma^{2}_{\text{obs}}\in\mathbb{R}$ is the variance of the velocities measured empirically. 
+where $H=I$, and $x_k^{\text{obs}}$ is the observed position at time $k$. Let us further define $R_k:=\sigma^{2}_{\text{obs}}\cdot I$ where $\sigma^{2}_{\text{obs}}\in\mathbb{R}$ is the variance of the velocities estimated by the PX4's EKF. 
 
-The values of the estimated state $\hat{x}_{t}^f$, and error covariance matrix $P_{t}^f$, are used as input to the next iteration of the prediction step $\hat{x}_{t+1},P_{t+1}$.
+The values of the estimated state $\hat{x}_{k}^f$, and error covariance matrix $P_{k}^f$, are used as input to the next iteration of the prediction step $\hat{x}_{k+1},P_{k+1}$.
 
 A velocity estimator is also constructed to determine the magnitude
 and direction of the moving platform's velocity vector. 
@@ -1215,22 +1217,22 @@ speed is calculated by the following equations
 \cite{Dynamic_pressure_NASA,anderson2010fundamentals}:
 \begin{equation}
     \begin{array}{l}
-         F = p_{d} \cdot A,\,\,\,
+         F_{\textrm{init}} = p_{d} \cdot A,\,\,\,
          p_{d} = \frac{\varrho \cdot v^2}{2},
     \end{array}
 \end{equation}%\todo{
 %  Ad3: can be one line, and actually, I would trust the reader to search for this one. Is really basic physics.
 %}
-\noindent where $F_{\text{init}}$ is the force, \(p_{d}\) is the dynamic pressure, \(A\) is
-the area of the applied pressure, \(\varrho\) is the density of the
-air (around \SI{1.2}{\kg \per \m^3}), \(v\) is the wind velocity in \SI{}{\m \per \s}.
+\noindent where $F_{\text{init}}\in\mathbb{R}$ is the force, \(p_{d}\in\mathbb{R}\) is the dynamic pressure, \(A\in\mathbb{R}\) is
+the area of the applied pressure, \(\varrho\in\mathbb{R}\) is the density of the
+air (around \SI{1.2}{\kg \per \m^3}), and \(v\in\mathbb{R}\) is the wind velocity in \SI{}{\m \per \s}.
 
 By solving the above equations the applied force on the UAV is found
 to be \SI{3.45}{\newton} for an \SI{8}{\m \per \s} wind speed, and 
 \SI{7.76}{\newton} for a \SI{12}{\m \per \s}
-wind speed. The wind forces will be applied on the UAV in Gazebo
-simulation, to test the performance of the whole system. This will be
-done by constructing a program that will apply the wind forces on the
+wind speed. The wind forces are applied on the UAV in Gazebo
+simulation, to test the performance of the whole system. This is
+done by constructing a program that applies the wind forces on the
 virtual UAV.
 
 To simulate a wind pattern the wind direction and magnitude must be
@@ -1264,7 +1266,7 @@ The magnitude of the wind is calculated as follows: %according to the following 
 
 % [Ad4:] used such direction
 \begin{itemize}
-    \item For an altitude of \SI{6.0}{\meter} and above, $F=F_{\text{init}}$. % where $F_{\text{init}}$ is either \SI{3.45}{\newton} or \SI{7.76}{\newton}
+    \item For a UAV altitude of \SI{6.0}{\meter} and above, $F=F_{\text{init}}$. % where $F_{\text{init}}$ is either \SI{3.45}{\newton} or \SI{7.76}{\newton}
 % [Ad4:] said before.
     \item For a UAV altitude of \SI{6.0}{\meter} and below, the wind force decreases as:
    $F=F_{\text{init}}\cdot h/ 6$ where $h$ is the altitude.
@@ -1274,7 +1276,7 @@ The magnitude of the wind is calculated as follows: %according to the following 
 \end{itemize}
 %
 % [Ad4:] cleaned a little, same meaning.
-This model is created to simulate different scaling in the wind's magnitude and will be used for all simulated tests.
+This model is created to simulate different scaling in the wind's magnitude and is used for all simulated tests.
 
 %%%%%%%%%%%%%%%%%%%%
 \section{Evaluation}
@@ -1318,7 +1320,7 @@ positions and orientations as seen in Figure~\ref{fig:Gazebo}.
 \centering
 \includegraphics[scale=0.2]{gazebo_scalled_gamma_corrected.png}
 \caption{On the left, a top view of the Gazebo scene. 
-On the right, a view of the UAV attempting a landing on the moving platform }
+On the right, a view of the UAV attempting a landing on the moving platform.}
 \label{fig:Gazebo}
 \end{figure}
 
@@ -1326,9 +1328,9 @@ Pre-trained weights for \emph{YOLOv3-tiny}, were initially used but the
 performance on detecting objects from a downward facing camera was
 not satisfactory. Since a dataset for detecting the above four classes
 from a top view was not available, we created an artificial dataset
-based on the Gazebo models. The dataset consists of \SI{1200}{} images, \SI{300}{}
+based on the Gazebo models. The dataset consists of 1200 images, 300
 for each class. We trained the \emph{YOLOv3-tiny} by its default training
-parameters for \SI{5000}{} epochs, for an input image size of \SI{416}{}$\times$\SI{416}{}
+parameters for 5000 epochs, for an input image size of \SI{416}{}$\times$\SI{416}{}
 pixels.
 
 %For the following experiments, the input image to $YOLOV3$ $tiny$ will be resized to a 416$\times$416 pixel size. 
@@ -1415,7 +1417,7 @@ For the energy evaluation, eight tests were executed for different
 fps rates for the \emph{landing marker} detection ROS node 
 (10fps, 2fps, 1fps, 0.5fps) using two different cases. 
 In the first case, the kernel size remains fixed at 
-22$\times$22 pixels and in the second case an adaptive selection 
+\SI{22}{}$\times$\SI{22}{} pixels and in the second case an adaptive selection 
 kernel size algorithm is used. 
 %
 The landing time is also taken under consideration as seen in
