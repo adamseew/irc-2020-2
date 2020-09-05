@@ -517,7 +517,7 @@ behavior-based control architecture. In physical tests a marker of
 landing marker inspired by a QR code but consisting of three
 artificial markers is investigated by Yuan
 et~al.~\cite{yuan2018hierarchical}, and was shown to provide a \SI{6}-Degree Of Freedom (DOF)
-pose over an altitude range of \SI{0}{}-\SI{20}{\m}. Our work is in constrast focused on
+pose over an altitude range of \SI{0}{}-\SI{20}{\m}. Our work is in contrast focused on
 the ability to land on moving platforms.
 
 Saripalli et~al.~\cite{saripalli2003landing} also demonstrated the use
@@ -596,7 +596,7 @@ scene.
 The use of a hybrid camera system consisting of a fish-eye IR camera
 and a stereo camera was demonstrated by Yang
 et~al.~\cite{yang2018hybrid}. An ArUco marker was used to mark the
-moving platform and a convolutional neural network (CNN) YOLO~v3 was
+moving platform and a convolutional neural network (CNN) YOLOv3 was
 trained specifically for marker detection. A similar approach
 concerning the detection of a landing marker was adopted by
 Nguyen et~al.~\cite{nguyen2018lightdenseyolo} in which a specific CNN was trained to detect a landing marker pattern: successful
@@ -1092,7 +1092,7 @@ Prediction Step:\begin{subequations}
 P_{k} & = F \cdot P_{k-1} \cdot F^\top + Q_{k},
 \end{align}\end{subequations}
 where %$x_k \in \mathbb{R}^2$ is the position of the UAV, 
-$u_{k} = \begin{bmatrix}\dot{x}_k & \ddot{x}_k & \dot{x}_{k}^l\end{bmatrix}^\top$ is its control with $x_k,x_k^l$ being the positions of the UAV and the moving paltform respectively.
+$u_{k} = \begin{bmatrix}\dot{x}_k & \ddot{x}_k & \dot{x}_{k}^l\end{bmatrix}^\top$ is its control with $x_k,x_k^l$ being the positions of the UAV and the moving platform respectively.
 Given $I:=I_2$, a \SI{2}{}$\times$\SI{2}{} identity matrix, the matrix $F=I$, the noise covariance matrix $Q_k=\Delta t_k\cdot\sigma^2_{\textrm{IMU}}\cdot I$, and $\sigma^2_{\textrm{IMU}}\in\mathbb{R}$ is the variance of the velocities retrieved from the flight controller's data. %\todo[noinline]{Is this the right word? 
 % [Ad4:] actually no/yes--diatrabes between controls people stating that the model of the system is perfect since is a model [cite Hector]}
 Further, \(\Delta t_k\) is the time interval the flight controller output the data (usually around \SI{33}{\ms}). 
