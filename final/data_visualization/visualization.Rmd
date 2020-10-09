@@ -1,0 +1,284 @@
+---
+title: "R Notebook"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+```{r}
+library(knitr)
+library(tidyverse)
+library(cowplot)
+theme_set(theme_cowplot())
+```
+
+```{r}
+landings_raw <- readODS::read_ods('landing_data_reformatted.ods', 
+                              sheet=1, 
+                              col_names = TRUE)
+```
+
+
+```{r}
+landings_raw %>%
+  separate(measure, c("coordinate", "alt", "other"), sep='[()]') %>%
+  extract(condition, c("experiment", "update_rate", "wind"), "(\\d). (.*?) (.*)") %>%
+  select(-other) %>%
+  mutate(alt = fct_relevel(alt, "alt 0-5", "alt 5-10", "alt 10-20", "alt 20+")) %>%
+  mutate(update_rate = fct_relevel(update_rate, "nfold_10fps", "nfold_2fps", "nfold_1fps", "nfold_0.5fps")) %>%
+  mutate(wind = fct_recode(wind, 
+                           "0 m/s" = "nowind", 
+                           "8 m/s" = "wind 8m/s", 
+                           "12 m/s" = "wind 12m/s")) %>%
+  mutate(wind = fct_relevel(wind, "0 m/s", "8 m/s", "12 m/s")) %>%
+  mutate(update_rate = fct_recode(update_rate, 
+                                  "10" = "nfold_10fps", 
+                                  "2" = "nfold_2fps", 
+                                  "1" = "nfold_1fps", 
+                                  "0.5" = "nfold_0.5fps")) %>%
+  mutate(coordinate = str_replace(coordinate, "mse_", "")) %>%
+  mutate(alt = fct_recode(alt, 
+                          "0m - 5m" = "alt 0-5", 
+                          "5m - 10m" = "alt 5-10", 
+                          "10m - 20m" = "alt 10-20", 
+                          "20m - " = "alt 20+")) ->
+  landings_formatted
+```
+```{r}
+landings_formatted %>%
+  head()
+```
+
+
+
+```{r QoSLanding, fig.width=6, fig.height=4}
+landings_formatted %>%
+  ggplot() + 
+  aes(x = measured_value, 
+      y = update_rate, 
+      shape=coordinate, 
+      color=wind) + 
+  geom_point() + 
+  facet_wrap(~alt) + 
+  #scale_color_manual(values = c("grey", "black")) + 
+  labs(x = 'Mean squared error [meter^2]', 
+       y = 'Update rate [fps]', 
+       color = 'Wind', 
+       shape = 'Coordinate') + 
+  theme_cowplot(font_size = 8) + 
+  theme() -> p
+p
+ggsave('QoSLanding.pdf', p, width = 8, height=4.5, unit="cm")
+```
+
+
+```{r}
+landing_precision_raw <- readODS::read_ods('landing_precision_reformatted.ods', sheet = 1)
+```
+
+```{r}
+landing_precision_raw %>%
+  extract(condition, c("experiment", "update_rate", "wind"), "(\\d). (.*?) (.*)") %>%
+  mutate(wind = fct_recode(wind, 
+                           "0" = "nowind", 
+                           "8" = "wind 8m/s", 
+                           "12" = "wind 12m/s")) %>%
+  mutate(update_rate = fct_recode(update_rate, 
+                           "0.5" = "nfold_0.5fps", 
+                           "1" = "nfold_1fps", 
+                           "2" = "nfold_2fps", 
+                           "10" = "nfold_10fps")) ->
+  landing_precision
+```
+
+
+```{r}
+landing_precision %>%
+  ggplot() + 
+  aes(x = accuracy_x, 
+      y = wind) + 
+  geom_point()
+```
+
+
+
+
+```{r}
+object_detection_raw <- readODS::read_ods('object_detection_reformatted.ods', 
+                                          col_names = TRUE,
+                                          col_types = cols(
+                                            condition = col_character(),
+                                            object_number = col_double(),
+                                            object_class = col_double(),
+                                            detected = col_character(),
+                                            correct = col_character(),
+                                            mse_x = col_double(),
+                                            mse_y = col_double()
+                                          ))
+```
+
+```{r}
+head(object_detection_raw)
+```
+
+
+
+```{r}
+object_detection_raw %>%
+  extract(condition, 
+          c("experiment", "yolo_fps", "nfold_fps", "wind"), 
+          "(\\d). \\(Yolo_(.*)fps\\) \\(nfold_(.*)fps\\) \\((.*)\\)") %>%
+  mutate(wind = fct_recode(wind, 
+                           "0" = "NoWindSpeed", 
+                           "8" = "WindSpeed_8m/s", 
+                           "8" = "WindSpeed 8m/s", 
+                           "12" = "WindSpeed 12m/s", 
+                           "12" = "WindSpeed 12 m/s", 
+                           "12" = "WindSpeed_12m/s")) %>%
+  mutate(wind = fct_relevel(wind, "0", "8", "12")) %>%
+  mutate(yolo_fps = factor(as.numeric(yolo_fps))) %>%
+  mutate(nfold_fps = factor(as.numeric(nfold_fps))) %>%
+  mutate(object_number = factor(object_number)) %>%
+  mutate(object_class = factor(object_class)) %>%
+  mutate(detected = factor(detected)) %>%
+  mutate(correct = correct == 'yes') ->
+  object_detection
+```
+
+```{r}
+object_detection %>%
+  ggplot() + 
+  aes(x = mse_x, 
+      y = mse_y) + 
+  geom_point(aes(color = wind)) + 
+  facet_grid(yolo_fps ~ nfold_fps) + 
+  labs(x = "Mean Squared Error x (meter)",
+       y = "Mean Squared Error y (meter)", 
+       title = "Error in x and y directions", 
+       subtitle = "Faceted on yolo fps (0.1 and 4) and nfold fps (0.5 and 10)")
+```
+
+I see not direction relation between the errors in x and y directions 
+in this plot.
+
+
+
+
+
+```{r}
+object_detection %>%
+  group_by(experiment, wind, yolo_fps, nfold_fps) %>%
+  summarise(correct = sum(correct), 
+            .groups = "drop_last") %>%
+  arrange(desc(correct))
+```
+
+```{r}
+object_detection %>%
+  group_by(experiment, wind, yolo_fps, nfold_fps) %>%
+  summarise(correct = sum(correct), 
+            .groups = "drop_last") %>%
+  filter(wind == 8)
+```
+
+
+```{r QoSDetection}
+object_detection %>%
+  group_by(experiment, wind, yolo_fps, nfold_fps) %>%
+  summarise(correct = sum(correct), 
+            .groups = "drop_last") %>%
+  ggplot() +
+  aes(x = correct, 
+      y = wind, 
+      color = sprintf("%s fps", yolo_fps), 
+      shape = sprintf("%s fps", nfold_fps)) + 
+  geom_jitter(height = 0, width=0.2) + 
+  scale_color_manual(values = c("0.1 fps" = "grey", 
+                                "4 fps" = "black")) + 
+  scale_x_continuous(limits = c(15, 32)) +
+  labs(color = "YOLOv3 tiny", 
+       shape = "n-fold",
+       y = "Wind [m/s]", 
+       x = "Number of correct detections (max 32)") +
+  theme_cowplot(font_size = 8) +
+  theme(legend.position = c(1.0, 1.0), 
+        legend.justification=c(1,1), 
+        legend.box = "horizontal", 
+        legend.box.background = element_rect(color='black', size=0.2), 
+        legend.box.margin = margin(0.1, 0.1, 0.1, 0.1, 'cm')) +
+  guides(color = guide_legend(order = 1), 
+         shape = guide_legend(order = 2)) -> p
+p
+ggsave('QoSDetection.pdf', p, width = 8, height=4.5, unit="cm")
+```
+
+Observations: 
+1. The number of correct detections increase when the wind is reduced.
+2. The number of correct detections increase when the yolo frame rate is increased.
+3. There are no clear relation with the nfold edge frame rate.
+
+
+# Plotting power consumption during landing
+
+```{r}
+power_landing <- readr::read_csv("../figures/source/energy/landing/plot_data.csv", 
+                                 col_names = c("framerate", "fixed_kernel", "adaptable_kernel", "duration"))
+```
+
+```{r PowerLanding}
+power_landing %>%
+  ggplot() + 
+  aes(x = framerate, 
+      y = fixed_kernel, 
+      size=duration) + 
+  geom_point(aes(y = adaptable_kernel), color="grey") + 
+  geom_point() + 
+  scale_y_continuous(limits = c(3.25, 3.50)) + 
+  scale_size_continuous(breaks = c(90, 120, 150)) + 
+  labs(x = "Marker detection [fps]", 
+       y = "Power consumption [watt]", 
+       size = "Landing duration [s]") +
+  theme_cowplot(font_size = 8) +
+  theme(legend.position = c(1-0.025, 0.025), 
+        legend.justification = c(1, 0),
+        legend.box.background = element_rect(color='black', size=0.2), 
+        legend.box.margin = margin(0.1, 0.1, 0.1, 0.1, 'cm')) -> p
+p
+ggsave('PowerLanding.pdf', p, width = 8, height=4.5, unit="cm")
+```
+
+
+
+# Plotting power consuption during object detection
+
+```{r}
+power_detection <- readr::read_csv("../figures/source/energy/tracking/plot_data_power.csv", 
+                                   col_names = c("yolo", "nfold", "power")) %>%
+  mutate(nfold = factor(nfold))
+```
+
+```{r PowerDetection}
+power_detection %>%
+  ggplot() + 
+  aes(x = yolo, 
+      shape = sprintf("%s fps", nfold), 
+      color = sprintf("%s fps", nfold), 
+      y = power) + 
+  geom_point() + 
+  scale_color_manual(values = c("0.5 fps" = "grey", 
+                                "10 fps" = "black")) + 
+  labs(x = "YOLOv3 Tiny [fps]", 
+       y = "Power comsumption [watt]", 
+       shape = "n-fold", 
+       color = "n-fold") + 
+  theme_cowplot(font_size = 8) +
+  theme(legend.position = c(1-0.025, 0.025), 
+        legend.justification = c(1, 0), 
+        legend.box.background = element_rect(color='black', size=0.2), 
+        legend.box.margin = margin(0.1, 0.1, 0.1, 0.1, 'cm')) -> p
+p
+ggsave('PowerDetection.pdf', p, width = 8, height=4.5, unit="cm")
+```
+
+
+
