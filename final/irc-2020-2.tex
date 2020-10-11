@@ -687,11 +687,13 @@ guidance, and control of the UAV. From an energy-sensitive design
 approach, our focus is on the computer vision algorithms used to
 detect the moving platform and the parameterization by a QoS
 influencing energy consumption and performance, as described in
-Section~\ref{sec:Detection}. Furthermore, a Kalman Filter is implemented
-%the navigation block is
-%designed 
-to increase the robustness and overall performance of the
-system. Last, a model of
+Section~\ref{sec:Detection}. 
+%Furthermore, a Kalman Filter is implemented
+%%the navigation block is
+%%designed 
+%to increase the robustness and overall performance of the
+%system. 
+A model of
 dynamically changing wind disturbances is analysed and described in
 Section~\ref{sec:WindDisturbances}, allowing the system to be tested
 in a more realistic simulation.
@@ -953,9 +955,7 @@ simulation, to test the performance of the whole system.
 
 At first the wind's direction vector is defined as
 $w=\begin{bmatrix}0.8 & 0.2\end{bmatrix}^\top$ according to Gazebo's \emph{(x, y)} axes and an initial wind force ($F_{\text{init}}$) of either \SI{3.45}{\newton} or \SI{7.76}{\newton} is chosen. An update cycle of \SI{5.5}{\second} is chosen between two different applied forces. A random float number between \SI{0.9}{} and \SI{1.2}{} is chosen at every update cycle. This number is defined as $r\in\mathbb{R}$. The applied wind force is calculated as $\hat{F}=w\cdot F\cdot r$. For a UAV altitude of \SI{6.0}{\meter} and above, $F=F_{\text{init}}$ while for a UAV altitude of \SI{6.0}{\meter} and below, the wind force decreases as:
-   $F=F_{\text{init}}\cdot h/ 6$ where $h$ is the altitude. 
-   
-This model is created to simulate different scaling in the wind's magnitude and is used for all simulated tests.
+   $F=F_{\text{init}}\cdot h/ 6$ where $h$ is the altitude. This model is created to simulate different scaling in the wind's magnitude and is used for all simulated tests.
 
 %To simulate a wind pattern the wind direction and magnitude must be
 %defined. The wind direction is assumed to remain the same for the
@@ -1036,7 +1036,7 @@ All experiments are performed in Gazebo simulation under Ubuntu 18.04
 and ROS Melodic on a i7-8550U 1.8~GHz (4.0~GHz Boost), 8~GB DDR4
 laptop. The \emph{PX4} Software In The Loop (SITL) Firmware v1.10.2 is used as the flight
 controller and the \emph{IRIS} quadcopter is used as the UAV platform. A
-vertically facing RGB camera is placed on the UAV providing a
+downward facing RGB camera is placed on the UAV providing a
 \SI{640}{}$\times$\SI{480}{} pixel image at 10 fps. An NVIDIA Jetson Nano
 with Ubuntu 18.04 and ROS Melodic is used as the UAV's companion
 computer. 
@@ -1055,7 +1055,7 @@ for the landing marker in the image frame. Once the landing marker is
 detected, the UAV commences its actions.
 
 In \emph{tracking} mode, the UAV will follow the moving platform at a fixed
-altitude and use its vertically facing camera to map the environment,
+altitude and use its downward facing camera to map the environment,
 while in \emph{landing} mode the UAV will follow the moving platform and
 gradually lower its altitude until it lands on it. Both \emph{tracking} and
 \emph{landing} modes are tested under three different cases of no wind
@@ -1087,14 +1087,14 @@ three different cases of wind disturbances.
 %
 The QoS is determined as the number of correctly detected objects. An
 object is considered to be correctly detected if it is detected within
-a distance of \SI{2}{\meter} from the its actual position and classified with
+a distance of \SI{2}{\meter} from its actual position and classified with
 the correct class. The detection results can be seen in
 Figure~\ref{fig:NCorrectObjectDetections}. The best results were
 obtained for a high fps update rate in \emph{YOLOv3-tiny} and \emph{landing marker} 
 detection, under no wind disturbances, since 28 out of the 32
-objects were detected. Nevertheless, for the same high fps values but
+objects were detected. This is expected since at a higher fps each object is viewed more times at different angles as the UAV moves. Nevertheless, for the same high fps values but
 with a wind speed of \SI{12}{\meter \per \second}, only 18 out of 32 objects were
-correctly detected.
+correctly detected. This is also expected since the UAV has to be at a certain roll and pitch angle to balance itself when wind disturbances are applied. This causes some objects to be either outside the downward facing camera's field of view or to be viewed from a certain top-side view, which the \emph{YOLOv3-tiny} hasn't been trained for.
 
 
 The second group of experiments was conducted to test the \emph{landing} mode
