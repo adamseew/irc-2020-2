@@ -447,66 +447,73 @@ while tracking and landing on a moving platform.
 \label{sec:state-of-the-art}
 
 Vision-based autonomous landing on a marker has been extensively
-studied by many researchers. Key distinctions include whether the
-marker is on a moving platform, the type of the marker, the algorithms
-used to detect it, as well as the mounted sensors onboard of the UAV.
+studied by many researchers. Key distinctions include the type of the marker along with the computer vision algorithms used to detect it and whether the marker is on a moving platform or not.
 
-For stationary platforms, one of the first experiments with
-vision-based autonomous landing was conducted by Saripalli
-et~al.~\cite{saripalli2002vision}. Here, a helicopter with a color
-camera facing vertically towards the ground would land on an ”H”-shape
-pattern (similar to ones found on a helipad) using a hierarchical
-behavior-based control architecture. In physical tests a marker of
-\SI{122}{}$\times$\SI{122}{\cm} size was detected for a maximum altitude of \SI{10}{\m}. A landing marker inspired by a QR code but consisting of three
-artificial markers is investigated by Yuan
-et~al.~\cite{yuan2018hierarchical}, and was shown to provide a \SI{6}-Degree Of Freedom (DOF)
-pose over an altitude range of \SI{0}{}-\SI{20}{\m}. Our work is in contrast focused on
-the ability to land on moving platforms.
-
-Saripalli et~al.~\cite{saripalli2003landing} also demonstrated the use
-of a Kalman Filter to track a moving platform. However, all the
-computations were performed offline. Similarly, an ArUco marker was
-used as a landing marker by Lee et~al.~\cite{lee2012autonomous} to
-detect a moving platform. The control of the UAV is performed based on
-the error provided by the vision algorithm but all the computations
-were performed off-board. Arrar et~al.~\cite{araar2017vision} focus
-on extending the detection range by using an
-AprilTag~\cite{olson2011apriltag} as a landing marker. Again all the
-computer vision algorithms were also executed off-board. Conversely, a crucial
-aspect of our application is to perform all the computations onboard,
-and to evaluate them according to their energy efficiency as a
-function of QoS.
-
-The design of the marker and choice of sensors can facilitate doing the computations onboard. Chen et~al.~\cite{chen2016system} utilized a marker consisting of a
-circle and rectangles of different colors along with a LiDAR scanning
-range finder for height estimation. The marker was detected by
-performing color segmentation on the incoming image frame. By fusing
-the height measurement from the LiDAR into the vision measurement, a
-relative pose of the UAV from the moving platform was obtained. A
-color segmentation approach was also implemented by Lee
-et~al.~\cite{lee2016vision}. A red rectangle was used as a landing marker while the detection was done by a vertically facing camera with a fish-eye lens. The setup accounted for a successful landing from an altitude of \SI{70}{\m}. In the above two cases an onboard companion computer is used to
-perform all the computations on the UAV. However, we in this work do not consider a color segmentation
+One of the first experiments with
+vision-based autonomous landing was conducted by
+%by Saripalli
+%et~al.~
+\cite{saripalli2002vision}
+%. Here, a helicopter with a color camera facing vertically towards the ground would land on 
+in which an ”H”-shape
+pattern (similar to ones found on a helipad) was used. %using a hierarchical behavior-based control architecture. In physical tests a marker of \SI{122}{}$\times$\SI{122}{\cm} size was detected for a maximum altitude of \SI{10}{\m}. 
+A landing marker inspired by a QR code 
+%but consisting of three artificial markers 
+is investigated by 
+%Yuanet~al.~
+\cite{yuan2018hierarchical}. Towards the direction of using fiducial markers, \cite{lee2012autonomous} and \cite{yang2018hybrid} have used ArUco markers where \cite{araar2017vision}, \cite{kyristsis2016towards}, \cite{feng2018autonomous} utilized AprilTag~\cite{olson2011apriltag} markers. A special pattern of a black and white marker was designed by \cite{nguyen2018lightdenseyolo} and \cite{falanga2017vision}. On the contrary, color markers were utilized by \cite{chen2016system} and \cite{lee2016vision}.  However, we in this work do not consider a color segmentation
 approach, since for a realistic (outdoor)
 case it would be difficult to ensure that the
 landing marker will be the only object of a specific color in the
 scene.
 
-The use of a hybrid camera system consisting of a fish-eye IR camera
-and a stereo camera was demonstrated by Yang
-et~al.~\cite{yang2018hybrid}. An ArUco marker was used to mark the
-moving platform and a convolutional neural network (CNN) YOLOv3 was
-trained specifically for marker detection. A similar approach
-concerning the detection of a landing marker was adopted by
-Nguyen et~al.~\cite{nguyen2018lightdenseyolo} in which a specific CNN was trained to detect a landing marker pattern: successful
-detection of a \SI{1}{}$\times$\SI{1}{\m} marker size was demonstrated from a
-distance of \SI{50}{\m}. An AprilTag marker was used as a landing marker by
-Kyritsis et~al.~\cite{kyristsis2016towards}. The identification of the AprilTag marker
-was performed using a Graphics Processing Unit (GPU). In the above three cases, the researchers
-have utilized the companion's computer GPU to detect the landing
-marker. In the agricultural use-case addressed in this paper, the GPU
+An onboard implementation of the computer vision algorithms to detect a moving platform, is demonstrated by \cite{chen2016system}, \cite{lee2016vision}, \cite{yang2018hybrid}, \cite{nguyen2018lightdenseyolo} and \cite{kyristsis2016towards}, with the latter three utilizing the companion's computer GPU. In the agricultural use-case addressed in this paper, the GPU
 is however needed for a CNN to detect ground hazards, and since the
 GPU cannot normally run different algorithms simultaneously, the CPU should be used for detecting the landing marker. By doing so,
 a different QoS can be chosen for each algorithm.  
+
+
+
+ 
+%, and was shown to provide a \SI{6}-Degree Of Freedom (DOF) pose over an altitude range of \SI{0}{}-\SI{20}{\m}. Our work is in contrast focused on the ability to land on moving platforms.
+
+%Saripalli et~al.~\cite{saripalli2003landing} also demonstrated the use of a Kalman Filter to track a moving platform. However, all the computations were performed offline. Similarly, an ArUco marker was used as a landing marker by Lee et~al.~\cite{lee2012autonomous} to detect a moving platform. The control of the UAV is performed based on the error provided by the vision algorithm but all the computations were performed off-board. Arrar et~al.~\cite{araar2017vision} focus on extending the detection range by using an
+%AprilTag~\cite{olson2011apriltag} as a landing marker. Again all the
+%computer vision algorithms were also executed off-board. Conversely, a crucial
+%aspect of our application is to perform all the computations onboard,
+%and to evaluate them according to their energy efficiency as a
+%function of QoS.
+%
+%The design of the marker and choice of sensors can facilitate doing the computations onboard. Chen et~al.~\cite{chen2016system} utilized a marker consisting of a
+%circle and rectangles of different colors along with a LiDAR scanning
+%range finder for height estimation. The marker was detected by
+%performing color segmentation on the incoming image frame. By fusing
+%the height measurement from the LiDAR into the vision measurement, a
+%relative pose of the UAV from the moving platform was obtained. A
+%color segmentation approach was also implemented by Lee
+%et~al.~\cite{lee2016vision}. A red rectangle was used as a landing marker while the detection was done by a vertically facing camera with a fish-eye lens. The setup accounted for a successful landing from an altitude of \SI{70}{\m}. In the above two cases an onboard companion computer is used to
+%perform all the computations on the UAV. However, we in this work do not consider a color segmentation
+%approach, since for a realistic (outdoor)
+%case it would be difficult to ensure that the
+%landing marker will be the only object of a specific color in the
+%scene.
+%
+%The use of a hybrid camera system consisting of a fish-eye IR camera
+%and a stereo camera was demonstrated by Yang
+%et~al.~\cite{yang2018hybrid}. An ArUco marker was used to mark the
+%moving platform and a convolutional neural network (CNN) YOLOv3 was
+%trained specifically for marker detection. A similar approach
+%concerning the detection of a landing marker was adopted by
+%Nguyen et~al.~\cite{nguyen2018lightdenseyolo} in which a specific CNN was trained to detect a landing marker pattern: successful
+%detection of a \SI{1}{}$\times$\SI{1}{\m} marker size was demonstrated from a
+%distance of \SI{50}{\m}. An AprilTag marker was used as a landing marker by
+%Kyritsis et~al.~\cite{kyristsis2016towards}. The identification of the AprilTag marker
+%was performed using a Graphics Processing Unit (GPU). In the above three cases, the researchers
+%have utilized the companion's computer GPU to detect the landing
+%marker. In the agricultural use-case addressed in this paper, the GPU
+%is however needed for a CNN to detect ground hazards, and since the
+%GPU cannot normally run different algorithms simultaneously, the CPU should be used for detecting the landing marker. By doing so,
+%a different QoS can be chosen for each algorithm.  
 
 To account for the energy modeling of computer vision algorithms, we
 considered the work previously carried by Nardi
@@ -551,18 +558,32 @@ energy required for executing this algorithm during landing.
 
 Taking into account varying environmental conditions and unpredictable
 movements of the platform to land on is relevant for the use of
-landing in outdoor, mobile scenarios.  Regarding wind conditions, an
-AprilTag marker was used by Feng et~al.~\cite{feng2018autonomous} with
+landing in outdoor, mobile scenarios.  Regarding wind conditions, \cite{feng2018autonomous} used
 a constant wind speed of \SI{5}{\m \per \s} as an external disturbance in a
 simulation environment. Nevertheless, a fluctuation in the wind's
 magnitude and direction is likely to happen in realistic cases.
 %
 Concerning estimation of the drone's position,
 similar to our approach a Kalman Filter or Extended Kalman Filter (EKF) has been used for the
-estimation~\cite{araar2017vision,feng2018autonomous,
-  falanga2017vision}, whereas Yang et~al.~\cite{yang2018hybrid}
+estimation~\cite{saripalli2003landing,araar2017vision,feng2018autonomous,
+  falanga2017vision}, whereas \cite{yang2018hybrid}
 constructed a velocity observer algorithm by calculating the actual
 moving distance of the moving platform over a period of time.
+
+%Taking into account varying environmental conditions and unpredictable
+%movements of the platform to land on is relevant for the use of
+%landing in outdoor, mobile scenarios.  Regarding wind conditions, an
+%AprilTag marker was used by Feng et~al.~\cite{feng2018autonomous} with
+%a constant wind speed of \SI{5}{\m \per \s} as an external disturbance in a
+%simulation environment. Nevertheless, a fluctuation in the wind's
+%magnitude and direction is likely to happen in realistic cases.
+%%
+%Concerning estimation of the drone's position,
+%similar to our approach a Kalman Filter or Extended Kalman Filter (EKF) has been used for the
+%estimation~\cite{araar2017vision,feng2018autonomous,
+%  falanga2017vision}, whereas Yang et~al.~\cite{yang2018hybrid}
+%constructed a velocity observer algorithm by calculating the actual
+%moving distance of the moving platform over a period of time.
 
 \section{Energy-Sensitive Mission Deployment} 
 \label{sec:approach}
@@ -666,17 +687,19 @@ guidance, and control of the UAV. From an energy-sensitive design
 approach, our focus is on the computer vision algorithms used to
 detect the moving platform and the parameterization by a QoS
 influencing energy consumption and performance, as described in
-Section~\ref{sec:Detection}. Furthermore, the navigation block is
-designed to increase the robustness and overall performance of the
-system, as described in Section~\ref{sec:Navigation}. Last, a model of
+Section~\ref{sec:Detection}. Furthermore, a Kalman Filter is implemented
+%the navigation block is
+%designed 
+to increase the robustness and overall performance of the
+system. Last, a model of
 dynamically changing wind disturbances is analysed and described in
 Section~\ref{sec:WindDisturbances}, allowing the system to be tested
 in a more realistic simulation.
 
 \begin{figure}
 \centering
-\includegraphics[scale=0.15]{n-fold-for-landing.png}
-\caption{The landing marker}
+\includegraphics[scale=0.27]{n-fold-for-landing2.png}
+\caption{On the left is the landing marker and on the right is the kernel that is constructed to detect the n-fold marker. The white regions, on the kernel, are the real values and the black regions are the imaginary values. The grey area is of no concern.}
 \label{fig:LandingMarker}
 \end{figure}
 
@@ -692,15 +715,16 @@ detect the moving platform from a high altitude, while the ArUco
 markers are used as extra landmarks in case the marker is partially
 visible in the image frame.
 
-To evaluate the computer vision algorithm for detecting the landing
-marker, real images of \SI{640}{}$\times$\SI{480}{} pixel size were captured with
-an Intel RealSense D435 camera. In the Gazebo simulation a color camera
-with the same distortion coefficients as the Intel camera is used to
-output a \SI{640}{}$\times$\SI{480}{} pixel image at 10 frames per second (fps).
 
-To extract the pixel coordinates of the tip of the n-fold marker, a
+%To evaluate the computer vision algorithm for detecting the landing
+%marker, real images of \SI{640}{}$\times$\SI{480}{} pixel size were captured with
+%an Intel RealSense D435 camera. In the Gazebo simulation a color camera
+%with the same distortion coefficients as the Intel camera is used to
+%output a \SI{640}{}$\times$\SI{480}{} pixel image at 10 frames per second (fps).
+
+To extract the pixel coordinates of the tip (center) of the n-fold marker, a
 kernel size of \SI{13}{}$\times$\SI{13}{} pixels consisting of a real and imaginary
-part is created. For every pixel in the image, a convolution is
+part is created. We present a larger kernel size for visualisation purposes in Figure~\ref{fig:LandingMarker}.   For every pixel in the image, a convolution is
 performed with this kernel and the magnitude of the convolution is
 stored. The pixel with the highest magnitude is considered as a
 candidate tip of the n-fold marker. For that candidate pixel only, an
@@ -801,89 +825,89 @@ system is increased in case the moving platform is not detected in
 every image frame. A velocity estimator for the moving platform is
 also being implemented as a part of the navigation block.
 
-The variables of interest that describe the state of the UAV are:
+%The variables of interest that describe the state of the UAV are:
+%%
+%\begin{itemize}
 %
-\begin{itemize}
-
-\item The relative position of the UAV from the moving platform, 
-$x_k\in\mathbb{R}^2$.
-
-\item The attitude of the UAV \emph{[roll, pitch, yaw]}, obtained from the flight controller's IMUs.
-
-\item the velocity of the UAV, $\dot{x}_k$, in \emph{NED} frame, obtained from 
-the flight controller's EKF.
-
-\item the acceleration of the UAV, $\ddot{x}_k$, in \emph{NED} frame, obtained by differentiating the velocities.
-
-\end{itemize}
+%\item The relative position of the UAV from the moving platform, 
+%$x_k\in\mathbb{R}^2$.
 %
-The altitude, attitude, velocity and acceleration variables of the
-UAV's state are obtained from the flight controller's onboard sensors
-and already implemented sensor fusion algorithms (EKF). To fuse those
-state variables with the obtained position measurements from
-Section~\ref{sec:Detection}, a Kalman Filter is implemented. The
-measurements from the flight controller are used in the prediction
-step.
-
-Prediction Step:\begin{subequations}
-\begin{align} 
-\hat{x}_{k} & = F \cdot \hat{x}_{k-1} + G_{k} \cdot u_{k}, \\ 
-P_{k} & = F \cdot P_{k-1} \cdot F^\top + Q_{k},
-\end{align}\end{subequations}
-where 
-$u_{k} = \begin{bmatrix}\dot{x}_k & \ddot{x}_k & \dot{x}_{k}^l\end{bmatrix}^\top$ is its control with $x_k,x_k^l$ being the positions of the UAV and the moving platform respectively.
-Given $I:=I_2$, a \SI{2}{}$\times$\SI{2}{} identity matrix, the matrix $F=I$, the noise covariance matrix $Q_k=\Delta t_k\cdot\sigma^2_{\textrm{IMU}}\cdot I$, and $\sigma^2_{\textrm{IMU}}\in\mathbb{R}$ is the variance of the velocities retrieved from the flight controller's data.
-Further, \(\Delta t_k\) is the time interval the flight controller output the data (usually around \SI{33}{\ms}). 
-The input matrix is given by:
-\begin{align*}
-G_{k} & = \begin{bmatrix}
-    \Delta t_k & 0 & \frac{\Delta t_k^{2}}{2} & 0 & -\Delta t_k & 0\\ 
-    0 & \Delta t_k & 0 & \frac{\Delta t_k^{2}}{2} &0 & -\Delta t_k\end{bmatrix},
-\end{align*}
-
-In the correction step, the observed measurements from the downward
-looking camera are used to correct and update the estimated
-position of the UAV $\hat{x}_k$. However due to the computation time
-needed to detect the landing marker, the incoming measurement is
-delayed by a time \(\Delta t_k^{\text{obs}}\in\mathbb{R}_{\geq 0}\). Physically, let us define the displacement $\tilde{x}_k^{\text{obs}}\in\mathbb{R}$ as
-\begin{equation}
-  \tilde{x}_k^{\text{obs}}:=\bar{\dot{x}}_k\,\Delta t_k^{\text{obs}}, %lol why not->|{\hat{x}_t-\hat{x}_v}|\text{ with }v:=t-d_t^{\text{obs}}, seems you loose the amplitude of the velocity???
-\end{equation}
-where $\bar{\dot{x}}_k\in\mathbb{R}$ is the mean velocity measured empirically. Such displacement is later employed in the observed measurements. 
-
-Correction Step:
-\begin{subequations}
-  \begin{align}
-    %e_{t} = x^{\text{obs}}_t+\tilde{x}_t - H\cdot\hat{x}_{t} \\<-not necessary
-    %S_{t} = H\cdot P_{t}\cdot H^T + R_{t} \\<-easier...
-    K_{k} &= P_{k}\cdot H^T(H\cdot P_{k}\cdot H^T + R_{k})^{-1}, \\
-    \hat{x}_{k}^f &= \hat{x}_{k} + K_{k}(x^{\text{obs}}_k+\tilde{x}^{\text{obs}}_k - \hat{x}_{k}), \\ %<- TBH not entirely sure why there as there is no system but directly estimate (you would compare the system with the measurement at this step) but ok; if it works then I am fine with it :) [just confirm it does]
-    P_{k}^f &= (I - K_{k}\cdot H) P_{k},
-  \end{align}
-\end{subequations}
-where $H=I$, and $x_k^{\text{obs}}$ is the observed position at time $k$. Let us further define $R_k:=\sigma^{2}_{\text{obs}}\cdot I$ where $\sigma^{2}_{\text{obs}}\in\mathbb{R}$ is the variance of the velocities estimated by the PX4's EKF. 
-
-The values of the estimated state $\hat{x}_{k}^f$, and error covariance matrix $P_{k}^f$, are used as input to the next iteration of the prediction step $\hat{x}_{k+1},P_{k+1}$.
-
-A velocity estimator is also constructed to determine the magnitude
-and direction of the moving platform's velocity vector. 
-The magnitude
-is calculated by differentiating two sequential positions 
-of the tractor, obtained by detecting the n-fold marker from the 
-vertically facing camera as explained in section \ref{sec:Detection}  
-and taking into consideration the
-UAV's \emph{NED} velocities according to the PX4's EKF. A low-pass
-filter is used to provide a smooth estimation of the velocity's
-magnitude by filtering out high frequency noise. High frequency noise
-can be caused by oscillations of the UAV along with a fast update rate
-in the landing marker detection algorithm.
-
-In the agricultural use-case the moving platform is likely to change
-its direction up to 180 degrees. Furthermore, it is assumed that the
-moving platform is a nonholonomic system, like a tractor. To
-compensate for sudden turns, the moving platform's yaw orientation
-will be taken into account. Based on the velocity's magnitude and moving platform's yaw orientation, the
-moving platform's velocity (\(\dot{x}_k^l\)) in \emph{NED} frame can be obtained.
+%\item The attitude of the UAV \emph{[roll, pitch, yaw]}, obtained from the flight controller's IMUs.
+%
+%\item the velocity of the UAV, $\dot{x}_k$, in \emph{NED} frame, obtained from 
+%the flight controller's EKF.
+%
+%\item the acceleration of the UAV, $\ddot{x}_k$, in \emph{NED} frame, obtained by differentiating the velocities.
+%
+%\end{itemize}
+%%
+%The altitude, attitude, velocity and acceleration variables of the
+%UAV's state are obtained from the flight controller's onboard sensors
+%and already implemented sensor fusion algorithms (EKF). To fuse those
+%state variables with the obtained position measurements from
+%Section~\ref{sec:Detection}, a Kalman Filter is implemented. The
+%measurements from the flight controller are used in the prediction
+%step.
+%
+%Prediction Step:\begin{subequations}
+%\begin{align} 
+%\hat{x}_{k} & = F \cdot \hat{x}_{k-1} + G_{k} \cdot u_{k}, \\ 
+%P_{k} & = F \cdot P_{k-1} \cdot F^\top + Q_{k},
+%\end{align}\end{subequations}
+%where 
+%$u_{k} = \begin{bmatrix}\dot{x}_k & \ddot{x}_k & \dot{x}_{k}^l\end{bmatrix}^\top$ is its control with $x_k,x_k^l$ being the positions of the UAV and the moving platform respectively.
+%Given $I:=I_2$, a \SI{2}{}$\times$\SI{2}{} identity matrix, the matrix $F=I$, the noise covariance matrix $Q_k=\Delta t_k\cdot\sigma^2_{\textrm{IMU}}\cdot I$, and $\sigma^2_{\textrm{IMU}}\in\mathbb{R}$ is the variance of the velocities retrieved from the flight controller's data.
+%Further, \(\Delta t_k\) is the time interval the flight controller output the data (usually around \SI{33}{\ms}). 
+%The input matrix is given by:
+%\begin{align*}
+%G_{k} & = \begin{bmatrix}
+%    \Delta t_k & 0 & \frac{\Delta t_k^{2}}{2} & 0 & -\Delta t_k & 0\\ 
+%    0 & \Delta t_k & 0 & \frac{\Delta t_k^{2}}{2} &0 & -\Delta t_k\end{bmatrix},
+%\end{align*}
+%
+%In the correction step, the observed measurements from the downward
+%looking camera are used to correct and update the estimated
+%position of the UAV $\hat{x}_k$. However due to the computation time
+%needed to detect the landing marker, the incoming measurement is
+%delayed by a time \(\Delta t_k^{\text{obs}}\in\mathbb{R}_{\geq 0}\). Physically, let us define the displacement $\tilde{x}_k^{\text{obs}}\in\mathbb{R}$ as
+%\begin{equation}
+%  \tilde{x}_k^{\text{obs}}:=\bar{\dot{x}}_k\,\Delta t_k^{\text{obs}}, %lol why not->|{\hat{x}_t-\hat{x}_v}|\text{ with }v:=t-d_t^{\text{obs}}, seems you loose the amplitude of the velocity???
+%\end{equation}
+%where $\bar{\dot{x}}_k\in\mathbb{R}$ is the mean velocity measured empirically. Such displacement is later employed in the observed measurements. 
+%
+%Correction Step:
+%\begin{subequations}
+%  \begin{align}
+%    %e_{t} = x^{\text{obs}}_t+\tilde{x}_t - H\cdot\hat{x}_{t} \\<-not necessary
+%    %S_{t} = H\cdot P_{t}\cdot H^T + R_{t} \\<-easier...
+%    K_{k} &= P_{k}\cdot H^T(H\cdot P_{k}\cdot H^T + R_{k})^{-1}, \\
+%    \hat{x}_{k}^f &= \hat{x}_{k} + K_{k}(x^{\text{obs}}_k+\tilde{x}^{\text{obs}}_k - \hat{x}_{k}), \\ %<- TBH not entirely sure why there as there is no system but directly estimate (you would compare the system with the measurement at this step) but ok; if it works then I am fine with it :) [just confirm it does]
+%    P_{k}^f &= (I - K_{k}\cdot H) P_{k},
+%  \end{align}
+%\end{subequations}
+%where $H=I$, and $x_k^{\text{obs}}$ is the observed position at time $k$. Let us further define $R_k:=\sigma^{2}_{\text{obs}}\cdot I$ where $\sigma^{2}_{\text{obs}}\in\mathbb{R}$ is the variance of the velocities estimated by the PX4's EKF. 
+%
+%The values of the estimated state $\hat{x}_{k}^f$, and error covariance matrix $P_{k}^f$, are used as input to the next iteration of the prediction step $\hat{x}_{k+1},P_{k+1}$.
+%
+%A velocity estimator is also constructed to determine the magnitude
+%and direction of the moving platform's velocity vector. 
+%The magnitude
+%is calculated by differentiating two sequential positions 
+%of the tractor, obtained by detecting the n-fold marker from the 
+%vertically facing camera as explained in section \ref{sec:Detection}  
+%and taking into consideration the
+%UAV's \emph{NED} velocities according to the PX4's EKF. A low-pass
+%filter is used to provide a smooth estimation of the velocity's
+%magnitude by filtering out high frequency noise. High frequency noise
+%can be caused by oscillations of the UAV along with a fast update rate
+%in the landing marker detection algorithm.
+%
+%In the agricultural use-case the moving platform is likely to change
+%its direction up to 180 degrees. Furthermore, it is assumed that the
+%moving platform is a nonholonomic system, like a tractor. To
+%compensate for sudden turns, the moving platform's yaw orientation
+%will be taken into account. Based on the velocity's magnitude and moving platform's yaw orientation, the
+%moving platform's velocity (\(\dot{x}_k^l\)) in \emph{NED} frame can be obtained.
 
 
 \subsection{Wind disturbances}
