@@ -741,11 +741,15 @@ therefore the energy consumption. However, a higher computation time and energy 
 is preferred over a non-detection of the n-fold marker. To balance
 between energy consumption and effective marker detection, an adaptive
 kernel selection function is created to ensure the selection of a
-proper kernel size based on a threshold quality score value. In Figure~\ref{fig:NfoldOcclusions} an Intel RealSense D435 Depth camera is used
-to capture the image and measure also the distance \emph{d} from the n-fold
-marker. Based on a desired quality \emph{q}, the proper kernel size \emph{k} is
-selected. It is seen that an occlusion on the tip of the n-fold marker
-results in a significant increase in the selected kernel size.
+proper kernel size \emph{k} based on a threshold quality score value \emph{q}. The marker detection results under two different occlusion cases can be seen in Figure~\ref{fig:NfoldOcclusions}. Distance \emph{d} denotes the distance of the marker from the camera.
+
+%Based on a desired quality \emph{q}, the proper kernel size \emph{k} is selected. It is seen that an occlusion on the tip of the n-fold marker results in a significant increase in the selected kernel size.
+
+%In Figure~\ref{fig:NfoldOcclusions} an Intel RealSense D435 Depth camera is used
+%to capture the image and measure also the distance \emph{d} from the n-fold
+%marker. Based on a desired quality \emph{q}, the proper kernel size \emph{k} is
+%selected. It is seen that an occlusion on the tip of the n-fold marker
+%results in a significant increase in the selected kernel size.
 
 \begin{figure}[t]
 \centering
@@ -760,70 +764,75 @@ results in a significant increase in the selected kernel size.
 To detect the ArUco markers the standard OpenCV library is used and if
 any ArUco markers are detected, their central pixel coordinates and
 pose are stored.
+ 
+To convert the pixel coordinates into a real-world relative position \emph{[X, Y, Z]} the PX4 flight controller's onboard sensor measurements are used. For the \emph{Z} component, the altitude of the UAV from the flight controller's EKF is used. To obtain the \emph{X, Y} components, the IMU and barometric sensor measurements are used to project the image plane down to the ground plane. Then a perspective homography matrix is calculated between the two planes, the image plane and the ground plane, thus transforming the pixel coordinates into a relative \emph{X, Y} position in meters. For ArUco markers only, an offset vector in the x, y axis is added depending on the distance of each ArUco marker from the tip of the n-fold marker. 
+It is assumed that this vector is prior known. The mean measurements from the detected n-fold and/or ArUco markers are used to determine the \emph{X, Y} relative position of the landing marker.
 
-The next step is to convert these pixel coordinates into a real-world
-relative position \emph{[X, Y, Z]} according to a local coordinate frame. The
-origin of the local coordinate frame \emph{[0, 0, 0]} is defined as the
-center of the landing marker and alignment according to the North,
-East, Down (\emph{NED}) frame.
+
+
+%The next step is to convert these pixel coordinates into a real-world
+%relative position \emph{[X, Y, Z]} according to a local coordinate frame. The
+%origin of the local coordinate frame \emph{[0, 0, 0]} is defined as the
+%center of the landing marker and alignment according to the North,
+%East, Down (\emph{NED}) frame.
+%%
+%The available sensor measurements and sensor fusion algorithms from
+%the flight controller are used in this process. The PX4 flight
+%controller outputs through mavlink messages the altitude and the attitude of the UAV (roll, pitch, yaw). For the \emph{Z} component,
+%the altitude of the UAV from the flight controller's EKF is used. To
+%obtain the \emph{X, Y} components, an algorithm is constructed to convert
+%pixel coordinates into real world \emph{X, Y} coordinates in meters:
 %
-The available sensor measurements and sensor fusion algorithms from
-the flight controller are used in this process. The PX4 flight
-controller outputs through mavlink messages the altitude and the attitude of the UAV (roll, pitch, yaw). For the \emph{Z} component,
-the altitude of the UAV from the flight controller's EKF is used. To
-obtain the \emph{X, Y} components, an algorithm is constructed to convert
-pixel coordinates into real world \emph{X, Y} coordinates in meters:
-
-\begin{enumerate}
-
-\item The pose of the camera in UAV's \emph{BODY} frame is calculated by 
-utilizing the roll and pitch IMU data.
-
-\item The normalized coordinates of the four image corners, according to the 
-camera's horizontal, vertical field of view and the camera's pose from step 1, 
-are calculated.
-
-\item The coordinates of the four image corners (in meters), with respect to 
-the UAV's \emph{BODY} frame, are determined by using the normalised coordinates from 
-step 2 along with the UAV's altitude. The result is a projection plane of the 
-image corners on the ground.
-
-\item The perspective homography matrix is calculated between the two planes, 
-the image plane and the world plane from step 3.
-
-\item The homography matrix from step 4 is used to convert the pixel coordinates 
-of the tip of the n-fold marker from the image plane, into  coordinates (in meters) 
-in the UAV's \emph{BODY} frame.
-
-\item The coordinates from step 5 are in respect to the UAV's \emph{BODY} frame. 
-To convert them into the UAV's \emph{NED} frame, the yaw IMU data from the flight 
-controller is used. 
-
-\item The coordinates from step 6, are converted from UAV's \emph{NED} frame 
-into the landing site's local coordinate frame.
-
-\item For ArUco markers only, an offset vector in the x, y axis is added depending 
-on the distance of each ArUco marker from the tip of the n-fold marker. 
-It is assumed that this vector is prior known.
-
-\end{enumerate}
+%\begin{enumerate}
 %
-The mean measurements from the detected n-fold and/or ArUco markers
-are used to determine the position and orientation of the landing
-marker. The result is an \emph{[X, Y, Z]} relative position of the UAV from
-the moving platform along with the yaw orientation of the landing
-marker.
+%\item The pose of the camera in UAV's \emph{BODY} frame is calculated by 
+%utilizing the roll and pitch IMU data.
+%
+%\item The normalized coordinates of the four image corners, according to the 
+%camera's horizontal, vertical field of view and the camera's pose from step 1, 
+%are calculated.
+%
+%\item The coordinates of the four image corners (in meters), with respect to 
+%the UAV's \emph{BODY} frame, are determined by using the normalised coordinates from 
+%step 2 along with the UAV's altitude. The result is a projection plane of the 
+%image corners on the ground.
+%
+%\item The perspective homography matrix is calculated between the two planes, 
+%the image plane and the world plane from step 3.
+%
+%\item The homography matrix from step 4 is used to convert the pixel coordinates 
+%of the tip of the n-fold marker from the image plane, into  coordinates (in meters) 
+%in the UAV's \emph{BODY} frame.
+%
+%\item The coordinates from step 5 are in respect to the UAV's \emph{BODY} frame. 
+%To convert them into the UAV's \emph{NED} frame, the yaw IMU data from the flight 
+%controller is used. 
+%
+%\item The coordinates from step 6, are converted from UAV's \emph{NED} frame 
+%into the landing site's local coordinate frame.
+%
+%\item For ArUco markers only, an offset vector in the x, y axis is added depending 
+%on the distance of each ArUco marker from the tip of the n-fold marker. 
+%It is assumed that this vector is prior known.
+%
+%\end{enumerate}
+%%
+%The mean measurements from the detected n-fold and/or ArUco markers
+%are used to determine the position and orientation of the landing
+%marker. The result is an \emph{[X, Y, Z]} relative position of the UAV from
+%the moving platform along with the yaw orientation of the landing
+%marker.
 
 
-\subsection{Navigation}
-\label{sec:Navigation}
-
-The purpose of the navigation block is to provide an accurate
-prediction for the state of the UAV at any given time. Such a prediction allow us to process images at different fps
-according to a desired QoS. Furthermore, the overall robustness of the
-system is increased in case the moving platform is not detected in
-every image frame. A velocity estimator for the moving platform is
-also being implemented as a part of the navigation block.
+%\subsection{Navigation}
+%\label{sec:Navigation}
+%
+%The purpose of the navigation block is to provide an accurate
+%prediction for the state of the UAV at any given time. Such a prediction allow us to process images at different fps
+%according to a desired QoS. Furthermore, the overall robustness of the
+%system is increased in case the moving platform is not detected in
+%every image frame. A velocity estimator for the moving platform is
+%also being implemented as a part of the navigation block.
 
 %The variables of interest that describe the state of the UAV are:
 %%
