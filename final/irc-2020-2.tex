@@ -941,43 +941,49 @@ speed is calculated by the following equations
 \end{equation}
 \noindent where $F_{\text{init}}\in\mathbb{R}$ is the force, \(p_{d}\in\mathbb{R}\) is the dynamic pressure, \(A\in\mathbb{R}\) is
 the area of the applied pressure, \(\varrho\in\mathbb{R}\) is the density of the
-air (around \SI{1.2}{\kg \per \m^3}), and \(v\in\mathbb{R}\) is the wind velocity in \SI{}{\m \per \s}.
-
-By solving the above equations the applied force on the UAV is found
+air (around \SI{1.2}{\kg \per \m^3}), and \(v\in\mathbb{R}\) is the wind velocity in \SI{}{\m \per \s}. By solving the above equations the applied force on the UAV is found
 to be \SI{3.45}{\newton} for an \SI{8}{\m \per \s} wind speed, and 
 \SI{7.76}{\newton} for a \SI{12}{\m \per \s}
 wind speed. The wind forces are applied on the UAV in Gazebo
-simulation, to test the performance of the whole system. This is
-done by constructing a program that applies the wind forces on the
-virtual UAV.
-
-To simulate a wind pattern the wind direction and magnitude must be
-defined. The wind direction is assumed to remain the same for the
-whole duration of the experiments. That direction vector is defined as
-$w=\begin{bmatrix}0.8 & 0.2\end{bmatrix}^\top$ according to Gazebo's \emph{(x, y)} axes.
+simulation, to test the performance of the whole system. 
 %
-The magnitude of the wind is calculated as follows: 
+%This is
+%done by constructing a program that applies the wind forces on the
+%virtual UAV. 
 
-\begin{itemize}
-    \item An initial wind force of either \SI{3.45}{\newton} or \SI{7.76}{\newton} is chosen.
-    
-    \item An update cycle of \SI{5.5}{\second} is chosen between two different applied forces.
-    
-    \item A random float number between \SI{0.9}{} and \SI{1.2}{} is chosen at every update 
-    cycle. This number is defined as $r\in\mathbb{R}$.
-    
-    \item The applied wind force is calculated as $\hat{F}=w\cdot F\cdot r$ :
-
-\begin{itemize}
-    \item For a UAV altitude of \SI{6.0}{\meter} and above, $F=F_{\text{init}}$. 
-    \item For a UAV altitude of \SI{6.0}{\meter} and below, the wind force decreases as:
-   $F=F_{\text{init}}\cdot h/ 6$ where $h$ is the altitude.
+At first the wind's direction vector is defined as
+$w=\begin{bmatrix}0.8 & 0.2\end{bmatrix}^\top$ according to Gazebo's \emph{(x, y)} axes and an initial wind force ($F_{\text{init}}$) of either \SI{3.45}{\newton} or \SI{7.76}{\newton} is chosen. An update cycle of \SI{5.5}{\second} is chosen between two different applied forces. A random float number between \SI{0.9}{} and \SI{1.2}{} is chosen at every update cycle. This number is defined as $r\in\mathbb{R}$. The applied wind force is calculated as $\hat{F}=w\cdot F\cdot r$. For a UAV altitude of \SI{6.0}{\meter} and above, $F=F_{\text{init}}$ while for a UAV altitude of \SI{6.0}{\meter} and below, the wind force decreases as:
+   $F=F_{\text{init}}\cdot h/ 6$ where $h$ is the altitude. 
    
-   \item For a UAV altitude of \SI{3}{\meter} and below, $F = 0.5$. 
-\end{itemize}
-\end{itemize}
-%
 This model is created to simulate different scaling in the wind's magnitude and is used for all simulated tests.
+
+%To simulate a wind pattern the wind direction and magnitude must be
+%defined. The wind direction is assumed to remain the same for the
+%whole duration of the experiments. That direction vector is defined as
+%$w=\begin{bmatrix}0.8 & 0.2\end{bmatrix}^\top$ according to Gazebo's \emph{(x, y)} axes.
+%%
+%The magnitude of the wind is calculated as follows: 
+%
+%\begin{itemize}
+%    \item An initial wind force of either \SI{3.45}{\newton} or \SI{7.76}{\newton} is chosen.
+%    
+%    \item An update cycle of \SI{5.5}{\second} is chosen between two different applied forces.
+%    
+%    \item A random float number between \SI{0.9}{} and \SI{1.2}{} is chosen at every update 
+%    cycle. This number is defined as $r\in\mathbb{R}$.
+%    
+%    \item The applied wind force is calculated as $\hat{F}=w\cdot F\cdot r$ :
+%
+%\begin{itemize}
+%    \item For a UAV altitude of \SI{6.0}{\meter} and above, $F=F_{\text{init}}$. 
+%    \item For a UAV altitude of \SI{6.0}{\meter} and below, the wind force decreases as:
+%   $F=F_{\text{init}}\cdot h/ 6$ where $h$ is the altitude.
+%   
+%   \item For a UAV altitude of \SI{3}{\meter} and below, $F = 0.5$. 
+%\end{itemize}
+%\end{itemize}
+%%
+%This model is created to simulate different scaling in the wind's magnitude and is used for all simulated tests.
 
 %%%%%%%%%%%%%%%%%%%%
 \section{Evaluation}
