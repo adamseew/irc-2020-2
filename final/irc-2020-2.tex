@@ -461,17 +461,34 @@ A landing marker inspired by a QR code
 %but consisting of three artificial markers 
 is investigated by 
 %Yuanet~al.~
-\cite{yuan2018hierarchical}. Towards the direction of using fiducial markers, \cite{lee2012autonomous} and \cite{yang2018hybrid} have used ArUco markers where \cite{araar2017vision}, \cite{kyristsis2016towards}, \cite{feng2018autonomous} utilized AprilTag~\cite{olson2011apriltag} markers. A special pattern of a black and white marker was designed by \cite{nguyen2018lightdenseyolo} and \cite{falanga2017vision}. On the contrary, color markers were utilized by \cite{chen2016system} and \cite{lee2016vision}.  However, we in this work do not consider a color segmentation
-approach, since for a realistic (outdoor)
-case it would be difficult to ensure that the
-landing marker will be the only object of a specific color in the
-scene.
+\cite{yuan2018hierarchical}. Towards the direction of using fiducial markers, \cite{lee2012autonomous} and \cite{yang2018hybrid} have used ArUco markers where \cite{araar2017vision}, \cite{kyristsis2016towards}, \cite{feng2018autonomous} utilized AprilTag~\cite{olson2011apriltag} markers. A special pattern of a black and white marker was designed by \cite{nguyen2018lightdenseyolo} and \cite{falanga2017vision}. On the contrary, color markers were utilized by \cite{chen2016system} and \cite{lee2016vision}.  
+%
+%However, we in this work do not consider a color segmentation
+%approach, since for a realistic (outdoor)
+%case it would be difficult to ensure that the
+%landing marker will be the only object of a specific color in the
+%scene.
+%
+An onboard implementation of the computer vision algorithms to detect a moving platform, is demonstrated by \cite{chen2016system}, \cite{lee2016vision}, \cite{falanga2017vision}, \cite{yang2018hybrid}, \cite{nguyen2018lightdenseyolo} and \cite{kyristsis2016towards}, with the latter three utilizing the companion's computer GPU. 
+%
+%In the agricultural use-case addressed in this paper, the GPU
+%is however needed for a CNN to detect ground hazards, and since the
+%GPU cannot normally run different algorithms simultaneously, the CPU should be used for detecting the landing marker. By doing so,
+%a different QoS can be chosen for each algorithm.  
 
-An onboard implementation of the computer vision algorithms to detect a moving platform, is demonstrated by \cite{chen2016system}, \cite{lee2016vision}, \cite{falanga2017vision}, \cite{yang2018hybrid}, \cite{nguyen2018lightdenseyolo} and \cite{kyristsis2016towards}, with the latter three utilizing the companion's computer GPU. In the agricultural use-case addressed in this paper, the GPU
-is however needed for a CNN to detect ground hazards, and since the
-GPU cannot normally run different algorithms simultaneously, the CPU should be used for detecting the landing marker. By doing so,
-a different QoS can be chosen for each algorithm.  
-
+Regarding wind conditions, \cite{feng2018autonomous} used
+a constant wind speed of \SI{5}{\m \per \s} as an external disturbance in a
+simulation environment. 
+%
+%Nevertheless, a fluctuation in the wind's
+%magnitude and direction is likely to happen in realistic cases.
+%
+Concerning estimation of the UAV's position,
+similar to our approach a Kalman Filter or Extended Kalman Filter (EKF) has been used for the
+estimation~\cite{saripalli2003landing,araar2017vision,feng2018autonomous,
+  falanga2017vision}, whereas \cite{yang2018hybrid}
+constructed a velocity observer algorithm by calculating the actual
+moving distance of the moving platform over a period of time.
 
 
  
@@ -556,19 +573,19 @@ paper considered in the proximity of the drone. The actual landing
 is handled by the proposed algorithm, and we also account for the
 energy required for executing this algorithm during landing.
 
-Taking into account varying environmental conditions and unpredictable
-movements of the platform to land on is relevant for the use of
-landing in outdoor, mobile scenarios.  Regarding wind conditions, \cite{feng2018autonomous} used
-a constant wind speed of \SI{5}{\m \per \s} as an external disturbance in a
-simulation environment. Nevertheless, a fluctuation in the wind's
-magnitude and direction is likely to happen in realistic cases.
-%
-Concerning estimation of the drone's position,
-similar to our approach a Kalman Filter or Extended Kalman Filter (EKF) has been used for the
-estimation~\cite{saripalli2003landing,araar2017vision,feng2018autonomous,
-  falanga2017vision}, whereas \cite{yang2018hybrid}
-constructed a velocity observer algorithm by calculating the actual
-moving distance of the moving platform over a period of time.
+%Taking into account varying environmental conditions and unpredictable
+%movements of the platform to land on is relevant for the use of
+%landing in outdoor, mobile scenarios.  Regarding wind conditions, \cite{feng2018autonomous} used
+%a constant wind speed of \SI{5}{\m \per \s} as an external disturbance in a
+%simulation environment. Nevertheless, a fluctuation in the wind's
+%magnitude and direction is likely to happen in realistic cases.
+%%
+%Concerning estimation of the drone's position,
+%similar to our approach a Kalman Filter or Extended Kalman Filter (EKF) has been used for the
+%estimation~\cite{saripalli2003landing,araar2017vision,feng2018autonomous,
+%  falanga2017vision}, whereas \cite{yang2018hybrid}
+%constructed a velocity observer algorithm by calculating the actual
+%moving distance of the moving platform over a period of time.
 
 %Taking into account varying environmental conditions and unpredictable
 %movements of the platform to land on is relevant for the use of
