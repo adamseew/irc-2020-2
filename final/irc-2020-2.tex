@@ -467,7 +467,7 @@ case it would be difficult to ensure that the
 landing marker will be the only object of a specific color in the
 scene.
 
-An onboard implementation of the computer vision algorithms to detect a moving platform, is demonstrated by \cite{chen2016system}, \cite{lee2016vision}, \cite{yang2018hybrid}, \cite{nguyen2018lightdenseyolo} and \cite{kyristsis2016towards}, with the latter three utilizing the companion's computer GPU. In the agricultural use-case addressed in this paper, the GPU
+An onboard implementation of the computer vision algorithms to detect a moving platform, is demonstrated by \cite{chen2016system}, \cite{lee2016vision}, \cite{falanga2017vision}, \cite{yang2018hybrid}, \cite{nguyen2018lightdenseyolo} and \cite{kyristsis2016towards}, with the latter three utilizing the companion's computer GPU. In the agricultural use-case addressed in this paper, the GPU
 is however needed for a CNN to detect ground hazards, and since the
 GPU cannot normally run different algorithms simultaneously, the CPU should be used for detecting the landing marker. By doing so,
 a different QoS can be chosen for each algorithm.  
@@ -681,9 +681,10 @@ complete model that maps QoS to energy consumption.
 \section{Vision-Based Autonomous Tracking and Landing}
 \label{sec:landing}
 
-The vision-based autonomous tracking and landing can be split into
-four main sub-problems: detection of the moving platform, navigation,
-guidance, and control of the UAV. From an energy-sensitive design
+%The vision-based autonomous tracking and landing can be split into
+%four main sub-problems: detection of the moving platform, navigation,
+%guidance, and control of the UAV. 
+From an energy-sensitive design
 approach, our focus is on the computer vision algorithms used to
 detect the moving platform and the parameterization by a QoS
 influencing energy consumption and performance, as described in
@@ -700,7 +701,7 @@ in a more realistic simulation.
 
 \begin{figure}
 \centering
-\includegraphics[scale=0.27]{n-fold-for-landing2.png}
+\includegraphics[scale=0.25]{n-fold-for-landing2.png}
 \caption{On the left is the landing marker and on the right is the kernel that is constructed to detect the n-fold marker. The white regions, on the kernel, are the real values and the black regions are the imaginary values. The grey area is of no concern.}
 \label{fig:LandingMarker}
 \end{figure}
@@ -729,21 +730,27 @@ kernel size of \SI{13}{}$\times$\SI{13}{} pixels consisting of a real and imagin
 part is created. We present a larger kernel size for visualisation purposes in Figure~\ref{fig:LandingMarker}.   For every pixel in the image, a convolution is
 performed with this kernel and the magnitude of the convolution is
 stored. The pixel with the highest magnitude is considered as a
-candidate tip of the n-fold marker. For that candidate pixel only, an
-estimation of the orientation/phase of the marker is made and an
-overall normalized quality score between \SI{0.0}{} and \SI{1.0}{} is calculated. If
+candidate tip of the n-fold marker. For that candidate pixel only, 
+%an
+%estimation of the orientation/phase of the marker is made and 
+an
+overall normalized quality score \emph{q} between \SI{0.0}{} and \SI{1.0}{} is calculated. If
 the score is above a desired threshold value then the pixel is
-accepted as the tip of the n-fold marker. If an n-fold marker is
-detected, the result will be the pixel coordinates of the tip of the
-n-fold marker along with its orientation/phase.
+accepted as the tip of the n-fold marker. 
+%If an n-fold marker is
+%detected, the result will be the pixel coordinates of the tip of the
+%n-fold marker along with its orientation/phase.
+%
+An adaptive kernel selection function is implemented to ensure the selection of a
+proper minimum kernel size \emph{k} based on a threshold quality score value \emph{q} thus balancing between the computationally expensive convolution process and the effective marker detection.
 
-Since a convolution is a computationally expensive process, an increase
-in the kernel size would also increase the computation time and
-therefore the energy consumption. However, a higher computation time and energy consumption
-is preferred over a non-detection of the n-fold marker. To balance
-between energy consumption and effective marker detection, an adaptive
-kernel selection function is created to ensure the selection of a
-proper kernel size \emph{k} based on a threshold quality score value \emph{q}. The marker detection results under two different occlusion cases can be seen in Figure~\ref{fig:NfoldOcclusions}. Distance \emph{d} denotes the distance of the marker from the camera.
+%Since a convolution is a computationally expensive process, an increase
+%in the kernel size would also increase the computation time and
+%therefore the energy consumption. However, a higher computation time and energy consumption
+%is preferred over a non-detection of the n-fold marker. To balance
+%between energy consumption and effective marker detection, an adaptive
+%kernel selection function is created to ensure the selection of a
+%proper kernel size \emph{k} based on a threshold quality score value \emph{q}. The marker detection results under two different occlusion cases can be seen in Figure~\ref{fig:NfoldOcclusions}. Distance \emph{d} denotes the distance of the marker from the camera.
 
 %Based on a desired quality \emph{q}, the proper kernel size \emph{k} is selected. It is seen that an occlusion on the tip of the n-fold marker results in a significant increase in the selected kernel size.
 
@@ -753,21 +760,21 @@ proper kernel size \emph{k} based on a threshold quality score value \emph{q}. T
 %selected. It is seen that an occlusion on the tip of the n-fold marker
 %results in a significant increase in the selected kernel size.
 
-\begin{figure}[t]
-\centering
-\includegraphics[scale=0.25]{nfold_occlusions.png}
-\caption{Detection of the landing marker under different
-  occlusions. On the left an occlusion on the tip of the n-fold marker
-  and on the right an occlusion on a sector of the n-fold marker.}
-\label{fig:NfoldOcclusions}
-\end{figure}
+%\begin{figure}[t]
+%\centering
+%\includegraphics[scale=0.25]{nfold_occlusions.png}
+%\caption{Detection of the landing marker under different
+%  occlusions. On the left an occlusion on the tip of the n-fold marker
+%  and on the right an occlusion on a sector of the n-fold marker.}
+%\label{fig:NfoldOcclusions}
+%\end{figure}
 
 %
 To detect the ArUco markers the standard OpenCV library is used and if
 any ArUco markers are detected, their central pixel coordinates and
 pose are stored.
  
-To convert the pixel coordinates into a real-world relative position \emph{[X, Y, Z]} the PX4 flight controller's onboard sensor measurements are used. For the \emph{Z} component, the altitude of the UAV from the flight controller's EKF is used. To obtain the \emph{X, Y} components, the IMU and barometric sensor measurements are used to project the image plane down to the ground plane. Then a perspective homography matrix is calculated between the two planes, the image plane and the ground plane, thus transforming the pixel coordinates into a relative \emph{X, Y} position in meters. For ArUco markers only, an offset vector in the x, y axis is added depending on the distance of each ArUco marker from the tip of the n-fold marker. 
+To convert the pixel coordinates into a real-world relative position \emph{[X, Y, Z]} the PX4 flight controller's onboard sensor measurements are utilized. For the \emph{Z} component, the altitude of the UAV from the flight controller's EKF is used. To obtain the \emph{X, Y} components, the IMU and barometric sensor measurements are used to project the image plane down to the ground plane. Then a perspective homography matrix is calculated between the two planes, the image plane and the ground plane, thus transforming the pixel coordinates into a relative \emph{X, Y} position in meters. For ArUco markers only, an offset vector in the x, y axis is added depending on the distance of each ArUco marker from the tip of the n-fold marker. 
 It is assumed that this vector is prior known. The mean measurements from the detected n-fold and/or ArUco markers are used to determine the \emph{X, Y} relative position of the landing marker.
 
 
@@ -923,16 +930,15 @@ It is assumed that this vector is prior known. The mean measurements from the de
 
 \subsection{Wind disturbances}
 \label{sec:WindDisturbances}
-The exact and accurate estimation of the applied wind forces on a body
-is a complex matter studied by the field of fluid dynamics. We use a
-simplified approach, as follows. We assume that the wind will be
+%The exact and accurate estimation of the applied wind forces on a body
+%is a complex matter studied by the field of fluid dynamics. We use a
+%simplified approach, as follows. 
+We assume that the wind will be
 applied on an area of \SI{0.09}{\m^2}. Such an area is emulating a UAV
 with extra payload attached on its frame. Two different wind speeds of
-\SI{8}{\m \per \s} and \SI{12}{\m \per \s} will be used to calculate the applied wind forces
+\SI{8}{\m \per \s} and \SI{12}{\m \per \s} are used to calculate the applied wind forces
 on that area. The wind forces are considered to be applied on the
-center of gravity of the UAV with direction parallel to the ground.
-
-The magnitude of the applied force, corresponding to a certain wind
+center of gravity of the UAV with direction parallel to the ground. The magnitude of the applied force, corresponding to a certain wind
 speed is calculated by the following equations
 \cite{Dynamic_pressure_NASA,anderson2010fundamentals}:
 \begin{equation}
@@ -988,11 +994,12 @@ $w=\begin{bmatrix}0.8 & 0.2\end{bmatrix}^\top$ according to Gazebo's \emph{(x, y
 %%%%%%%%%%%%%%%%%%%%
 \section{Evaluation}
 \label{sec:experimental}
+% Georgios: I think we can ommit that first parapragh
 
-We evaluate our approach in terms of the quality of the overall
-functionality and the energy efficiency of the algorithms. All
-algorithms are executed on an embedded companion computer interfaced
-to a simulation running on a standard computer.
+%We evaluate our approach in terms of the quality of the overall
+%functionality and the energy efficiency of the algorithms. All
+%algorithms are executed on an embedded companion computer interfaced
+%to a simulation running on a standard computer.
 
 \subsection{Use-case: agricultural safety}
 
@@ -1092,7 +1099,7 @@ the correct class. The detection results can be seen in
 Figure~\ref{fig:NCorrectObjectDetections}. The best results were
 obtained for a high fps update rate in \emph{YOLOv3-tiny} and \emph{landing marker} 
 detection, under no wind disturbances, since 28 out of the 32
-objects were detected. This is expected since at a higher fps each object is viewed more times at different angles as the UAV moves. Nevertheless, for the same high fps values but
+objects were detected. This is expected since at a higher fps each object is viewed more times at slightly different angles as the UAV moves. Nevertheless, for the same high fps values but
 with a wind speed of \SI{12}{\meter \per \second}, only 18 out of 32 objects were
 correctly detected. This is also expected since the UAV has to be at a certain roll and pitch angle to balance itself when wind disturbances are applied. This causes some objects to be either outside the downward facing camera's field of view or to be viewed from a certain top-side view, which the \emph{YOLOv3-tiny} hasn't been trained for.
 
