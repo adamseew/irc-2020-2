@@ -1015,10 +1015,11 @@ image from the downward facing camera into a \emph{YOLOv3-tiny} CNN
 \cite{yolov3} implemented in ROS \cite{bjelonicYolo2018}. Four
 different classes are selected: cars, humans, tractors, and
 cows. Based on the CNN's predictions and onboard
-sensors, the UAV maps the detected objects onto a 2D map.
-
-A simulated field is created in Gazebo with objects placed in random
-positions and orientations as seen in Figure~\ref{fig:Gazebo}.
+sensors, the UAV maps the detected objects onto a 2D map. A simulated field is created in Gazebo with objects placed in random
+positions and orientations as seen in Figure~\ref{fig:Gazebo}. The performance of \emph{YOLOv3-tiny} on pre-trained weights was not satisfactory and therefore a custom dataset based on the Gazebo models was created for training the CNN. The dataset consists of 1200 images, 300
+for each class. We trained the \emph{YOLOv3-tiny} by its default training
+parameters for 5000 epochs, for an input image size of \SI{416}{}$\times$\SI{416}{}
+pixels.
 
 \begin{figure}[t]
 \centering
@@ -1028,14 +1029,27 @@ On the right, a view of the UAV attempting a landing on the moving platform.}
 \label{fig:Gazebo}
 \end{figure}
 
-Pre-trained weights for \emph{YOLOv3-tiny}, were initially used but the
-performance on detecting objects from a downward facing camera was
-not satisfactory. Since a dataset for detecting the above four classes
-from a top view was not available, we created an artificial dataset
-based on the Gazebo models. The dataset consists of 1200 images, 300
-for each class. We trained the \emph{YOLOv3-tiny} by its default training
-parameters for 5000 epochs, for an input image size of \SI{416}{}$\times$\SI{416}{}
-pixels.
+
+
+
+
+% were initially used but the
+%performance on detecting objects from a downward facing camera was
+%not satisfactory. Since a dataset for detecting the above four classes
+%from a top view was not available, we created an artificial dataset
+%based on the Gazebo models. The dataset consists of 1200 images, 300
+%for each class. We trained the \emph{YOLOv3-tiny} by its default training
+%parameters for 5000 epochs, for an input image size of \SI{416}{}$\times$\SI{416}{}
+%pixels.
+
+%Pre-trained weights for \emph{YOLOv3-tiny}, were initially used but the
+%performance on detecting objects from a downward facing camera was
+%not satisfactory. Since a dataset for detecting the above four classes
+%from a top view was not available, we created an artificial dataset
+%based on the Gazebo models. The dataset consists of 1200 images, 300
+%for each class. We trained the \emph{YOLOv3-tiny} by its default training
+%parameters for 5000 epochs, for an input image size of \SI{416}{}$\times$\SI{416}{}
+%pixels.
 
 \subsection{Experimental setup}
 
