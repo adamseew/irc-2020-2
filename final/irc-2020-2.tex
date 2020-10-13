@@ -764,12 +764,12 @@ proper minimum kernel size \emph{k} based on a threshold quality score value \em
 %\end{figure}
 
 %
-To detect the ArUco markers the standard OpenCV library is used and if
-any ArUco markers are detected, their central pixel coordinates and
-pose are stored.
- 
-To convert the pixel coordinates into a real-world relative position \emph{[X, Y, Z]} the PX4 flight controller's onboard sensor measurements are utilized. For the \emph{Z} component, the altitude of the UAV from the flight controller's EKF is used. To obtain the \emph{X, Y} components, the IMU and barometric sensor measurements are used to project the image plane down to the ground plane. Then a perspective homography matrix is calculated between the two planes, the image plane and the ground plane, thus transforming the pixel coordinates into a relative \emph{X, Y} position in meters. For ArUco markers only, an offset vector in the x, y axis is added depending on the distance of each ArUco marker from the tip of the n-fold marker. 
-It is assumed that this vector is prior known. The mean measurements from the detected n-fold and/or ArUco markers are used to determine the \emph{X, Y} relative position of the landing marker.
+%To detect the ArUco markers the standard OpenCV library is used and if
+%any ArUco markers are detected, their central pixel coordinates and
+%pose are stored.
+% 
+%To convert the pixel coordinates into a real-world relative position \emph{[X, Y, Z]} the PX4 flight controller's onboard sensor measurements are utilized. For the \emph{Z} component, the altitude of the UAV from the flight controller's EKF is used. To obtain the \emph{X, Y} components, the IMU and barometric sensor measurements are used to project the image plane down to the ground plane. Then a perspective homography matrix is calculated between the two planes, the image plane and the ground plane, thus transforming the pixel coordinates into a relative \emph{X, Y} position in meters. For ArUco markers only, an offset vector in the x, y axis is added depending on the distance of each ArUco marker from the tip of the n-fold marker. 
+%It is assumed that this vector is prior known. The mean measurements from the detected n-fold and/or ArUco markers are used to determine the \emph{X, Y} relative position of the landing marker.
 
 
 
