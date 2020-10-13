@@ -446,42 +446,22 @@ while tracking and landing on a moving platform.
 \section{State of the Art}
 \label{sec:state-of-the-art}
 
-Vision-based autonomous landing on a marker has been extensively
-studied by many researchers. Key distinctions include the type of the marker along with the computer vision algorithms used to detect it and whether the marker is on a moving platform or not.
+%Vision-based autonomous landing on a marker has been extensively
+%studied by many researchers. Key distinctions include the type of the marker along with the computer vision algorithms used to detect it and whether the marker is on a moving platform or not.
 
 One of the first experiments with
 vision-based autonomous landing was conducted by
-%by Saripalli
-%et~al.~
 \cite{saripalli2002vision}
-%. Here, a helicopter with a color camera facing vertically towards the ground would land on 
 in which an ”H”-shape
-pattern (similar to ones found on a helipad) was used. %using a hierarchical behavior-based control architecture. In physical tests a marker of \SI{122}{}$\times$\SI{122}{\cm} size was detected for a maximum altitude of \SI{10}{\m}. 
+pattern (similar to ones found on a helipad) was used. 
 A landing marker inspired by a QR code 
-%but consisting of three artificial markers 
 is investigated by 
-%Yuanet~al.~
 \cite{yuan2018hierarchical}. Towards the direction of using fiducial markers, \cite{lee2012autonomous} and \cite{yang2018hybrid} have used ArUco markers where \cite{araar2017vision}, \cite{kyristsis2016towards}, \cite{feng2018autonomous} utilized AprilTag~\cite{olson2011apriltag} markers. A special pattern of a black and white marker was designed by \cite{nguyen2018lightdenseyolo} and \cite{falanga2017vision}. On the contrary, color markers were utilized by \cite{chen2016system} and \cite{lee2016vision}.  
-%
-%However, we in this work do not consider a color segmentation
-%approach, since for a realistic (outdoor)
-%case it would be difficult to ensure that the
-%landing marker will be the only object of a specific color in the
-%scene.
-%
-An onboard implementation of the computer vision algorithms to detect a moving platform, is demonstrated by \cite{chen2016system}, \cite{lee2016vision}, \cite{falanga2017vision}, \cite{yang2018hybrid}, \cite{nguyen2018lightdenseyolo} and \cite{kyristsis2016towards}, with the latter three utilizing the companion's computer GPU. 
-%
-%In the agricultural use-case addressed in this paper, the GPU
-%is however needed for a CNN to detect ground hazards, and since the
-%GPU cannot normally run different algorithms simultaneously, the CPU should be used for detecting the landing marker. By doing so,
-%a different QoS can be chosen for each algorithm.  
-
+An onboard implementation of the computer vision algorithms to detect a moving platform, is demonstrated by \cite{chen2016system}, \cite{lee2016vision}, \cite{falanga2017vision}, \cite{yang2018hybrid}, \cite{nguyen2018lightdenseyolo} and \cite{kyristsis2016towards}, with the latter three utilizing the companion's computer GPU.
+% 
 Regarding wind conditions, \cite{feng2018autonomous} used
 a constant wind speed of \SI{5}{\m \per \s} as an external disturbance in a
 simulation environment. 
-%
-%Nevertheless, a fluctuation in the wind's
-%magnitude and direction is likely to happen in realistic cases.
 %
 Concerning estimation of the UAV's position,
 similar to our approach, a Kalman Filter or Extended Kalman Filter (EKF) has been used for the
@@ -490,54 +470,10 @@ estimation~\cite{saripalli2003landing,araar2017vision,feng2018autonomous,
 constructed a velocity observer algorithm by calculating the actual
 moving distance of the moving platform over a period of time.
 
-
- 
-%, and was shown to provide a \SI{6}-Degree Of Freedom (DOF) pose over an altitude range of \SI{0}{}-\SI{20}{\m}. Our work is in contrast focused on the ability to land on moving platforms.
-
-%Saripalli et~al.~\cite{saripalli2003landing} also demonstrated the use of a Kalman Filter to track a moving platform. However, all the computations were performed offline. Similarly, an ArUco marker was used as a landing marker by Lee et~al.~\cite{lee2012autonomous} to detect a moving platform. The control of the UAV is performed based on the error provided by the vision algorithm but all the computations were performed off-board. Arrar et~al.~\cite{araar2017vision} focus on extending the detection range by using an
-%AprilTag~\cite{olson2011apriltag} as a landing marker. Again all the
-%computer vision algorithms were also executed off-board. Conversely, a crucial
-%aspect of our application is to perform all the computations onboard,
-%and to evaluate them according to their energy efficiency as a
-%function of QoS.
-%
-%The design of the marker and choice of sensors can facilitate doing the computations onboard. Chen et~al.~\cite{chen2016system} utilized a marker consisting of a
-%circle and rectangles of different colors along with a LiDAR scanning
-%range finder for height estimation. The marker was detected by
-%performing color segmentation on the incoming image frame. By fusing
-%the height measurement from the LiDAR into the vision measurement, a
-%relative pose of the UAV from the moving platform was obtained. A
-%color segmentation approach was also implemented by Lee
-%et~al.~\cite{lee2016vision}. A red rectangle was used as a landing marker while the detection was done by a vertically facing camera with a fish-eye lens. The setup accounted for a successful landing from an altitude of \SI{70}{\m}. In the above two cases an onboard companion computer is used to
-%perform all the computations on the UAV. However, we in this work do not consider a color segmentation
-%approach, since for a realistic (outdoor)
-%case it would be difficult to ensure that the
-%landing marker will be the only object of a specific color in the
-%scene.
-%
-%The use of a hybrid camera system consisting of a fish-eye IR camera
-%and a stereo camera was demonstrated by Yang
-%et~al.~\cite{yang2018hybrid}. An ArUco marker was used to mark the
-%moving platform and a convolutional neural network (CNN) YOLOv3 was
-%trained specifically for marker detection. A similar approach
-%concerning the detection of a landing marker was adopted by
-%Nguyen et~al.~\cite{nguyen2018lightdenseyolo} in which a specific CNN was trained to detect a landing marker pattern: successful
-%detection of a \SI{1}{}$\times$\SI{1}{\m} marker size was demonstrated from a
-%distance of \SI{50}{\m}. An AprilTag marker was used as a landing marker by
-%Kyritsis et~al.~\cite{kyristsis2016towards}. The identification of the AprilTag marker
-%was performed using a Graphics Processing Unit (GPU). In the above three cases, the researchers
-%have utilized the companion's computer GPU to detect the landing
-%marker. In the agricultural use-case addressed in this paper, the GPU
-%is however needed for a CNN to detect ground hazards, and since the
-%GPU cannot normally run different algorithms simultaneously, the CPU should be used for detecting the landing marker. By doing so,
-%a different QoS can be chosen for each algorithm.  
-
 To account for the energy modeling of computer vision algorithms, we
 considered SLAMBench \cite{nardi2015introducing}, a framework that investigates Simultaneous Localisation and Mapping (SLAM) algorithms configuration alternatives
 for energy efficiency. 
-
-
-
+%
 Other approaches to energy modeling, such as the mission-based energy
 models studied by~\cite{sadrpour2013experimental,
   sadrpour2013mission}, focus mostly on ground-based autonomous
@@ -553,23 +489,10 @@ in~\cite{mei2004energy}, a design strategy that allows accounting for
 motion and computations separately in~\cite{mei2005case}, to an
 energy-efficient deployment algorithm in~\cite{mei2006deployment}.
 %
-%The battery in our system is considered in the context of a drone
-%being able to perform its mission while accounting for the eventuality
-%of a battery shortage; to this end, we investigated 
-%
 To account for the eventuality of battery shortage,~\cite{berenz2012autonomous} elaborates a
 battery management mission-based dynamic recharge approach by using a set of recharge stations along with
 self-docking capable robots. 
-
-
-
-%Our approach similarly allows landing on
-%a moving platform for recharging, which is in the context of this
-%paper considered in the proximity of the drone. The actual landing
-%is handled by the proposed algorithm, and we also account for the
-%energy required for executing this algorithm during landing.
-
-%In this work we do not consider a color segmentation approach, since for a realistic (outdoor) case it would be difficult to ensure that the landing marker will be the only object of a specific color in the scene.
+%
 
 In this work we propose a new marker pattern robust to occlusions and suitable for a realistic outdoor case. Since the GPU cannot normally run different algorithms simultaneously, we utilize the CPU for detecting the landing marker and the GPU for a CNN to detect ground hazards. By doing so, a different QoS can be chosen for each algorithm. Furthermore, we use \powprof{}, a generic energy
 modeling tool~\cite{seewald2019coarse}. This tool enables measuring
@@ -579,27 +502,6 @@ The \powprof{} tool is part of the TeamPlay toolchain, which aims to make tradeo
 In this paper, we present
 extensions to \powprof{} that facilitates the initial exploration of
 the energy usage of complex ROS-based systems.
-
-%do not consider a color segmentation
-%approach, since for a realistic (outdoor)
-%case it would be difficult to ensure that the
-%landing marker will be the only object of a specific color in the
-%scene.
-
-%In the agricultural use-case addressed in this paper, the GPU
-%is however needed for a CNN to detect ground hazards, and since the
-%GPU cannot normally run different algorithms simultaneously, the CPU should be used for detecting the landing marker. By doing so,
-%a different QoS can be chosen for each algorithm.  
-
-
-%In our work, we use \powprof{}, a generic energy
-%modeling tool~\cite{seewald2019coarse}. This tool enables measuring
-%the energy impact of different configurations of the ROS-based system
-%implementing the agricultural use-case.
-%The \powprof{} tool is part of the TeamPlay toolchain, which aims to make tradeoffs between energy and other non-functional properties accessible to the developer. 
-%In this paper, we present
-%extensions to \powprof{} that facilitates the initial exploration of
-%the energy usage of complex ROS-based systems.
 
 
 
