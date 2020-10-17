@@ -1122,7 +1122,7 @@ the correct class. The detection results can be seen in
 Figure~\ref{fig:NCorrectObjectDetections}. The best results were
 obtained for a high fps update rate in \emph{YOLOv3-tiny} and \emph{landing marker} 
 detection, under no wind disturbances, since 28 out of the 32
-objects were detected. This is expected since at a higher fps each object is viewed more times at slightly different angles as the UAV moves. Nevertheless, for the same high fps values but
+objects were detected. This is expected since at a higher fps each object is viewed more times as the UAV moves. Nevertheless, for the same high fps values but
 with a wind speed of \SI{12}{\meter \per \second}, only 18 out of 32 objects were
 correctly detected. This is also expected since the UAV has to be at a certain roll and pitch angle to balance itself when wind disturbances are applied. This causes some objects to be either outside the downward facing camera's field of view or to be viewed from a certain top-side view, which the \emph{YOLOv3-tiny} hasn't been trained for.
 
