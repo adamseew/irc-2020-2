@@ -1009,18 +1009,21 @@ simulation, to test the performance of the whole system. The direction of the wi
 
 We evaluate our approach based on a simulated use-case where a multirotor UAV identifies
 hazardous objects around a moving platform, and lands on the
-moving platform to recharge.
-No communication link is considered between the moving platform and the UAV
-and no GNSS positioning is assumed to be available. The system can thus be
-considered as a fallback for fault-tolerance.
+moving platform to recharge. A simulated field is created in Gazebo with randomly placed objects as seen in Figure~\ref{fig:Gazebo}.
+%No communication link is considered between the moving platform and the UAV
+%and no GNSS positioning is assumed to be available. The system can thus be
+%considered as a fallback for fault-tolerance.
 
-Object detection and classification is performed by feeding the input
+Object detection and classification of cars, humans, tractors and cows is performed by feeding the input
 image from the downward facing camera into a \emph{YOLOv3-tiny} CNN
-\cite{yolov3} implemented in ROS \cite{bjelonicYolo2018}. Four
-different classes are selected: cars, humans, tractors, and
-cows. Based on the CNN's predictions and onboard
-sensors, the UAV maps the detected objects onto a 2D map. A simulated field is created in Gazebo with objects placed in random
-positions and orientations as seen in Figure~\ref{fig:Gazebo}. The performance of \emph{YOLOv3-tiny} on pre-trained weights was not satisfactory and therefore a custom dataset based on the Gazebo models was created for training the CNN. The dataset consists of 1200 images, 300
+\cite{yolov3} implemented in ROS \cite{bjelonicYolo2018}. 
+%Four
+%different classes are selected: cars, humans, tractors, and
+%cows. 
+%Based on the CNN's predictions and onboard
+%sensors, the UAV maps the detected objects onto a 2D map. 
+%The performance of \emph{YOLOv3-tiny} on pre-trained weights was not satisfactory and therefore 
+A custom dataset based on the Gazebo models was created. The dataset consists of 1200 images, 300
 for each class. We trained the \emph{YOLOv3-tiny} by its default training
 parameters for 5000 epochs, for an input image size of \SI{416}{}$\times$\SI{416}{}
 pixels.
@@ -1137,16 +1140,16 @@ power consumption is \SI{0.14}{\watt} and is observed between the 0.5fps and
 the 10fps update rate for the \emph{landing marker} detection. However
 the landing time is reduced by \SI{30}{\second} when using the 10fps update
 rate. The adaptive kernel size in most cases outperforms the fixed
-kernel size by \SI{0.11}{\watt}. Furthermore the adaptive kernel size can
-compensate for marker occlusions which will increase the overall
-robustness of the system.
+kernel size by \SI{0.11}{\watt}. 
+%Furthermore the adaptive kernel size can
+%compensate for marker occlusions which will increase the overall
+%robustness of the system.
 
 For the QoS evaluation, twelve tests were executed for different 
 fps rates for the \emph{landing marker} detection ROS node 
 (10fps, 2fps, 1fps, 0.5fps) under three different cases of wind
 disturbances. The QoS is determined as the  mean squared error (MSE) 
-between the predicted position of the moving platform, 
-from the navigation block, and the moving platform's actual position. 
+between the predicted and actual position of the moving platform.
 Four different altitude bins were used as seen in 
 Figure~\ref{fig:PositionErrorDuringLanding}. 
 A large MSE of around \SI{3}{\square\meter} is observed for an altitude 
