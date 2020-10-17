@@ -1023,8 +1023,8 @@ image from the downward facing camera into a \emph{YOLOv3-tiny} CNN
 %Based on the CNN's predictions and onboard
 %sensors, the UAV maps the detected objects onto a 2D map. 
 %The performance of \emph{YOLOv3-tiny} on pre-trained weights was not satisfactory and therefore 
-A custom dataset based on the Gazebo models was created. The dataset consists of 1200 images, 300
-for each class. We trained the \emph{YOLOv3-tiny} by its default training
+A custom dataset based on the Gazebo models was created consisting of 1200 images, 300
+for each class. We trained the CNN by its default training
 parameters for 5000 epochs, for an input image size of \SI{416}{}$\times$\SI{416}{}
 pixels.
 
@@ -1072,10 +1072,12 @@ computer.
 %
 Energy profiling is performed directly on the NVIDIA Jetson
   Nano using \powprof{} as outlined in Section~\ref{sec:semi-automatic}.
-
-Two groups of experiments are conducted. The first group evaluates the
-energy consumption and QoS of the \emph{tracking} mode and the second group
-evaluates the energy consumption and QoS of the \emph{landing} mode. 
+  
+%Experiments are conducted to evaluate the energy consumption and QoS of \emph{tracking} and \emph{landing} modes. 
+%
+%Two groups of experiments are conducted. The first group evaluates the
+%energy consumption and QoS of the \emph{tracking} mode and the second group
+%evaluates the energy consumption and QoS of the \emph{landing} mode. 
 %For
 %both groups, the experiments start with the tractor moving at a
 %constant speed of \SI{0.3}{\meter\per\second}, according to a square path similar to that of a
@@ -1090,14 +1092,15 @@ altitude and map the ground environment,
 %use its downward facing camera to map the environment,
 while in \emph{landing} mode the UAV will follow the moving platform and
 gradually lower its altitude until it lands on it. Both \emph{tracking} and
-\emph{landing} modes are tested under three different cases of no wind, \SI{8}{\meter \per \second} and \SI{12}{\meter \per \second} wind disturbances as analysed in Section~\ref{sec:WindDisturbances}.
+\emph{landing} modes are evaluated for their energy consumption and QoS under three different cases of no wind, \SI{8}{\meter \per \second} and \SI{12}{\meter \per \second} wind disturbances as analysed in Section~\ref{sec:WindDisturbances}.
 
 
 \subsection{Results}
 
-The first group of experiments was conducted to test the \emph{tracking} mode and evaluate its 
-energy efficiency and QoS. For the energy 
-evaluation, eight tests were executed for different fps rates 
+%The first group of experiments was conducted to test the \emph{tracking} mode and evaluate its 
+%energy efficiency and QoS. 
+For the energy 
+evaluation of \emph{tracking} mode, eight tests were executed for different fps rates 
 for the \emph{YOLOv3-tiny} ROS node (\emph{YRN}) (4fps, 1fps, 0.5fps, 0.1fps) and 
 the \emph{landing marker} detection ROS node (\emph{LRN}) (10fps, 0.5fps) as 
 %
@@ -1113,7 +1116,7 @@ saving of \SI{0.15}{\watt}- \SI{0.19}{\watt} is achieved.
 
 
 
-For the QoS evaluation, twelve tests were executed for different 
+For the QoS evaluation of \emph{tracking} mode, twelve tests were executed for different 
 fps rates for the \emph{YRN}
 %\emph{YOLOv3-tiny} ROS node
  (4fps, 0.1fps) and for 
@@ -1122,10 +1125,12 @@ the \emph{LRN}
  (10fps, 0.5fps) under 
 three different cases of wind disturbances. 
 %
-The QoS is determined as the number of correctly detected objects. An
-object is considered to be correctly detected if it is detected within
-a distance of \SI{2}{\meter} from its actual position and classified with
-the correct class. The detection results can be seen in
+The QoS is determined as the number of correctly detected objects (objects detected within a distance of \SI{2}{\meter} from their actual position and classified correctly). 
+%
+%An object is considered to be correctly detected if it is detected within
+%a distance of \SI{2}{\meter} from its actual position and classified with
+%the correct class. 
+The detection results can be seen in
 Figure~\ref{fig:NCorrectObjectDetections}. The best results were
 obtained for a high fps update rate in \emph{YRN} %\emph{YOLOv3-tiny}
  and \emph{LRN},
@@ -1136,9 +1141,9 @@ with a wind speed of \SI{12}{\meter \per \second}, only 18 out of 32 objects wer
 correctly detected. This is also expected since the UAV has to be at a certain roll and pitch angle to balance itself when wind disturbances are applied. This causes some objects to be either outside the downward facing camera's field of view or to be viewed from a certain top-side view, which the CNN hasn't been trained for.
 
 
-The second group of experiments was conducted to test the \emph{landing} mode
-and evaluate its energy efficiency and QoS.
-For the energy evaluation, eight tests were executed for different 
+%The second group of experiments was conducted to test the \emph{landing} mode
+%and evaluate its energy efficiency and QoS.
+For the energy evaluation of \emph{landing} mode, eight tests were executed for different 
 fps rates for the \emph{LRN}
 %\emph{landing marker} detection ROS node 
 (10fps, 2fps, 1fps, 0.5fps) using two different cases. 
@@ -1159,7 +1164,7 @@ kernel size by \SI{0.11}{\watt}.
 %compensate for marker occlusions which will increase the overall
 %robustness of the system.
 
-For the QoS evaluation, twelve tests were executed for different 
+For the QoS evaluation of \emph{landing} mode, twelve tests were executed for different 
 fps rates for the \emph{LRN}
 %\emph{landing marker} detection ROS node 
 (10fps, 2fps, 1fps, 0.5fps) under three different cases of wind
