@@ -1061,7 +1061,8 @@ On the right, a view of the UAV attempting a landing on the moving platform.}
 \subsection{Experimental setup}
 
 All experiments are performed in Gazebo simulation under Ubuntu 18.04
-and ROS Melodic on a i7-8550U 1.8~GHz (4.0~GHz Boost), 8~GB DDR4
+and ROS Melodic on a standard
+%i7-8550U 1.8~GHz (4.0~GHz Boost), 8~GB DDR4
 laptop. The \emph{PX4} Software In The Loop (SITL) Firmware v1.10.2 is used as the flight
 controller and the \emph{IRIS} quadcopter is used as the UAV platform. A
 downward facing RGB camera is placed on the UAV providing a
@@ -1074,21 +1075,22 @@ Energy profiling is performed directly on the NVIDIA Jetson
 
 Two groups of experiments are conducted. The first group evaluates the
 energy consumption and QoS of the \emph{tracking} mode and the second group
-evaluates the energy consumption and QoS of the \emph{landing} mode. For
-both groups, the experiments start with the tractor moving at a
-constant speed of \SI{0.3}{\meter\per\second}, according to a square path similar to that of a
-plowing tractor, and the UAV taking off and hovering at an altitude of
-\SI{25}{\meter}. After reaching the desired altitude, the UAV starts searching
-for the landing marker in the image frame. Once the landing marker is
-detected, the UAV commences its actions.
-
+evaluates the energy consumption and QoS of the \emph{landing} mode. 
+%For
+%both groups, the experiments start with the tractor moving at a
+%constant speed of \SI{0.3}{\meter\per\second}, according to a square path similar to that of a
+%plowing tractor, and the UAV taking off and hovering at an altitude of
+%\SI{25}{\meter}. After reaching the desired altitude, the UAV starts searching
+%for the landing marker in the image frame. 
+%Once the landing marker is
+%detected, the UAV commences its actions.
+%
 In \emph{tracking} mode, the UAV will follow the moving platform at a fixed
-altitude and use its downward facing camera to map the environment,
+altitude and map the ground environment,
+%use its downward facing camera to map the environment,
 while in \emph{landing} mode the UAV will follow the moving platform and
 gradually lower its altitude until it lands on it. Both \emph{tracking} and
-\emph{landing} modes are tested under three different cases of no wind
-disturbances, wind disturbances of \SI{8}{\meter \per \second} and wind disturbances of
-\SI{12}{\meter \per \second} according to the wind model described in Section~\ref{sec:WindDisturbances}.
+\emph{landing} modes are tested under three different cases of no wind, \SI{8}{\meter \per \second} and \SI{12}{\meter \per \second} wind disturbances as analysed in Section~\ref{sec:WindDisturbances}.
 
 
 \subsection{Results}
