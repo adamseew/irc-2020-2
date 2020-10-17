@@ -700,7 +700,7 @@ in a more realistic simulation.
 \begin{figure}
 \centering
 \includegraphics[scale=0.26]{n-fold-for-landing3.png}
-\caption{On the left is the landing marker and in the middle is the kernel that is constructed to detect the n-fold marker. The white regions, on the kernel, correspond to the real values and the black regions to the imaginary values. The grey area is of no concern. 
+\caption{On the left is the landing marker and in the middle is the kernel that is constructed to detect the n-fold marker. The white regions, on the kernel and marker, correspond to the real values and the black regions to the imaginary values. The grey area on the kernel is of no concern. 
 On the top-right a detection of the marker under occlusion on the tip of the n-fold marker
 and on the bottom-right under an occlusion on a sector of the n-fold marker.}
 \label{fig:LandingMarker}
@@ -729,8 +729,10 @@ To extract the pixel coordinates of the tip (center) of the n-fold marker, a
 kernel size of \SI{13}{}$\times$\SI{13}{} pixels consisting of a real and imaginary
 part is created. We present a larger kernel size for visualisation purposes in Figure~\ref{fig:LandingMarker}.   For every pixel in the image, a convolution is
 performed with this kernel and the magnitude of the convolution is
-stored. The pixel with the highest magnitude is considered as a
-candidate tip of the n-fold marker. For that candidate pixel only, 
+stored. 
+%The pixel with the highest magnitude is considered as a
+%candidate tip of the n-fold marker. 
+For the pixel with the highest magnitude only, 
 %an
 %estimation of the orientation/phase of the marker is made and 
 an
