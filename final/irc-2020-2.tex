@@ -1137,8 +1137,7 @@ obtained for a high fps update rate in \emph{YRN} %\emph{YOLOv3-tiny}
 % \emph{landing marker} detection,
 under no wind disturbances, since 28 out of the 32
 objects were detected. This is expected since at a higher fps each object is viewed more times as the UAV moves. Nevertheless, for the same high fps values but
-with a wind speed of \SI{12}{\meter \per \second}, only 18 out of 32 objects were
-correctly detected. This is also expected since the UAV has to be at a certain roll and pitch angle to balance itself when wind disturbances are applied. This causes some objects to be either outside the downward facing camera's field of view or to be viewed from a certain top-side view, which the CNN hasn't been trained for.
+with a wind speed of \SI{12}{\meter \per \second}, only 18 out of 32 objects were detected. This is also expected since the UAV has to be at a certain roll and pitch angle to balance itself when wind disturbances are applied. This causes some objects to be either outside the downward facing camera's field of view or to be viewed from a certain top-side view, which the CNN hasn't been trained for.
 
 
 %The second group of experiments was conducted to test the \emph{landing} mode
@@ -1146,7 +1145,7 @@ correctly detected. This is also expected since the UAV has to be at a certain r
 For the energy evaluation of \emph{landing} mode, eight tests were executed for different 
 fps rates for the \emph{LRN}
 %\emph{landing marker} detection ROS node 
-(10fps, 2fps, 1fps, 0.5fps) using two different cases. 
+(10fps, 2fps, 1fps, 0.5fps) under two different cases. 
 In the first case, the kernel size remains fixed at 
 \SI{22}{}$\times$\SI{22}{} pixels and in the second case an adaptive selection 
 kernel size algorithm is used. 
@@ -1220,7 +1219,7 @@ errors in the y direction.}
 
 \subsection{Discussion}
 
-The experiments show that both tracking mode and landing mode are
+The experiments show that both \emph{tracking} and \emph{landing} modes are
 supported by the system, in a simulated environment with a moving
 platform and random wind conditions. Moreover, the performance of both
 modes is sensitive to the QoS, with a high success rate of both modes
