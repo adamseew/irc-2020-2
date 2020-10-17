@@ -1234,17 +1234,25 @@ for comparison). We estimate\footnote{From information on the respective
   product pages regarding battery capacity and maximal flight time.}
 that the Phantom uses roughly \SI{140}{\watt} while cruising whereas the Cumulus
 uses roughly \SI{40}{\watt} while cruising. The maximal saving gained from
-changing the \emph{YOLOv3-tiny} rate is 
+changing the \emph{YRN}
+%\emph{YOLOv3-tiny} 
+rate is 
 $\SI{6.30}{\watt}-\SI{3.9}{\watt}=\SI{2.4}{\watt}$ whereas the
-maximal saving gained from changing the \emph{landing marker} rate is
+maximal saving gained from changing the \emph{LRN}
+%\emph{landing marker} 
+rate is
 \SI{0.2}{\watt}. For the Cumulus, there is thus a 6.5\% potential energy
 saving, whereas the potential energy saving only is 1.9\% for the
 Phantom. For the Cumulus this saving is considered large enough to
 significantly impact the flying time of the drone, with a total energy
 saving of \SI{23.4}{\kilo \joule}. For the Cumulus, the potential saving from adapting
-the \emph{landing marker} QoS is however only 0.5\%. 
+the \emph{LRN}
+%\emph{landing marker} 
+QoS is however only 0.5\%. 
 
-For the tracking mode, changing the \emph{landing marker} rate
+For the tracking mode, changing the \emph{LRN}
+%\emph{landing marker} 
+rate
 provided a minor saving of \SI{0.14}{\watt}, but at the cost of increased
 landing time. Therefore, although the higher-QoS computer vision
 algorithm is marginally more expensive by \SI{0.14}{\watt}, the UAV will
@@ -1261,8 +1269,9 @@ the NVIDIA Jetson Nano companion computer.
 %
 Our experiments show that the proposed computer vision algorithms for 
 detecting the moving platform can be run at the highest QoS level with only a marginal
-energy overhead, whereas adapting the QoS level of \emph{YOLOv3-tiny} 
-CNN results in a considerable power saving for the system as a whole. 
+energy overhead, whereas adapting the QoS level of \emph{YRN}
+%\emph{YOLOv3-tiny} CNN
+results in a considerable power saving for the system as a whole. 
 This power saving is significant if the system was executing on a fixed-wing UAV, %
 but only marginal if executing on a multirotor UAV.
 
