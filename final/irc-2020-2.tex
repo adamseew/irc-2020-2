@@ -1165,7 +1165,7 @@ gradually lowers its altitude until it lands on it. Both \emph{tracking} and
 %The first group of experiments was conducted to test the \emph{tracking} mode and evaluate its 
 %energy efficiency and QoS. 
 For \emph{energy 
-evaluation of tracking}, eight tests were executed for different rates 
+evaluation of tracking}, 8 tests were executed for different rates 
 of the \emph{YOLOv3-tiny} ROS node \emph{YO} (4fps, 1fps, 0.5fps, 0.1fps) and 
 the \emph{landing marker} detection node \emph{LM} (10fps, 0.5fps).
 %
@@ -1181,14 +1181,14 @@ saving of \SI{0.15}{\watt}--\SI{0.19}{\watt} is achieved.
 
 
 
-For \emph{QoS evaluation of tracking}, twelve tests were executed for different 
+For \emph{QoS evaluation of tracking}, 12 tests were executed for different 
 fps rates for \emph{YO}
 %\emph{YOLOv3-tiny} ROS node
  (4fps, 0.1fps) and for 
 \emph{LM}
 %\emph{landing marker} detection ROS node
  (10fps, 0.5fps) under 
-three different wind speeds. 
+3 different wind speeds. 
 %
 The QoS is determined as the number of correctly detected objects: objects detected within a distance of \SI{2}{\meter} from their actual position and classified correctly. 
 %
@@ -1208,7 +1208,7 @@ being at an angle to balance itself against the wind, which causes some objects 
 
 %The second group of experiments was conducted to test the \emph{landing} mode
 %and evaluate its energy efficiency and QoS.
-For the \emph{energy evaluation of landing}, four tests were executed for different 
+For the \emph{energy evaluation of landing}, 4 tests were executed for different 
 \emph{LM} fps rates 
 %\emph{landing marker} detection ROS node 
 (10fps, 2fps, 1fps, 0.5fps). %under two different cases: fixed kernel size
@@ -1224,37 +1224,16 @@ The largest observed difference in
 power consumption is \SI{0.14}{\watt} and is observed between the 0.5fps and
 the 10fps \emph{LM} update rate.
 %\emph{landing marker} detection.
-The landing time is however reduced by \SI{30}{\second} when using the 10fps update
-rate. %The adaptive kernel size in most cases outperforms the fixed
+Landing with
+%The landing time is however reduced by \SI{30}{\second} 
+%when using the 
+10fps update
+rate is however \SI{30}{\second} faster. %The adaptive kernel size in most cases outperforms the fixed
 %kernel size by \SI{0.11}{\watt}. 
 %Furthermore the adaptive kernel size can
 %compensate for marker occlusions which will increase the overall
 %robustness of the system.
 
-For the \emph{QoS evaluation of landing}, twelve tests were executed for different 
-\emph{LM} fps rates 
-%\emph{landing marker} detection ROS node 
-(10fps, 2fps, 1fps, 0.5fps) under three different wind speeds.
-The QoS is determined as the  mean squared error (MSE) 
-between the predicted and actual position of the moving platform.
-Four different altitude bins were used as seen in 
-Fig.~\ref{fig:PositionErrorDuringLanding}. 
-A large MSE of around \SI{3}{\square\meter} is observed for an altitude 
-greater than \SI{20}{\meter} for a 0.5fps rate, while an MSE close to 
-zero is observed for an altitude of less than \SI{5}{\meter} for an 
-update rate of 10fps.  Wind disturbances do not seem to 
-have an influence on the MSE. We believe the larger MSE for the \emph{y} 
-coordinates compared to the \emph{x} coordinates is caused by  
-sudden changes of the moving platform's direction on the \emph{y} axis.
-
-%% \begin{figure}[t]
-%%   \centering
-%%   \includegraphics{data_visualization/PowerDetection.pdf}
-%%   \caption{Power consumption during tracking mode. \emph{YO} fps:
-%%     0=0.1fps, 1=0.5fps, 2=1fps, 3=4fps.}
-%%   \label{fig:PowerDuringTracking}
-%% \end{figure}
-  
 \begin{figure}[t]
   \centering
   \includegraphics[scale=0.9]{data_visualization/QoSDetection.pdf}
@@ -1267,6 +1246,31 @@ sudden changes of the moving platform's direction on the \emph{y} axis.
   \label{fig:NCorrectObjectDetections}
 \end{figure}
 
+
+For the \emph{QoS evaluation of landing}, 12 tests were executed for different 
+\emph{LM} fps rates 
+%\emph{landing marker} detection ROS node 
+(10fps, 2fps, 1fps, 0.5fps) under 3 different wind speeds.
+The QoS is determined as the  mean squared error (MSE) 
+between the predicted and actual position of the moving platform.
+Four different altitude bins were used, see
+Fig.~\ref{fig:PositionErrorDuringLanding}. 
+A large MSE of around \SI{3}{\square\meter} is observed for an altitude 
+greater than \SI{20}{\meter} for a 0.5fps rate, while an MSE close to 
+zero is observed for an altitude of less than \SI{5}{\meter} for an 
+update rate of 10fps.  Wind disturbances do not significantly
+influence the MSE. We believe the larger MSE for the \emph{y} 
+coordinates compared to the \emph{x} coordinates is caused by  
+sudden changes of the moving platform's direction on the \emph{y} axis.
+
+%% \begin{figure}[t]
+%%   \centering
+%%   \includegraphics{data_visualization/PowerDetection.pdf}
+%%   \caption{Power consumption during tracking mode. \emph{YO} fps:
+%%     0=0.1fps, 1=0.5fps, 2=1fps, 3=4fps.}
+%%   \label{fig:PowerDuringTracking}
+%% \end{figure}
+  
 %% \begin{figure}[t]
 %% \centering
 %% \includegraphics{data_visualization/PowerLanding.pdf}
@@ -1287,11 +1291,13 @@ errors in the y direction.}
 
 \subsection{Discussion}
 
-The experiments show that both \emph{tracking} and \emph{landing} modes are
-supported by the system, in a simulated environment with a moving
-platform and random wind conditions. Moreover, the performance of both
-modes is sensitive to the QoS, with a high success rate of both modes
-at high QoS levels, and significantly lower performance at lower QoS
+The experiments show that both \emph{tracking} and \emph{landing} 
+is operational
+%supported by the system, 
+in a simulated environment with a moving
+platform and random wind conditions. The performance of both
+modes is QoS-sensitive with a high success rate 
+at high QoS levels, and significantly lower performance at lower 
 levels.
 
 The potential energy savings from
@@ -1301,8 +1307,8 @@ should be seen
 in relation to the total energy consumption of the UAV. 
 Consider a DJI Phantom 4 multirotor and a Sky-Watch Cumulus
 fixed-wing (the fixed-wing would need to circle while tracking and 
-would need VTOL capabilities to land). We estimate\footnote{From information on the respective
-  product pages regarding battery capacity and maximal flight time.}
+would need VTOL capabilities to land). Using respective
+  product pages regarding battery capacity and flight time we estimate
 that the Phantom uses roughly \SI{140}{\watt} while cruising whereas the Cumulus
 uses roughly \SI{40}{\watt} while cruising. The saving gained from
 changing the \emph{YO}
@@ -1349,9 +1355,10 @@ results in a considerable power saving for the system as a whole,
 %with a significant power saving for a %system executing on
 representing a significant power saving for a fixed-wing UAV. %
 %but only marginal if executing on a multirotor UAV.
-
+%
 In terms of future work, we are interested in automatically adapting
-the QoS level to the available battery, and in testing this approach
+the QoS level %to the available battery, 
+and in testing this approach
 on a physical drone.
 
 %% acknowledgement
