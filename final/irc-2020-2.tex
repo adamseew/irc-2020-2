@@ -589,7 +589,8 @@ the energy usage of complex ROS-based systems.
 %constructed a velocity observer algorithm by calculating the actual
 %moving distance of the moving platform over a period of time.
 
-\section{Energy-Sensitive Mission Deployment} 
+\section{Energy-Aware System Design} 
+%\section{Energy-Sensitive Mission Deployment} 
 \label{sec:approach}
 
 \subsection{Overall approach}
@@ -664,6 +665,7 @@ hazard detection QoS in terms of frequency.
 
 \subsection{Semi-automatic energy profiling}
 \label{sec:semi-automatic}
+
 A ROS node has been developed for the purposes of the semi-automatic %energy-sensitive
 approach used in this paper. This node allows automatic
 generation of the basic energy models that map time to the
@@ -680,7 +682,7 @@ what QoS configuration corresponds to which basic model
 (instantaneous power consumption as a function of time). Running
 \powprof{} using this configuration file as a parameter generates the
 complete model that maps QoS to energy consumption.
-%
+
 %%%%%%%%%%%%%%%%%%%%
 \section{Vision-Based Autonomous Tracking and Landing}
 \label{sec:landing}
