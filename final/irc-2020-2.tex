@@ -721,7 +721,7 @@ hazard detection QoS in terms of frequency.
 \begin{figure}
 \centering
 \includegraphics[scale=0.26]{n-fold-for-landing3.png}
-\caption{Left: the landing marker. Middle: the kernel that is constructed to detect the n-fold marker (the white regions on the kernel and marker correspond to the real values and the black regions to the imaginary values, the grey area on the kernel is of no concern).
+\caption{Left: landing marker. Middle: n-fold marker detection kernel (white regions on kernel and marker correspond to real values and black regions to imaginary values, grey area on the kernel is of no concern).
 Top-right: detection under occlusion on the tip of the n-fold marker.
 Bottom-right: detected under occlusion of a sector of the n-fold marker.}
 \label{fig:LandingMarker}
@@ -734,7 +734,7 @@ To mark the moving platform a special pattern is used,
 consisting of an n-fold marker~\cite{NfoldMarker} and three
 ArUco markers~\cite{ArUco_marker} with different ids. This pattern
 is referred to as the \emph{landing marker} and can be seen in
-Figure~\ref{fig:LandingMarker}. The n-fold marker is primarily used to
+Fig.~\ref{fig:LandingMarker}. The n-fold marker is primarily used to
 detect the moving platform from a high altitude, while the ArUco
 markers are used as extra landmarks in case the marker is partially
 visible in the image frame.
@@ -748,24 +748,24 @@ visible in the image frame.
 
 To extract the pixel coordinates of the tip (center) of the n-fold marker, a
 kernel size of \SI{13}{}$\times$\SI{13}{} pixels consisting of a real and imaginary
-part is created. We present a larger kernel size for visualisation purposes in Figure~\ref{fig:LandingMarker}.   For every pixel in the image, a convolution is
+part is created. We present a larger kernel size for visualisation purposes in Fig.~\ref{fig:LandingMarker}.   For every pixel in the image, a convolution is
 performed with this kernel and the magnitude of the convolution is
 stored. 
 %The pixel with the highest magnitude is considered as a
 %candidate tip of the n-fold marker. 
-For the pixel with the highest magnitude only, 
+For the pixel with the highest magnitude, 
 %an
 %estimation of the orientation/phase of the marker is made and 
 an
 overall normalized quality score \emph{q} between \SI{0.0}{} and \SI{1.0}{} is calculated. If
-the score is above a threshold then the pixel is
+the score is above the threshold then the pixel is
 accepted as the tip of the n-fold marker. 
 %If an n-fold marker is
 %detected, the result will be the pixel coordinates of the tip of the
 %n-fold marker along with its orientation/phase.
 %
 An adaptive kernel selection function is implemented to ensure the selection of a
-proper minimum kernel size \emph{k} based on a threshold quality score value \emph{q} thus balancing between the computationally expensive convolution process and the effective marker detection. The marker detection results under two different occlusion cases can be seen in Figure~\ref{fig:LandingMarker} for an image size of \SI{640}{}$\times$\SI{480}{} pixel.
+proper minimum kernel size \emph{k} based on a threshold quality score value \emph{q}, balancing between the computationally expensive convolution process and the effective marker detection. The marker detection results under two different occlusion cases can be seen in Fig.~\ref{fig:LandingMarker}. %for an image size of \SI{640}{}$\times$\SI{480}{} pixel.
 %
 To detect the ArUco markers the standard OpenCV library is used. %and if
 %any ArUco markers are detected, their central pixel coordinates and
@@ -801,15 +801,16 @@ To detect the ArUco markers the standard OpenCV library is used. %and if
 %To convert the pixel coordinates into a real-world relative position \emph{[X, Y, Z]} the PX4 flight controller's onboard sensor measurements are utilized. For the \emph{Z} component, the altitude of the UAV from the flight controller's EKF is used. To obtain the \emph{X, Y} components, the IMU and barometric sensor measurements are used to project the image plane down to the ground plane. Then a perspective homography matrix is calculated between the two planes, the image plane and the ground plane, thus transforming the pixel coordinates into a relative \emph{X, Y} position in meters. For ArUco markers only, an offset vector in the x, y axis is added depending on the distance of each ArUco marker from the tip of the n-fold marker. 
 %It is assumed that this vector is prior known. The mean measurements from the detected n-fold and/or ArUco markers are used to determine the \emph{X, Y} relative position of the landing marker.
 
-To convert the pixel coordinates into a real-world relative position
+To convert the pixel coordinates into a relative position
 the PX4 flight controller's onboard sensor measurements are utilized.
-The altitude of the UAV is obtained from the flight controller's EKF,
+The altitude of the UAV is obtained from the flight controller,
 whereas the IMU and barometric sensor measurements are used to project
 the image plane down to the ground plane. A perspective homography
 matrix is calculated between the two planes to transform the
-pixel coordinates into a relative position in meters. For ArUco
-markers an offset vector is added depending on the distance of
-each ArUco marker from the tip of the n-fold marker.
+pixel coordinates into a relative position. For ArUco
+markers an offset vector is added depending on the distance 
+%of each ArUco marker 
+from the tip of the n-fold marker.
 
 %The next step is to convert these pixel coordinates into a real-world
 %relative position \emph{[X, Y, Z]} according to a local coordinate frame. The
@@ -1047,7 +1048,7 @@ also implemented as a part of the tracking algorithm.
 
 We evaluate our approach based on a simulated use-case where a multirotor UAV identifies
 hazardous objects around a moving platform, and lands on the
-moving platform to recharge. A simulated field is created in Gazebo with randomly placed objects as seen in Figure~\ref{fig:Gazebo}.
+moving platform to recharge. A simulated field is created in Gazebo with randomly placed objects as seen in Fig.~\ref{fig:Gazebo}.
 %No communication link is considered between the moving platform and the UAV
 %and no GNSS positioning is assumed to be available. The system can thus be
 %considered as a fallback for fault-tolerance.
@@ -1167,7 +1168,7 @@ evaluation of \emph{tracking} mode, eight tests were executed for different fps 
 for the \emph{YOLOv3-tiny} ROS node (\emph{YRN}) (4fps, 1fps, 0.5fps, 0.1fps) and 
 the \emph{landing marker} detection ROS node (\emph{LRN}) (10fps, 0.5fps). as 
 %
-%seen in Figure~\ref{fig:PowerDuringTracking}. 
+%seen in Fig.~\ref{fig:PowerDuringTracking}. 
 For a 4fps update rate
 for \emph{YRN}
 %\emph{YOLOv3-tiny},
@@ -1195,7 +1196,7 @@ The QoS is determined as the number of correctly detected objects (objects detec
 %a distance of \SI{2}{\meter} from its actual position and classified with
 %the correct class. 
 The detection results can be seen in
-Figure~\ref{fig:NCorrectObjectDetections}. The best results were
+Fig.~\ref{fig:NCorrectObjectDetections}. The best results were
 obtained for a high fps update rate in \emph{YRN} %\emph{YOLOv3-tiny}
  and \emph{LRN},
 % \emph{landing marker} detection,
@@ -1237,7 +1238,7 @@ fps rates for the \emph{LRN}
 disturbances. The QoS is determined as the  mean squared error (MSE) 
 between the predicted and actual position of the moving platform.
 Four different altitude bins were used as seen in 
-Figure~\ref{fig:PositionErrorDuringLanding}. 
+Fig.~\ref{fig:PositionErrorDuringLanding}. 
 A large MSE of around \SI{3}{\square\meter} is observed for an altitude 
 greater than \SI{20}{\meter} for a 0.5fps rate, while an MSE close to 
 zero is observed for an altitude of less than \SI{5}{\meter} for an 
