@@ -1152,9 +1152,10 @@ gradually lower its altitude until it lands on it. Both \emph{tracking} and
 For the energy 
 evaluation of \emph{tracking} mode, eight tests were executed for different fps rates 
 for the \emph{YOLOv3-tiny} ROS node (\emph{YRN}) (4fps, 1fps, 0.5fps, 0.1fps) and 
-the \emph{landing marker} detection ROS node (\emph{LRN}) (10fps, 0.5fps) as 
+the \emph{landing marker} detection ROS node (\emph{LRN}) (10fps, 0.5fps). as 
 %
-seen in Figure~\ref{fig:PowerDuringTracking}. For a 4fps update rate
+%seen in Figure~\ref{fig:PowerDuringTracking}. 
+For a 4fps update rate
 for \emph{YRN}
 %\emph{YOLOv3-tiny},
 a power consumption of \SI{6.30}{\watt} is observed while
@@ -1197,11 +1198,12 @@ fps rates for the \emph{LRN}
 %\emph{landing marker} detection ROS node 
 (10fps, 2fps, 1fps, 0.5fps) under two different cases. 
 In the first case, the kernel size remains fixed at 
-\SI{22}{}$\times$\SI{22}{} pixels and in the second case an adaptive selection 
+\SI{22}{}$\times$\SI{22}{} pixels and in the second case the standard adaptive selection 
 kernel size algorithm is used. 
 %
-The landing time is also taken under consideration as seen in
-Figure~\ref{fig:PowerDuringLanding}. The largest difference in the
+%The landing time is also taken under consideration as seen in
+%Figure~\ref{fig:PowerDuringLanding}. 
+The largest observed difference in the
 power consumption is \SI{0.14}{\watt} and is observed between the 0.5fps and
 the 10fps update rate for the \emph{LRN}.
 %\emph{landing marker} detection.
@@ -1229,13 +1231,13 @@ have an influence on the MSE. We believe the larger MSE for the \emph{y}
 coordinates compared to the \emph{x} coordinates is caused by a 
 sudden change of the moving platform's direction on the \emph{y} axis.
 
-\begin{figure}[t]
-  \centering
-  \includegraphics{data_visualization/PowerDetection.pdf}
-  \caption{Power consumption during tracking mode. \emph{YRN} fps:
-    0=0.1fps, 1=0.5fps, 2=1fps, 3=4fps.}
-  \label{fig:PowerDuringTracking}
-\end{figure}
+%% \begin{figure}[t]
+%%   \centering
+%%   \includegraphics{data_visualization/PowerDetection.pdf}
+%%   \caption{Power consumption during tracking mode. \emph{YRN} fps:
+%%     0=0.1fps, 1=0.5fps, 2=1fps, 3=4fps.}
+%%   \label{fig:PowerDuringTracking}
+%% \end{figure}
   
 \begin{figure}[t]
   \centering
@@ -1249,13 +1251,13 @@ sudden change of the moving platform's direction on the \emph{y} axis.
   \label{fig:NCorrectObjectDetections}
 \end{figure}
 
-\begin{figure}[t]
-\centering
-\includegraphics{data_visualization/PowerLanding.pdf}
-\caption{Power consumption during landing mode. 
-The black circles denote a fixed kernel size while the grey circles denote an adaptive kernel size.}
-\label{fig:PowerDuringLanding}
-\end{figure}
+%% \begin{figure}[t]
+%% \centering
+%% \includegraphics{data_visualization/PowerLanding.pdf}
+%% \caption{Power consumption during landing mode. 
+%% The black circles denote a fixed kernel size while the grey circles denote an adaptive kernel size.}
+%% \label{fig:PowerDuringLanding}
+%% \end{figure}
 
 \begin{figure}[t]
 \centering
@@ -1283,8 +1285,7 @@ should be seen
 in relation to the total energy consumption of the UAV. As a concrete
 example, consider a DJI Phantom 4 multirotor and a Sky-Watch Cumulus
 fixed-wing (the fixed-wing would need to circle while tracking and 
-would need VTOL capabilities to land, but we nevertheless include it 
-for comparison). We estimate\footnote{From information on the respective
+would need VTOL capabilities to land). We estimate\footnote{From information on the respective
   product pages regarding battery capacity and maximal flight time.}
 that the Phantom uses roughly \SI{140}{\watt} while cruising whereas the Cumulus
 uses roughly \SI{40}{\watt} while cruising. The maximal saving gained from
@@ -1307,10 +1308,10 @@ QoS is however only 0.5\%.
 For the tracking mode, changing the \emph{LRN}
 %\emph{landing marker} 
 rate
-provided a minor saving of \SI{0.14}{\watt}, but at the cost of increased
+provided a minor saving of only \SI{0.14}{\watt}, but at the cost of increased
 landing time. Therefore, although the higher-QoS computer vision
 algorithm is marginally more expensive by \SI{0.14}{\watt}, the UAV will
-overall save energy because of a reduced flight time.
+overall save energy due to a reduced flight time.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion and Future Work}
