@@ -360,7 +360,7 @@
 
 
 
-\title{Energy-Aware Design of Vision-Based Autonomous\\Tracking and Landing of a UAV} 
+\title{Energy-Aware Design of Vision-Based\\Autonomous Tracking and Landing of a UAV} 
 %\title{Energy-Sensitive Vision-Based Autonomous\\Tracking and Landing of a UAV} 
 
 \author{
@@ -684,38 +684,38 @@ hazard detection QoS in terms of frequency.
 %% complete model that maps QoS to energy consumption.
 
 %%%%%%%%%%%%%%%%%%%%
-\section{Vision-Based Autonomous Tracking and Landing}
+\section{Vision-Based Tracking and Landing}
 \label{sec:landing}
 
 %The vision-based autonomous tracking and landing can be split into
 %four main sub-problems: detection of the moving platform, navigation,
 %guidance, and control of the UAV. 
-From an energy-sensitive design
-approach, our focus is on the computer vision algorithms used to
-detect the moving platform and the parameterization by a QoS
-influencing energy consumption and performance, as described in
-Section~\ref{sec:Detection}. 
+%From an energy-aware design
+%approach, our focus is on the computer vision algorithms used to
+%detect the moving platform and the parameterization by a QoS
+%influencing energy consumption and performance. %, as described in
+%Section~\ref{sec:Detection}. 
 %Furthermore, a Kalman Filter is implemented
 %%the navigation block is
 %%designed 
 %to increase the robustness and overall performance of the
 %system. 
-A model of
-dynamically changing wind disturbances is analysed and described in
-Section~\ref{sec:WindDisturbances}, allowing the system to be tested
-in a more realistic simulation.
+%A model of
+%dynamically changing wind disturbances is analysed and described in
+%Section~\ref{sec:WindDisturbances}, allowing the system to be tested
+%in a more realistic simulation.
 
 \begin{figure}
 \centering
 \includegraphics[scale=0.26]{n-fold-for-landing3.png}
-\caption{On the left is the landing marker and in the middle is the kernel that is constructed to detect the n-fold marker. The white regions, on the kernel and marker, correspond to the real values and the black regions to the imaginary values. The grey area on the kernel is of no concern. 
-On the top-right a detection of the marker under occlusion on the tip of the n-fold marker
-and on the bottom-right under an occlusion on a sector of the n-fold marker.}
+\caption{Left: the landing marker. Middle: the kernel that is constructed to detect the n-fold marker (the white regions on the kernel and marker correspond to the real values and the black regions to the imaginary values, the grey area on the kernel is of no concern).
+Top-right: detection under occlusion on the tip of the n-fold marker.
+Bottom-right: detected under occlusion of a sector of the n-fold marker.}
 \label{fig:LandingMarker}
 \end{figure}
 
-\subsection{Detection of the moving platform}
-\label{sec:Detection}
+%\subsection{Detection of the moving platform}
+%\label{sec:Detection}
 
 To mark the moving platform a special pattern is constructed,
 consisting of an n-fold marker~\cite{NfoldMarker} along with three
@@ -753,6 +753,10 @@ accepted as the tip of the n-fold marker.
 %
 An adaptive kernel selection function is implemented to ensure the selection of a
 proper minimum kernel size \emph{k} based on a threshold quality score value \emph{q} thus balancing between the computationally expensive convolution process and the effective marker detection. The marker detection results under two different occlusion cases can be seen in Figure~\ref{fig:LandingMarker} for an image size of \SI{640}{}$\times$\SI{480}{} pixel.
+%
+To detect the ArUco markers the standard OpenCV library is used and if
+any ArUco markers are detected, their central pixel coordinates and
+pose are stored.
 
 %Since a convolution is a computationally expensive process, an increase
 %in the kernel size would also increase the computation time and
@@ -780,14 +784,12 @@ proper minimum kernel size \emph{k} based on a threshold quality score value \em
 %\end{figure}
 
 %
-%To detect the ArUco markers the standard OpenCV library is used and if
-%any ArUco markers are detected, their central pixel coordinates and
-%pose are stored.
 % 
 %To convert the pixel coordinates into a real-world relative position \emph{[X, Y, Z]} the PX4 flight controller's onboard sensor measurements are utilized. For the \emph{Z} component, the altitude of the UAV from the flight controller's EKF is used. To obtain the \emph{X, Y} components, the IMU and barometric sensor measurements are used to project the image plane down to the ground plane. Then a perspective homography matrix is calculated between the two planes, the image plane and the ground plane, thus transforming the pixel coordinates into a relative \emph{X, Y} position in meters. For ArUco markers only, an offset vector in the x, y axis is added depending on the distance of each ArUco marker from the tip of the n-fold marker. 
 %It is assumed that this vector is prior known. The mean measurements from the detected n-fold and/or ArUco markers are used to determine the \emph{X, Y} relative position of the landing marker.
 
-
+To convert the pixel coordinates into a real-world relative position the PX4 flight controller's onboard sensor measurements are utilized.
+The altitude of the UAV is obtained from the flight controller's EKF, whereas the IMU and barometric sensor measurements are used to project the image plane down to the ground plane. A perspective homography matrix is calculated between the two planes, thus transforming the pixel coordinates into a relative position in meters. For ArUco markers only, an offset vector is added depending on the distance of each ArUco marker from the tip of the n-fold marker.
 
 %The next step is to convert these pixel coordinates into a real-world
 %relative position \emph{[X, Y, Z]} according to a local coordinate frame. The
@@ -841,6 +843,14 @@ proper minimum kernel size \emph{k} based on a threshold quality score value \em
 %marker. The result is an \emph{[X, Y, Z]} relative position of the UAV from
 %the moving platform along with the yaw orientation of the landing
 %marker.
+
+The tracking algorithm uses an EKF to provide an accurate
+prediction for the position of the moving platform at any given
+time. Such a prediction allow us to process images at different fps
+according to a desired QoS. Furthermore, the overall robustness of the
+system is increased in case the moving platform is not detected in
+every image frame. A velocity estimator for the moving platform is
+also implemented as a part of the tracking algorithm.
 
 
 %\subsection{Navigation}
@@ -938,32 +948,32 @@ proper minimum kernel size \emph{k} based on a threshold quality score value \em
 %moving platform's velocity (\(\dot{x}_k^l\)) in \emph{NED} frame can be obtained.
 
 
-\subsection{Wind disturbances}
-\label{sec:WindDisturbances}
-%The exact and accurate estimation of the applied wind forces on a body
-%is a complex matter studied by the field of fluid dynamics. We use a
-%simplified approach, as follows. 
-We assume that the wind will be
-applied on an area of \SI{0.09}{\m^2}. Such an area is emulating a UAV
-with extra payload attached on its frame. Two different wind speeds of
-\SI{8}{\m \per \s} and \SI{12}{\m \per \s} are used to calculate the applied wind forces
-on that area. The wind forces are considered to be applied on the
-center of gravity of the UAV with direction parallel to the ground. The magnitude of the applied force, corresponding to a certain wind
-speed is calculated by the following equations
-\cite{Dynamic_pressure_NASA,anderson2010fundamentals}:
-\begin{equation}
-    \begin{array}{l}
-         F_{\textrm{init}} = p_{d} \cdot A,\,\,\,
-         p_{d} = \frac{\varrho \cdot v^2}{2},
-    \end{array}
-\end{equation}
-\noindent where $F_{\text{init}}\in\mathbb{R}$ is the force, \(p_{d}\in\mathbb{R}\) is the dynamic pressure, \(A\in\mathbb{R}\) is
-the area of the applied pressure, \(\varrho\in\mathbb{R}\) is the density of the
-air (around \SI{1.2}{\kg \per \m^3}), and \(v\in\mathbb{R}\) is the wind velocity in \SI{}{\m \per \s}. By solving the above equations the applied force on the UAV is found
-to be \SI{3.45}{\newton} for an \SI{8}{\m \per \s} wind speed, and 
-\SI{7.76}{\newton} for a \SI{12}{\m \per \s}
-wind speed. The wind forces are applied on the UAV in Gazebo
-simulation, to test the performance of the whole system. The direction of the wind force remains constant while its magnitude changes every \SI{5.5}{\second} between -10\% and +20\% of the initial wind force of either \SI{3.45}{\newton} or \SI{7.76}{\newton}. For a UAV altitude of \SI{6.0}{\meter} and below, the wind force decreases linearly. This model is used for all simulated tests.
+%% \subsection{Wind disturbances}
+%% \label{sec:WindDisturbances}
+%% %The exact and accurate estimation of the applied wind forces on a body
+%% %is a complex matter studied by the field of fluid dynamics. We use a
+%% %simplified approach, as follows. 
+%% We assume that the wind will be
+%% applied on an area of \SI{0.09}{\m^2}. Such an area is emulating a UAV
+%% with extra payload attached on its frame. Two different wind speeds of
+%% \SI{8}{\m \per \s} and \SI{12}{\m \per \s} are used to calculate the applied wind forces
+%% on that area. The wind forces are considered to be applied on the
+%% center of gravity of the UAV with direction parallel to the ground. The magnitude of the applied force, corresponding to a certain wind
+%% speed is calculated by the following equations
+%% \cite{Dynamic_pressure_NASA,anderson2010fundamentals}:
+%% \begin{equation}
+%%     \begin{array}{l}
+%%          F_{\textrm{init}} = p_{d} \cdot A,\,\,\,
+%%          p_{d} = \frac{\varrho \cdot v^2}{2},
+%%     \end{array}
+%% \end{equation}
+%% \noindent where $F_{\text{init}}\in\mathbb{R}$ is the force, \(p_{d}\in\mathbb{R}\) is the dynamic pressure, \(A\in\mathbb{R}\) is
+%% the area of the applied pressure, \(\varrho\in\mathbb{R}\) is the density of the
+%% air (around \SI{1.2}{\kg \per \m^3}), and \(v\in\mathbb{R}\) is the wind velocity in \SI{}{\m \per \s}. By solving the above equations the applied force on the UAV is found
+%% to be \SI{3.45}{\newton} for an \SI{8}{\m \per \s} wind speed, and 
+%% \SI{7.76}{\newton} for a \SI{12}{\m \per \s}
+%% wind speed. The wind forces are applied on the UAV in Gazebo
+%% simulation, to test the performance of the whole system. The direction of the wind force remains constant while its magnitude changes every \SI{5.5}{\second} between -10\% and +20\% of the initial wind force of either \SI{3.45}{\newton} or \SI{7.76}{\newton}. For a UAV altitude of \SI{6.0}{\meter} and below, the wind force decreases linearly. This model is used for all simulated tests.
 
 
 %
@@ -1023,8 +1033,7 @@ moving platform to recharge. A simulated field is created in Gazebo with randoml
 %considered as a fallback for fault-tolerance.
 
 Object detection and classification of cars, humans, tractors and cows is performed by feeding the input
-image from the downward facing camera into a \emph{YOLOv3-tiny} CNN
-\cite{yolov3} implemented in ROS \cite{bjelonicYolo2018}. 
+image from the downward facing camera into a \emph{YOLOv3-tiny} CNN~\cite{yolov3} implemented in ROS~\cite{bjelonicYolo2018}. 
 %Four
 %different classes are selected: cars, humans, tractors, and
 %cows. 
@@ -1066,6 +1075,32 @@ On the right, a view of the UAV attempting a landing on the moving platform.}
 %parameters for 5000 epochs, for an input image size of \SI{416}{}$\times$\SI{416}{}
 %pixels.
 
+We assume a windy environment, as follows. %that the wind will be
+%applied on an area of \SI{0.09}{\m^2}. Such an area is emulating a UAV
+%with extra payload attached on its frame. Two different wind speeds of
+%\SI{8}{\m \per \s} and \SI{12}{\m \per \s} are used to calculate the applied wind forces
+%on that area. 
+The wind forces are considered to be applied on the
+center of gravity of the UAV with direction parallel to the ground. The magnitude of the applied force corresponds to certain wind
+speeds~\cite{Dynamic_pressure_NASA,anderson2010fundamentals}:
+%% \begin{equation}
+%%     \begin{array}{l}
+%%          F_{\textrm{init}} = p_{d} \cdot A,\,\,\,
+%%          p_{d} = \frac{\varrho \cdot v^2}{2},
+%%     \end{array}
+%% \end{equation}
+%% \noindent where $F_{\text{init}}\in\mathbb{R}$ is the force, \(p_{d}\in\mathbb{R}\) is the dynamic pressure, \(A\in\mathbb{R}\) is
+%% the area of the applied pressure, \(\varrho\in\mathbb{R}\) is the density of the
+%% air (around \SI{1.2}{\kg \per \m^3}), and \(v\in\mathbb{R}\) is the wind velocity in \SI{}{\m \per \s}. %By solving the above equations 
+The applied force on the UAV is found
+to be \SI{3.45}{\newton} for an \SI{8}{\m \per \s} wind speed, and 
+\SI{7.76}{\newton} for a \SI{12}{\m \per \s}
+wind speed. %The wind forces are applied on the UAV in Gazebo
+%simulation, to test the performance of the whole system. 
+The direction of the wind force remains constant while its magnitude changes every \SI{5.5}{\second} between -10\% and +20\% of the initial wind force. %of either \SI{3.45}{\newton} or \SI{7.76}{\newton}. 
+For a UAV altitude of \SI{6.0}{\meter} and below, the wind force decreases linearly. This model is used for all simulated tests.
+
+
 \subsection{Experimental setup}
 
 All experiments are performed in Gazebo simulation under Ubuntu 18.04
@@ -1100,7 +1135,7 @@ altitude and map the ground environment,
 %use its downward facing camera to map the environment,
 while in \emph{landing} mode the UAV will follow the moving platform and
 gradually lower its altitude until it lands on it. Both \emph{tracking} and
-\emph{landing} modes are evaluated for their energy consumption and QoS under three different cases of no wind, \SI{8}{\meter \per \second} and \SI{12}{\meter \per \second} wind disturbances as analysed in Section~\ref{sec:WindDisturbances}.
+\emph{landing} modes are evaluated for their energy consumption and QoS under three different cases of no wind, \SI{8}{\meter \per \second} and \SI{12}{\meter \per \second} wind disturbances. %as analysed in Section~\ref{sec:WindDisturbances}.
 
 
 \subsection{Results}
