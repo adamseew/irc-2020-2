@@ -410,8 +410,8 @@ power saving is significant for a system executing on a fixed-wing UAV but only 
 \label{sec:introduction}
 
 Unmanned Aerial Vehicles (UAVs) are increasingly used for applications
-such as monitoring, surveillance, transportation of small payloads,
-and agricultural applications~\cite{costa2012use,salami2014uav}.
+such as monitoring, surveillance, transportation,
+and agriculture. %~\cite{costa2012use,salami2014uav}.
 %
 %One of the major constraints of such applications is their limited level of autonomy due to battery limitations.
 Extending the flying time of a UAV is normally done by having it land
@@ -430,10 +430,10 @@ In this paper we investigate the use of a novel
 vision-based autonomous landing system and evaluate its robustness
 towards environmental conditions such as visual disturbances and wind.
 
-Extension of the flight time can be also achieved by using
-\emph{energy-aware design of algorithms}, basically reducing energy consumption
-by reducing the Quality of Service (QoS) where it has little impact on overall system performance. With this approach,
-energy-costly computations such as computer vision are adapted by
+Extension of the flight time can be achieved by using
+\emph{energy-aware design of algorithms}, reducing energy consumption
+by reducing the Quality of Service (QoS) where it has little impact on overall system performance. 
+Energy-costly computations such as computer vision are adapted by
 selecting the desired quality of service to match the available
 energy~\cite{seewald2020mechanical}. By combining energy-aware algorithm design with autonomous landing
 capabilities, we aim to increase the total availability of the UAV to
@@ -461,40 +461,43 @@ while tracking and landing on a moving platform.
 \section{State of the Art}
 \label{sec:state-of-the-art}
 
+\newcommand{\Xcite}[1]{}
+
 %Vision-based autonomous landing on a marker has been extensively
 %studied by many researchers. Key distinctions include the type of the marker along with the computer vision algorithms used to detect it and whether the marker is on a moving platform or not.
 
-One of the first experiments with
-vision-based autonomous landing used
-an ``H''-shape
-pattern (similar to ones found on a helipad)~\cite{saripalli2002vision}. Subsequently
-a landing marker inspired by a QR code has been
-investigated~\cite{yuan2018hierarchical};
-ArUco markers~\cite{lee2012autonomous,yang2018hybrid}, AprilTag markers~\cite{araar2017vision,kyristsis2016towards,feng2018autonomous,olson2011apriltag}; special-pattern black and white markers~\cite{nguyen2018lightdenseyolo,falanga2017vision}, and color markers~\cite{chen2016system,lee2016vision}.  
-An onboard implementation of the computer vision algorithms to detect a moving platform has been demonstrated using standard CPU~\cite{chen2016system,lee2016vision,falanga2017vision} as well as the companion computer GPU~\cite{yang2018hybrid,nguyen2018lightdenseyolo,kyristsis2016towards}.
+%One of the first experiments with
+Vision-based autonomous landing has used landing markers
+ in an ``H''-shape
+pattern (similar to ones found on a helipad)~\cite{saripalli2002vision};
+landing markers inspired by a QR code~\cite{yuan2018hierarchical};
+ArUco markers~\cite{lee2012autonomous}\Xcite{yang2018hybrid}, AprilTag markers~\cite{araar2017vision}\Xcite{kyristsis2016towards,feng2018autonomous,olson2011apriltag}; special-pattern black and white markers~\cite{nguyen2018lightdenseyolo}\Xcite{falanga2017vision}, and color markers~\cite{chen2016system}\Xcite{lee2016vision}.  
+An onboard implementation of the computer vision algorithms to detect a moving platform has been demonstrated using standard CPU~\cite{chen2016system}\Xcite{lee2016vision,falanga2017vision} and GPU~\cite{yang2018hybrid}\Xcite{nguyen2018lightdenseyolo,kyristsis2016towards}.
 % 
-Regarding wind conditions, 
+Wind conditions are normally ignored or kept stable, i.e.,
 a constant wind speed of \SI{5}{\m \per \s} has been used as an external disturbance in a
 simulation environment~\cite{feng2018autonomous}. 
 %
-Concerning estimation of the UAV's position,
-similar to our approach, a Kalman Filter or Extended Kalman Filter (EKF) has been used for the
-estimation~\cite{saripalli2003landing,araar2017vision,feng2018autonomous,
+Concerning %estimation of the UAV's position,
+position estimation for landing,
+similar to our approach a Kalman Filter or Extended Kalman Filter (EKF) has been used for the
+estimation~\cite{saripalli2003landing}\Xcite{araar2017vision,feng2018autonomous,
   falanga2017vision}, as well as a velocity observer algorithm based on calculating the actual
 moving distance of the moving platform over a period of time~\cite{yang2018hybrid}.
 
-The energy modeling of computer vision algorithms was investigated in
-SLAMBench~\cite{nardi2015introducing}, a framework that automatically evaluated 
+Energy modeling of computer vision algorithms was investigated in
+SLAMBench~\cite{nardi2015introducing}, a framework that automatically evaluates
 Simultaneous Localisation and Mapping (SLAM) algorithms configuration alternatives
 for energy efficiency. 
 %
-Other approaches to energy modeling, such mission-based energy
-models~\cite{sadrpour2013experimental, sadrpour2013mission}, 
-focus mostly on ground-based autonomous vehicles rather than UAVs. 
+%Other approaches to energy modeling, such 
+Mission-based energy
+models~\cite{sadrpour2013experimental}\Xcite{sadrpour2013mission} have 
+focused mostly on ground-based autonomous vehicles rather than UAVs. 
 The relation between motion and energy in a
 robot has been investigated ~\cite{morales2009power}, but without accounting for the energy required for computation.
 %
-Energy modeling of mobile robots~\cite{mei2006deployment, mei2005case, mei2004energy} has provided
+Energy modeling of mobile robots~\cite{mei2006deployment}\Xcite{mei2005case, mei2004energy} has provided
 the basis for our concept of %modeling computation for
 energy-aware algorithm design. Indeed, the approach employed in this paper has evolved
 from an energy-efficient motion planning technique~\cite{mei2004energy}, a design strategy that allows accounting for
@@ -597,9 +600,10 @@ the energy usage of complex ROS-based systems.
 
 The energy-aware design approach is a mission-oriented concept that adjusts
 the computations to the mission being performed while taking into
-account energy requirements, including energy consumed by actuation,
-computation, and the presence of a limited power source. Specifically,
-in our agricultural use-case, the concept is employed to profile and eventually adapt the
+account energy requirements. %, including energy consumed by actuation,
+%computation, and the presence of a limited power source. Specifically,
+In our %agricultural use-case, the concept is employed to 
+we profile and adapt the
 computationally heavy algorithms performing autonomous tracking,
 landing, and hazard detection. This adaptation is energy-aware
 in the sense that QoS parameters are modified
@@ -609,7 +613,7 @@ between QoS parameters can thus be performed as part of the system design, i.e.,
 the robustness towards wind during landing for precision of hazard
 detection.
 
-The energy-sensitive design using \powprof{} relies on empirical
+Energy-aware design using \powprof{} relies on empirical
 experiments to measure the actual power consumption on the robot
 hardware~\cite{seewald2019coarse}.
 %
@@ -617,39 +621,41 @@ In this paper, we focus on
 profiling the energy usage of the companion computer,
 which from the point of view of energy consumption
 can be studied independently from the specific drone it is mounted in.
-
+%
 The developer must specify the maximum and minimum QoS level for
 each algorithm running on the system.  During mission execution the
-levels are statically defined: automatic adaptation during different
-phases of the mission is 
+levels are statically defined: automatic, dynamic adaptation %during different
+%phases of the mission 
+is 
 considered future work.
-%
+
 The developer executes the system to empirically determine the
-power consumption. This can be done in two different ways:
+power consumption in one of two ways:
 %
 \begin{enumerate}
 \item Automatically using \powprof{} to control the experiment
   execution~\cite{seewald2019coarse}. For a ROS-based system, we assume that the algorithms
-  are wrapped as ROS nodes, and we require the developer to specify
-  the QoS parameters using a ROS configuration. We use a configuration
-  file in a key-value pair format which is then interpreted by
-  \powprof{}, enabling \powprof{} to iterate through all possible
-  combinations and empirically sample the energy consumption of each
+  are wrapped as ROS nodes, and we require the developer to declare
+  the QoS parameters. % using a ROS configuration. %We use a configuration
+  %file in a key-value pair format which is then 
+  The QoS parameters are interpreted by
+  \powprof{}, iterating through all possible
+  combinations and empirically sampling the energy consumption of each
   combination of QoS parameters. Once all combinations have been
   iterated through, \powprof{} automatically combines the energy
   consumption data into a complete model.
 \item Semi-automatically using \powprof{} to sample energy and combine
   the results of all experiments, but allowing the developer to
   control all aspects of the experiment execution. This new approach %and is described in more detail later in this section. Basically, 
-  is based on interfacing a dedicated ROS node to \powprof{}, enabling
+  uses a dedicated ROS node interfaced to \powprof{}, enabling
   the developer to start/stop sampling in a given
   configuration by publishing on a topic. Once all experiments have been completed, \powprof{} is
-  invoked by the developer to combine the energy consumption data into
+  invoked to combine the energy consumption data into
   a complete model.
 
 \end{enumerate}
 %
-Regardless of the approach, \powprof{} builds a single model mapping
+Regardless of the approach, \powprof{} builds a model mapping
 QoS to total system energy consumption. Coarse-grained sampling is
 employed to reduce the number of experiments, and missing values are
 automatically inferred from the others by the means of a multivariate
@@ -717,10 +723,10 @@ Bottom-right: detected under occlusion of a sector of the n-fold marker.}
 %\subsection{Detection of the moving platform}
 %\label{sec:Detection}
 
-To mark the moving platform a special pattern is constructed,
-consisting of an n-fold marker~\cite{NfoldMarker} along with three
+To mark the moving platform a special pattern is used,
+consisting of an n-fold marker~\cite{NfoldMarker} and three
 ArUco markers~\cite{ArUco_marker} with different ids. This pattern
-will be referred to as the \emph{landing marker} and can be seen in
+is referred to as the \emph{landing marker} and can be seen in
 Figure~\ref{fig:LandingMarker}. The n-fold marker is primarily used to
 detect the moving platform from a high altitude, while the ArUco
 markers are used as extra landmarks in case the marker is partially
@@ -745,7 +751,7 @@ For the pixel with the highest magnitude only,
 %estimation of the orientation/phase of the marker is made and 
 an
 overall normalized quality score \emph{q} between \SI{0.0}{} and \SI{1.0}{} is calculated. If
-the score is above a desired threshold value then the pixel is
+the score is above a threshold then the pixel is
 accepted as the tip of the n-fold marker. 
 %If an n-fold marker is
 %detected, the result will be the pixel coordinates of the tip of the
@@ -1082,14 +1088,14 @@ On the right, a view of the UAV attempting a landing on the moving platform.}
 %parameters for 5000 epochs, for an input image size of \SI{416}{}$\times$\SI{416}{}
 %pixels.
 
-We assume a windy environment, as follows. %that the wind will be
+We assume a windy environment where %, as follows. %that the wind will be
 %applied on an area of \SI{0.09}{\m^2}. Such an area is emulating a UAV
 %with extra payload attached on its frame. Two different wind speeds of
 %\SI{8}{\m \per \s} and \SI{12}{\m \per \s} are used to calculate the applied wind forces
 %on that area. 
-The wind forces are considered to be applied on the
-center of gravity of the UAV with direction parallel to the ground. The magnitude of the applied force corresponds to certain wind
-speeds~\cite{Dynamic_pressure_NASA,anderson2010fundamentals}:
+wind forces are applied on the
+center of gravity of the UAV with direction parallel to the ground. The magnitude of the applied force %corresponds to certain 
+is calculated from the speed~\cite{Dynamic_pressure_NASA,anderson2010fundamentals}:
 %% \begin{equation}
 %%     \begin{array}{l}
 %%          F_{\textrm{init}} = p_{d} \cdot A,\,\,\,
@@ -1110,14 +1116,14 @@ For a UAV altitude of \SI{6.0}{\meter} and below, the wind force decreases linea
 
 \subsection{Experimental setup}
 
-All experiments are performed in Gazebo simulation under Ubuntu 18.04
-and ROS Melodic on a standard
+All experiments are performed in Gazebo %simulation under 
+using Ubuntu~18.04 and ROS Melodic on a standard
 %i7-8550U 1.8~GHz (4.0~GHz Boost), 8~GB DDR4
 laptop. The \emph{PX4} Software In The Loop (SITL) Firmware v1.10.2 is used as the flight
 controller and the \emph{IRIS} quadcopter is used as the UAV platform. A
 downward facing RGB camera is placed on the UAV providing a
-\SI{640}{}$\times$\SI{480}{} pixel image at 10 fps. An NVIDIA Jetson Nano
-with Ubuntu 18.04 and ROS Melodic is used as the UAV's companion
+\SI{640}{}$\times$\SI{480}{} pixel image at 10~fps. An NVIDIA Jetson Nano
+with Ubuntu~18.04 and ROS Melodic is used as the UAV's companion
 computer. 
 %
 Energy profiling is performed directly on the NVIDIA Jetson
@@ -1137,12 +1143,12 @@ Energy profiling is performed directly on the NVIDIA Jetson
 %Once the landing marker is
 %detected, the UAV commences its actions.
 %
-In \emph{tracking} mode, the UAV will follow the moving platform at a fixed
-altitude and map the ground environment,
+In \emph{tracking} mode the UAV follows the moving platform at a fixed
+altitude and maps the ground environment.
 %use its downward facing camera to map the environment,
-while in \emph{landing} mode the UAV will follow the moving platform and
-gradually lower its altitude until it lands on it. Both \emph{tracking} and
-\emph{landing} modes are evaluated for their energy consumption and QoS under three different cases of no wind, \SI{8}{\meter \per \second} and \SI{12}{\meter \per \second} wind disturbances. %as analysed in Section~\ref{sec:WindDisturbances}.
+In \emph{landing} mode the UAV follows the moving platform and
+gradually lowers its altitude until it lands on it. Both \emph{tracking} and
+\emph{landing} modes are evaluated for energy consumption and QoS under cases of no wind, \SI{8}{\meter \per \second} and \SI{12}{\meter \per \second} wind disturbances. %as analysed in Section~\ref{sec:WindDisturbances}.
 
 
 \subsection{Results}
@@ -1186,9 +1192,11 @@ Figure~\ref{fig:NCorrectObjectDetections}. The best results were
 obtained for a high fps update rate in \emph{YRN} %\emph{YOLOv3-tiny}
  and \emph{LRN},
 % \emph{landing marker} detection,
-under no wind disturbances, since 28 out of the 32
-objects were detected. This is expected since at a higher fps each object is viewed more times as the UAV moves. Nevertheless, for the same high fps values but
-with a wind speed of \SI{12}{\meter \per \second}, only 18 out of 32 objects were detected. This is also expected since the UAV has to be at a certain roll and pitch angle to balance itself when wind disturbances are applied. This causes some objects to be either outside the downward facing camera's field of view or to be viewed from a certain top-side view, which the CNN hasn't been trained for.
+under no wind disturbances, where 28 out of the 32
+objects were detected. %This is expected since at a 
+Higher fps rates imply that each object is viewed more times as the UAV moves, but %. Nevertheless, 
+for the same high fps values with a wind speed of \SI{12}{\meter \per \second} only 18 out of 32 objects were detected. This difference is due to the UAV %has to 
+being at a certain roll and pitch angle to balance itself against the wind, which causes some objects to be either outside the downward facing camera's field of view, or to be viewed from an angle which the CNN has not been trained for.
 
 
 %The second group of experiments was conducted to test the \emph{landing} mode
@@ -1226,7 +1234,7 @@ Figure~\ref{fig:PositionErrorDuringLanding}.
 A large MSE of around \SI{3}{\square\meter} is observed for an altitude 
 greater than \SI{20}{\meter} for a 0.5fps rate, while an MSE close to 
 zero is observed for an altitude of less than \SI{5}{\meter} for an 
-update rate of 10fps. Furthermore, wind disturbances do not seem to 
+update rate of 10fps.  Wind disturbances do not seem to 
 have an influence on the MSE. We believe the larger MSE for the \emph{y} 
 coordinates compared to the \emph{x} coordinates is caused by a 
 sudden change of the moving platform's direction on the \emph{y} axis.
