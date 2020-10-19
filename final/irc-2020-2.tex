@@ -424,17 +424,18 @@ mission.
 %autonomous precision landing is not considered safe, since GPS signals
 %can be temporarily lost or even tampered with. As an alternative, 
 %
-Since GPS signals
-can be temporarily lost or even tampered with, in this paper we investigate the use of a novel
+Standard GPS is insufficient for precision landing, and moreover
+GPS signals can be temporarily lost or even tampered with. 
+In this paper we investigate the use of a novel
 vision-based autonomous landing system and evaluate its robustness
 towards environmental conditions such as visual disturbances and wind.
 
 Extension of the flight time can be also achieved by using
-\emph{energy-sensitive algorithms} that can reduce energy consumption
-by reducing the Quality of Service (QoS). With this approach,
+\emph{energy-aware design of algorithms}, basically reducing energy consumption
+by reducing the Quality of Service (QoS) where it has little impact on overall system performance. With this approach,
 energy-costly computations such as computer vision are adapted by
 selecting the desired quality of service to match the available
-energy~\cite{seewald2020mechanical}. By combining energy-sensitive algorithms with autonomous landing
+energy~\cite{seewald2020mechanical}. By combining energy-aware algorithm design with autonomous landing
 capabilities, we aim to increase the total availability of the UAV to
 perform operations, by extending the flight time and using autonomous
 recharging when needed.
