@@ -478,7 +478,7 @@ Vision-based autonomous landing has used landing markers
  in an ``H''-shape
 pattern; % (similar to ones found on a helipad)~\cite{saripalli2002vision};
 landing markers inspired by QR code~\cite{yuan2018hierarchical};
-ArUco markers~\cite{lee2012autonomous}\Xcite{yang2018hybrid}, AprilTag markers~\cite{araar2017vision}\Xcite{kyristsis2016towards,feng2018autonomous,olson2011apriltag}; and special-pattern black and white markers~\cite{nguyen2018lightdenseyolo}\Xcite{falanga2017vision} and color markers~\cite{chen2016system}\Xcite{lee2016vision}.  
+ArUco markers~\cite{lee2012autonomous}\Xcite{yang2018hybrid}, AprilTag markers~\cite{araar2017vision}\Xcite{kyristsis2016towards,feng2018autonomous,olson2011apriltag}; and special-pattern black and white markers~\cite{nguyen2018lightdenseyolo}\Xcite{falanga2017vision} and color markers~\Xcite{chen2016system}\cite{lee2016vision}.  
 An onboard implementation of the computer vision algorithms to detect a moving platform has been demonstrated using CPU~\cite{chen2016system}\Xcite{lee2016vision,falanga2017vision} and GPU~\cite{yang2018hybrid}\Xcite{nguyen2018lightdenseyolo,kyristsis2016towards}.
 % 
 Wind conditions are generally kept stable, i.e.,
@@ -488,8 +488,8 @@ simulation environment~\cite{feng2018autonomous}.
 Concerning %estimation of the UAV's position,
 position estimation for landing,
 similar to our approach a Kalman Filter or Extended Kalman Filter (EKF) has been used for the
-estimation~\cite{saripalli2003landing}\Xcite{araar2017vision,feng2018autonomous,
-  falanga2017vision}, as well as a velocity observer algorithm based on calculating the actual
+estimation~\cite{falanga2017vision}\Xcite{araar2017vision,feng2018autonomous,
+  saripalli2003landing}, as well as a velocity observer algorithm based on calculating the actual
 moving distance of the moving platform over a period of time~\cite{yang2018hybrid}.
 
 Energy modeling of computer vision algorithms was investigated in
@@ -1055,7 +1055,7 @@ moving platform. A simulated field is created in Gazebo with randomly placed obj
 %considered as a fallback for fault-tolerance.
 %
 Object detection and classification of cars, humans, tractors and cows is performed by feeding the input
-image from the downward facing camera into a \emph{YOLOv3-tiny} CNN\Xcite{yolov3} implemented in ROS~\cite{bjelonicYolo2018}. 
+image from the downward facing camera into a \emph{YOLOv3-tiny} CNN\cite{yolov3} implemented in ROS~\cite{bjelonicYolo2018}. 
 %Four
 %different classes are selected: cars, humans, tractors, and
 %cows. 
