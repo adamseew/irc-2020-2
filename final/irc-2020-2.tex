@@ -386,10 +386,10 @@ an evaluation of the energy consumption and Quality of Service (QoS) of each com
 We evaluate the approach based on an agricultural use case where
 the moving platform is tracked using 
 a landing marker %robust to occlusions 
-and the YOLOv3-tiny CNN to is used to detect ground-based hazards. We
+and the YOLOv3-tiny CNN is used to detect ground-based hazards. We
 perform all computations onboard using an NVIDIA Jetson Nano and analyse the impact on the flight time by profiling the energy consumption of the
 landing marker detection algorithm and YOLOv3-tiny CNN. Experiments are conducted in Gazebo simulation using an energy modeling tool to measure the computational energy cost as a function of QoS. Our experiments test the energy efficiency and robustness of our system in various dynamic wind disturbances. We show that the landing marker detection algorithm can be run at the highest QoS with only a marginal energy overhead whereas adapting the QoS level of YOLOv3-tiny CNN results in a considerable power saving for the system as a whole. The
-power saving is significant for a system executing on a fixed-wing UAV but only marginal if executing on a standard multirotor UAV.
+power saving is significant for a system executing on a fixed-wing UAV. %but only marginal if executing on a standard multirotor UAV.
 
 \end{abstract}
 
@@ -424,9 +424,10 @@ mission.
 %autonomous precision landing is not considered safe, since GPS signals
 %can be temporarily lost or even tampered with. As an alternative, 
 %
-Standard GPS is insufficient for precision landing, and moreover
+Standard GPS is however insufficient for precision landing, and 
 GPS signals can be temporarily lost or even tampered with. 
-In this paper we investigate the use of a novel
+%In this paper 
+We investigate the use of a 
 vision-based autonomous landing system and evaluate its robustness
 towards environmental conditions such as visual disturbances and wind.
 
@@ -487,7 +488,8 @@ moving distance of the moving platform over a period of time~\cite{yang2018hybri
 
 Energy modeling of computer vision algorithms was investigated in
 SLAMBench~\cite{nardi2015introducing}, a framework that automatically evaluates
-Simultaneous Localisation and Mapping (SLAM) algorithms configuration alternatives
+%Simultaneous Localisation and Mapping (SLAM) 
+algorithm configuration alternatives
 for energy efficiency. 
 %
 %Other approaches to energy modeling, such 
@@ -495,7 +497,7 @@ Mission-based energy
 models~\cite{sadrpour2013experimental}\Xcite{sadrpour2013mission} have 
 focused mostly on ground-based autonomous vehicles rather than UAVs. 
 The relation between motion and energy in a
-robot has been investigated ~\cite{morales2009power}, but without accounting for the energy required for computation.
+robot has been investigated~\cite{morales2009power}, but without accounting for the energy required for computation.
 %
 Energy modeling of mobile robots~\cite{mei2006deployment}\Xcite{mei2005case, mei2004energy} has provided
 the basis for our concept of %modeling computation for
@@ -509,14 +511,14 @@ energy-efficient robot deployment algorithm~\cite{mei2006deployment}.
 %self-docking capable robots has been proposed~\cite{berenz2012autonomous}. 
 %
 
-In this work we propose a new marker pattern robust to occlusions and suitable for a realistic outdoor case. Since the GPU cannot normally run different algorithms simultaneously, we utilize the CPU for detecting the landing marker and the GPU for a CNN to detect ground hazards. By doing so, a different QoS can be chosen for each algorithm. Furthermore, we use \powprof{}, a generic energy
-modeling tool~\cite{seewald2019coarse}. This tool enables measuring
-the energy impact of different configurations of the ROS-based system
+In this work we propose a new marker pattern robust to occlusions and suitable for a realistic outdoor case. Since the GPU cannot normally run different algorithms simultaneously, we utilize the CPU for detecting the landing marker and the GPU for a CNN to detect ground hazards. By doing so, a different QoS can be chosen for each algorithm. We use \powprof{}, a generic energy
+modeling tool~\cite{seewald2019coarse}, %. This tool enables measuring
+to measure the energy impact of different configurations of the ROS-based system
 implementing the agricultural use-case.
 The \powprof{} tool is part of the TeamPlay toolchain, which aims to make tradeoffs between energy and other non-functional properties accessible to the developer. 
 In this paper, we present
 extensions to \powprof{} that facilitates the initial exploration of
-the energy usage of complex ROS-based systems.
+the energy usage of ROS-based systems.
 
 
 
@@ -602,14 +604,14 @@ The energy-aware design approach is a mission-oriented concept that adjusts
 the computations to the mission being performed while taking into
 account energy requirements. %, including energy consumed by actuation,
 %computation, and the presence of a limited power source. Specifically,
-In our %agricultural use-case, the concept is employed to 
-we profile and adapt the
+%In our %agricultural use-case, the concept is employed to 
+Here, we profile and adapt the
 computationally heavy algorithms performing autonomous tracking,
 landing, and hazard detection. This adaptation is energy-aware
-in the sense that QoS parameters are modified
+in the sense that QoS parameters are adapted
 to enable the mission to be completed at the highest possible QoS
 level that does not significantly impact the available energy budget. Tradeoffs
-between QoS parameters can thus be performed as part of the system design, i.e., trading
+between QoS parameters are thus be performed as part of the system design, i.e., trading
 the robustness towards wind during landing for precision of hazard
 detection.
 
