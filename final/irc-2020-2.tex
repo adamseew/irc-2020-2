@@ -804,7 +804,7 @@ To detect the ArUco markers the standard OpenCV library is used. %and if
 To convert the pixel coordinates into a relative position
 the PX4 flight controller's onboard sensor measurements are utilized.
 The altitude of the UAV is obtained from the flight controller,
-whereas the IMU and barometric sensor measurements are used to project
+whereas the downward facing camera's horizontal and vertical field of view along with the IMU and barometric sensor measurements are used to project
 the image plane down to the ground plane. A perspective homography
 matrix is calculated between the two planes to transform the
 pixel coordinates into a relative position. For ArUco
