@@ -380,15 +380,17 @@ In this paper, we present the design and evaluation of a
 vision-based algorithm for autonomous tracking and landing on a moving platform 
 in varying environmental conditions. %We use
 %
-We use an energy-aware approach, where the design of the algorithm as a whole is based on
+We use an energy-aware approach, where the design of the algorithm is based on
 an evaluation of the energy consumption and Quality of Service (QoS) of each computational component.
 %
-We evaluate the approach based on an agricultural use case where
-the moving platform is tracked using 
+We evaluate our approach with an agricultural use case where
+a moving platform is tracked using 
 a landing marker %robust to occlusions 
 and the YOLOv3-tiny CNN is used to detect ground-based hazards. We
 perform all computations onboard using an NVIDIA Jetson Nano and analyse the impact on the flight time by profiling the energy consumption of the
-landing marker detection algorithm and YOLOv3-tiny CNN. Experiments are conducted in Gazebo simulation using an energy modeling tool to measure the computational energy cost as a function of QoS. Our experiments test the energy efficiency and robustness of our system in various dynamic wind disturbances. We show that the landing marker detection algorithm can be run at the highest QoS with only a marginal energy overhead whereas adapting the QoS level of YOLOv3-tiny CNN results in a considerable power saving for the system as a whole. The
+marker detection and the CNN. Experiments are conducted in Gazebo simulation using an energy modeling tool to measure the computational energy cost as a function of QoS. %Our experiments 
+We test the energy efficiency and robustness of our system in various dynamic wind disturbances. We show that the marker detection algorithm can be run at the highest QoS with only a marginal energy overhead whereas adapting the QoS level of CNN results in a considerable power saving. %for the system as a whole. 
+The
 power saving is significant for a system executing on a fixed-wing UAV. %but only marginal if executing on a standard multirotor UAV.
 
 \end{abstract}
@@ -410,12 +412,12 @@ power saving is significant for a system executing on a fixed-wing UAV. %but onl
 \label{sec:introduction}
 
 Unmanned Aerial Vehicles (UAVs) are increasingly used for applications
-such as monitoring, surveillance, transportation,
+such as monitoring, surveillance, %transportation,
 and agriculture. %~\cite{costa2012use,salami2014uav}.
 %
 %One of the major constraints of such applications is their limited level of autonomy due to battery limitations.
-Extending the flying time of a UAV is normally done by having it land
-in order to replace or charge the battery before continuing the
+Extending the flying time of a UAV can be done by landing to
+replace or charge the battery before continuing the
 mission. 
 %Performing landings autonomously can however be challenging
 %depending on the environment and whether the landing platform is
@@ -424,34 +426,37 @@ mission.
 %autonomous precision landing is not considered safe, since GPS signals
 %can be temporarily lost or even tampered with. As an alternative, 
 %
-Standard GPS is however insufficient for precision landing, and 
-GPS signals can be temporarily lost or even tampered with. 
+GPS is however insufficient for robust precision landing. %, and 
+%GPS signals can be temporarily lost or even tampered with. 
 %In this paper 
 We investigate the use of a 
 vision-based autonomous landing system and evaluate its robustness
 towards environmental conditions such as visual disturbances and wind.
 
-Extension of the flight time can be achieved by using
-\emph{energy-aware design of algorithms}, reducing energy consumption
+Extension of flight time can be achieved by using
+\emph{energy-aware design of algorithms} to reduce energy consumption
 by reducing the Quality of Service (QoS) where it has little impact on overall system performance. 
-Energy-costly computations such as computer vision are adapted by
-selecting the desired quality of service to match the available
-energy~\cite{seewald2020mechanical}. By combining energy-aware algorithm design with autonomous landing
-capabilities, we aim to increase the total availability of the UAV to
-perform operations, by extending the flight time and using autonomous
-recharging when needed.
+Energy-costly computations %such as computer vision 
+are adapted by
+selecting the desired QoS to match the available
+energy~\cite{seewald2020mechanical}. %By combining
+We aim to combine energy-aware algorithm design with autonomous landing
+capabilities to extend the flight time and increase the total availability of the UAV. %to
+%perform operations. %, by extending the flight time and using autonomous
+%recharging when needed.
 
 
 The main contribution of this paper concerns the experimental study of
-a robust vision-based algorithm for autonomous
+a vision-based algorithm for autonomous
 tracking and landing in varying environmental conditions. The
 algorithms are executed on an NVIDIA Jetson Nano companion computer
-controlling a simulated drone. The vision-based tracking and landing
+controlling a simulated drone. The %vision-based tracking and landing
 algorithms provide novel capabilities in terms of tolerance to visual
 disturbance and varying environmental conditions such as wind.
 %
 Our experiments are based on an agricultural use-case where a
-multirotor UAV performs visual identification of ground-based hazards
+%multirotor 
+UAV performs visual identification of ground-based hazards
 while tracking and landing on a moving platform.
 %
 
