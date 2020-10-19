@@ -594,17 +594,17 @@ the energy usage of complex ROS-based systems.
 
 \subsection{Overall approach}
 
-The energy-sensitive design is a mission-oriented concept that adjusts
+The energy-aware design approach is a mission-oriented concept that adjusts
 the computations to the mission being performed while taking into
 account energy requirements, including energy consumed by actuation,
 computation, and the presence of a limited power source. Specifically,
 in our agricultural use-case, the concept is employed to profile and eventually adapt the
 computationally heavy algorithms performing autonomous tracking,
-landing, and hazard detection. This adaptation enables
-energy-sensitivity, in the sense that QoS parameters can be modified
+landing, and hazard detection. This adaptation is energy-aware
+in the sense that QoS parameters are modified
 to enable the mission to be completed at the highest possible QoS
-level that does not exceed the available energy budget. Tradeoffs
-between QoS parameters can be performed by an end-user, i.e., trading
+level that does not significantly impact the available energy budget. Tradeoffs
+between QoS parameters can thus be performed as part of the system design, i.e., trading
 the robustness towards wind during landing for precision of hazard
 detection.
 
@@ -612,15 +612,15 @@ The energy-sensitive design using \powprof{} relies on empirical
 experiments to measure the actual power consumption on the robot
 hardware~\cite{seewald2019coarse}.
 %
-In this paper, we focus on the
-initial profiling using of energy usage of the companion computer,
+In this paper, we focus on 
+profiling the energy usage of the companion computer,
 which from the point of view of energy consumption
 can be studied independently from the specific drone it is mounted in.
 
 The developer must specify the maximum and minimum QoS level for
 each algorithm running on the system.  During mission execution the
 levels are statically defined: automatic adaptation during different
-phases of the mission is currently being investigated and is
+phases of the mission is 
 considered future work.
 %
 The developer executes the system to empirically determine the
