@@ -1325,18 +1325,19 @@ overall save energy due to a reduced flight time.
 \section{Conclusion and Future Work}
 \label{sec:conclusion}
 
-In this paper we presented a robust, energy-sensitive, vision-based
+In this paper we presented %a robust, energy-sensitive, 
+the energy-aware design of a vision-based
 algorithm for autonomous tracking and landing in varying environmental
-conditions, by experimentally executing all the necessary algorithms on 
+conditions, based on experimentally executing all the necessary algorithms on 
 the NVIDIA Jetson Nano companion computer.
 %
 Our experiments show that the proposed computer vision algorithms for 
 detecting the moving platform can be run at the highest QoS level with only a marginal
-energy overhead, whereas adapting the QoS level of \emph{YRN}
+energy overhead, whereas adapting the QoS level of the CNN %\emph{YRN}
 %\emph{YOLOv3-tiny} CNN
-results in a considerable power saving for the system as a whole. 
-This power saving is significant if the system was executing on a fixed-wing UAV, %
-but only marginal if executing on a multirotor UAV.
+results in a considerable power saving for the system as a whole, 
+with a significant power saving for a system executing on a fixed-wing UAV. %
+%but only marginal if executing on a multirotor UAV.
 
 In terms of future work, we are interested in automatically adapting
 the QoS level to the available battery, and in testing this approach
