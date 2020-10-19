@@ -1048,22 +1048,22 @@ also implemented as a part of the tracking algorithm.
 
 We evaluate our approach based on a simulated use-case where a multirotor UAV identifies
 hazardous objects around a moving platform, and lands on the
-moving platform to recharge. A simulated field is created in Gazebo with randomly placed objects as seen in Fig.~\ref{fig:Gazebo}.
+moving platform. A simulated field is created in Gazebo with randomly placed objects as seen in Fig.~\ref{fig:Gazebo}.
 %No communication link is considered between the moving platform and the UAV
 %and no GNSS positioning is assumed to be available. The system can thus be
 %considered as a fallback for fault-tolerance.
-
+%
 Object detection and classification of cars, humans, tractors and cows is performed by feeding the input
-image from the downward facing camera into a \emph{YOLOv3-tiny} CNN~\cite{yolov3} implemented in ROS~\cite{bjelonicYolo2018}. 
+image from the downward facing camera into a \emph{YOLOv3-tiny} CNN\Xcite{yolov3} implemented in ROS~\cite{bjelonicYolo2018}. 
 %Four
 %different classes are selected: cars, humans, tractors, and
 %cows. 
 %Based on the CNN's predictions and onboard
 %sensors, the UAV maps the detected objects onto a 2D map. 
 %The performance of \emph{YOLOv3-tiny} on pre-trained weights was not satisfactory and therefore 
-A custom dataset based on the Gazebo models was created consisting of 1200 images, 300
-for each class. We trained the CNN by its default training
-parameters for 5000 epochs, for an input image size of \SI{416}{}$\times$\SI{416}{}
+A dataset based on Gazebo models was created consisting of 1200 images, 300
+for each class. We trained the CNN 5000 epochs using default 
+parameters and an input image size of \SI{416}{}$\times$\SI{416}{}
 pixels.
 
 \begin{figure}[t]
