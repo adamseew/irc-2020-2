@@ -465,48 +465,45 @@ while tracking and landing on a moving platform.
 %studied by many researchers. Key distinctions include the type of the marker along with the computer vision algorithms used to detect it and whether the marker is on a moving platform or not.
 
 One of the first experiments with
-vision-based autonomous landing was conducted by
-\cite{saripalli2002vision}
-in which an ”H”-shape
-pattern (similar to ones found on a helipad) was used. 
-A landing marker inspired by a QR code 
-is investigated by 
-\cite{yuan2018hierarchical}. Towards the direction of using fiducial markers, \cite{lee2012autonomous} and \cite{yang2018hybrid} have used ArUco markers where \cite{araar2017vision}, \cite{kyristsis2016towards}, \cite{feng2018autonomous} utilized AprilTag~\cite{olson2011apriltag} markers. A special pattern of a black and white marker was designed by \cite{nguyen2018lightdenseyolo} and \cite{falanga2017vision}. On the contrary, color markers were utilized by \cite{chen2016system} and \cite{lee2016vision}.  
-An onboard implementation of the computer vision algorithms to detect a moving platform, is demonstrated by \cite{chen2016system}, \cite{lee2016vision}, \cite{falanga2017vision}, \cite{yang2018hybrid}, \cite{nguyen2018lightdenseyolo} and \cite{kyristsis2016towards}, with the latter three utilizing the companion's computer GPU.
+vision-based autonomous landing used
+an ``H''-shape
+pattern (similar to ones found on a helipad)~\cite{saripalli2002vision}. Subsequently
+a landing marker inspired by a QR code has been
+investigated~\cite{yuan2018hierarchical};
+ArUco markers~\cite{lee2012autonomous,yang2018hybrid}, AprilTag markers~\cite{araar2017vision,kyristsis2016towards,feng2018autonomous,olson2011apriltag}; special-pattern black and white markers~\cite{nguyen2018lightdenseyolo,falanga2017vision}, and color markers~\cite{chen2016system,lee2016vision}.  
+An onboard implementation of the computer vision algorithms to detect a moving platform has been demonstrated using standard CPU~\cite{chen2016system,lee2016vision} as well as the companion computer GPU~\cite{falanga2017visionyang2018hybrid,nguyen2018lightdenseyolo,kyristsis2016towards}.
 % 
-Regarding wind conditions, \cite{feng2018autonomous} used
-a constant wind speed of \SI{5}{\m \per \s} as an external disturbance in a
-simulation environment. 
+Regarding wind conditions, 
+a constant wind speed of \SI{5}{\m \per \s} has been used as an external disturbance in a
+simulation environment~\cite{feng2018autonomous}. 
 %
 Concerning estimation of the UAV's position,
 similar to our approach, a Kalman Filter or Extended Kalman Filter (EKF) has been used for the
 estimation~\cite{saripalli2003landing,araar2017vision,feng2018autonomous,
-  falanga2017vision}, whereas \cite{yang2018hybrid}
-constructed a velocity observer algorithm by calculating the actual
-moving distance of the moving platform over a period of time.
+  falanga2017vision}, as well as a velocity observer algorithm based on calculating the actual
+moving distance of the moving platform over a period of time~\cite{yang2018hybrid}.
 
-To account for the energy modeling of computer vision algorithms, we
-considered SLAMBench \cite{nardi2015introducing}, a framework that investigates Simultaneous Localisation and Mapping (SLAM) algorithms configuration alternatives
+The energy modeling of computer vision algorithms was investigated in
+SLAMBench~\cite{nardi2015introducing}, a framework that automatically evaluated 
+Simultaneous Localisation and Mapping (SLAM) algorithms configuration alternatives
 for energy efficiency. 
 %
-Other approaches to energy modeling, such as the mission-based energy
-models studied by~\cite{sadrpour2013experimental,
-  sadrpour2013mission}, focus mostly on ground-based autonomous
-vehicles instead of the UAVs.~\cite{morales2009power}
-extensively investigated the relation between motion and energy in a
-robot, but do not account for the energy required for computation.
+Other approaches to energy modeling, such mission-based energy
+models~\cite{sadrpour2013experimental, sadrpour2013mission}, 
+focus mostly on ground-based autonomous vehicles rather than UAVs. 
+The relation between motion and energy in a
+robot has been investigated ~\cite{morales2009power}, but without accounting for the energy required for computation.
 %
-Energy modeling of mobile robots as carried by~\cite{mei2006deployment, mei2005case, mei2004energy} has provided
-the ground for the concept of modeling computation for
-energy-sensitive algorithm design. Indeed, the approach employed in this paper has evolved
-from an energy-efficient motion planning technique
-in~\cite{mei2004energy}, a design strategy that allows accounting for
-motion and computations separately in~\cite{mei2005case}, to an
-energy-efficient deployment algorithm in~\cite{mei2006deployment}.
+Energy modeling of mobile robots~\cite{mei2006deployment, mei2005case, mei2004energy} has provided
+the basis for our concept of %modeling computation for
+energy-aware algorithm design. Indeed, the approach employed in this paper has evolved
+from an energy-efficient motion planning technique~\cite{mei2004energy}, a design strategy that allows accounting for
+motion and computations separately~\cite{mei2005case}, to obtain an
+energy-efficient robot deployment algorithm~\cite{mei2006deployment}.
 %
-To account for the eventuality of battery shortage,~\cite{berenz2012autonomous} elaborates a
-battery management mission-based dynamic recharge approach by using a set of recharge stations along with
-self-docking capable robots. 
+%To account for the eventuality of battery shortage, a
+%battery management mission-based dynamic recharge approach using a set of recharge stations along with
+%self-docking capable robots has been proposed~\cite{berenz2012autonomous}. 
 %
 
 In this work we propose a new marker pattern robust to occlusions and suitable for a realistic outdoor case. Since the GPU cannot normally run different algorithms simultaneously, we utilize the CPU for detecting the landing marker and the GPU for a CNN to detect ground hazards. By doing so, a different QoS can be chosen for each algorithm. Furthermore, we use \powprof{}, a generic energy
