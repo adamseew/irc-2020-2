@@ -471,7 +471,7 @@ pattern (similar to ones found on a helipad)~\cite{saripalli2002vision}. Subsequ
 a landing marker inspired by a QR code has been
 investigated~\cite{yuan2018hierarchical};
 ArUco markers~\cite{lee2012autonomous,yang2018hybrid}, AprilTag markers~\cite{araar2017vision,kyristsis2016towards,feng2018autonomous,olson2011apriltag}; special-pattern black and white markers~\cite{nguyen2018lightdenseyolo,falanga2017vision}, and color markers~\cite{chen2016system,lee2016vision}.  
-An onboard implementation of the computer vision algorithms to detect a moving platform has been demonstrated using standard CPU~\cite{chen2016system,lee2016vision} as well as the companion computer GPU~\cite{falanga2017visionyang2018hybrid,nguyen2018lightdenseyolo,kyristsis2016towards}.
+An onboard implementation of the computer vision algorithms to detect a moving platform has been demonstrated using standard CPU~\cite{chen2016system,lee2016vision,falanga2017vision} as well as the companion computer GPU~\cite{yang2018hybrid,nguyen2018lightdenseyolo,kyristsis2016towards}.
 % 
 Regarding wind conditions, 
 a constant wind speed of \SI{5}{\m \per \s} has been used as an external disturbance in a
@@ -593,7 +593,7 @@ the energy usage of complex ROS-based systems.
 %\section{Energy-Sensitive Mission Deployment} 
 \label{sec:approach}
 
-\subsection{Overall approach}
+%\subsection{Overall approach}
 
 The energy-aware design approach is a mission-oriented concept that adjusts
 the computations to the mission being performed while taking into
@@ -640,10 +640,10 @@ power consumption. This can be done in two different ways:
   consumption data into a complete model.
 \item Semi-automatically using \powprof{} to sample energy and combine
   the results of all experiments, but allowing the developer to
-  control all aspects of the experiment execution. This approach is new and is described in more detail later in this
-  section. Basically, a ROS node interfaces to \powprof{} and is used
-  by the developer to start/stop sampling in a given
-  configuration. Once all experiments have been completed, \powprof{} is
+  control all aspects of the experiment execution. This new approach %and is described in more detail later in this section. Basically, 
+  is based on interfacing a dedicated ROS node to \powprof{}, enabling
+  the developer to start/stop sampling in a given
+  configuration by publishing on a topic. Once all experiments have been completed, \powprof{} is
   invoked by the developer to combine the energy consumption data into
   a complete model.
 
@@ -663,25 +663,25 @@ hazard detection QoS in terms of frequency.
 %
 
 
-\subsection{Semi-automatic energy profiling}
-\label{sec:semi-automatic}
+%% \subsection{Semi-automatic energy profiling}
+%% \label{sec:semi-automatic}
 
-A ROS node has been developed for the purposes of the semi-automatic %energy-sensitive
-approach used in this paper. This node allows automatic
-generation of the basic energy models that map time to the
-instantaneous power consumption. To activate this functionality, the developer simply publishes on a ROS
-topic to start the model generation, with \powprof{} accounting for
-the invocation of an asynchronous thread which collects data from the
-energy sensors. Similarly, the developer publishes on another ROS topic to
-stop the model generation, while \powprof{} finalizes collecting data from
-sensors, builds the basic energy model, and stores it for later processing.
+%% A ROS node has been developed for the purposes of the semi-automatic %energy-sensitive
+%% approach used in this paper. This node allows automatic
+%% generation of the basic energy models that map time to the
+%% instantaneous power consumption. To activate this functionality, the developer simply publishes on a ROS
+%% topic to start the model generation, with \powprof{} accounting for
+%% the invocation of an asynchronous thread which collects data from the
+%% energy sensors. Similarly, the developer publishes on another ROS topic to
+%% stop the model generation, while \powprof{} finalizes collecting data from
+%% sensors, builds the basic energy model, and stores it for later processing.
 
-Once all the basic energy models for the desired QoS ranges have been
-collected, QoS ranges are specified in a configuration file: the developer defines
-what QoS configuration corresponds to which basic model
-(instantaneous power consumption as a function of time). Running
-\powprof{} using this configuration file as a parameter generates the
-complete model that maps QoS to energy consumption.
+%% Once all the basic energy models for the desired QoS ranges have been
+%% collected, QoS ranges are specified in a configuration file: the developer defines
+%% what QoS configuration corresponds to which basic model
+%% (instantaneous power consumption as a function of time). Running
+%% \powprof{} using this configuration file as a parameter generates the
+%% complete model that maps QoS to energy consumption.
 
 %%%%%%%%%%%%%%%%%%%%
 \section{Vision-Based Autonomous Tracking and Landing}
@@ -1079,7 +1079,7 @@ with Ubuntu 18.04 and ROS Melodic is used as the UAV's companion
 computer. 
 %
 Energy profiling is performed directly on the NVIDIA Jetson
-  Nano using \powprof{} as outlined in Section~\ref{sec:semi-automatic}.
+  Nano using \powprof{} as outlined in Section~\ref{sec:approach}.
   
 %Experiments are conducted to evaluate the energy consumption and QoS of \emph{tracking} and \emph{landing} modes. 
 %
